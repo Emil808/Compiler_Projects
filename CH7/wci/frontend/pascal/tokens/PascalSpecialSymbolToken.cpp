@@ -27,13 +27,27 @@ void PascalSpecialSymbolToken::extract() throw (string)
     {
         // Single-character special symbols.
         case '+':  case '-':  case '*':  case '/':  case ',':
-        case ';':  case '\'': case '=':  case '(':  case ')':
+        case ';':  case '\'': case '(':  case ')':
         case '[':  case ']':  case '{':  case '}':  case '^':
         {
             next_char();  // consume character
             break;
         }
 
+        // = or ==>
+        case '=':
+        {
+           	current_ch = next_char(); //consume '='
+
+           	if (current_ch == '=' && peek_char() == '>')
+           	{
+                		text += current_ch;
+                		current_ch = next_char(); // consume '='
+                		text += current_ch;
+                		next_char(); // consume '>'
+           	}
+           	break;
+        }
         // : or :=
         case ':':
         {

@@ -29,7 +29,7 @@ enum class PascalTokenType
     AND, ARRAY, BEGIN, CASE, CONST, DIV, DO, DOWNTO, ELSE, END,
     FILE, FOR, FUNCTION, GOTO, IF, IN, LABEL, MOD, NIL, NOT,
     OF, OR, PACKED, PROCEDURE, PROGRAM, RECORD, REPEAT, SET,
-    THEN, TO, TYPE, UNTIL, VAR, WHILE, WITH,
+    THEN, TO, TYPE, UNTIL, VAR, WHILE, WITH, LOOP, AGAIN, WHEN,
 
     // Special symbols.
     PLUS, MINUS, STAR, SLASH, COLON_EQUALS,
@@ -37,7 +37,7 @@ enum class PascalTokenType
     EQUALS, NOT_EQUALS, LESS_THAN, LESS_EQUALS,
     GREATER_EQUALS, GREATER_THAN, LEFT_PAREN, RIGHT_PAREN,
     LEFT_BRACKET, RIGHT_BRACKET, LEFT_BRACE, RIGHT_BRACE,
-    UP_ARROW, DOT_DOT,
+    UP_ARROW, DOT_DOT, EXIT_ARROW,
 
     IDENTIFIER, INTEGER, REAL, STRING,
     ERROR, END_OF_FILE,
@@ -83,6 +83,10 @@ constexpr PascalTokenType PT_VAR = PascalTokenType::VAR;
 constexpr PascalTokenType PT_WHILE = PascalTokenType::WHILE;
 constexpr PascalTokenType PT_WITH = PascalTokenType::WITH;
 
+constexpr PascalTokenType PT_LOOP = PascalTokenType::LOOP;
+constexpr PascalTokenType PT_AGAIN = PascalTokenType::AGAIN;
+constexpr PascalTokenType PT_WHEN = PascalTokenType::WHEN;
+
 constexpr PascalTokenType PT_PLUS = PascalTokenType::PLUS;
 constexpr PascalTokenType PT_MINUS = PascalTokenType::MINUS;
 constexpr PascalTokenType PT_STAR = PascalTokenType::STAR;
@@ -108,6 +112,7 @@ constexpr PascalTokenType PT_LEFT_BRACE = PascalTokenType::LEFT_BRACE;
 constexpr PascalTokenType PT_RIGHT_BRACE = PascalTokenType::RIGHT_BRACE;
 constexpr PascalTokenType PT_UP_ARROW = PascalTokenType::UP_ARROW;
 constexpr PascalTokenType PT_DOT_DOT = PascalTokenType::DOT_DOT;
+constexpr PascalTokenType PT_EXIT_ARROW = PascalTokenType::EXIT_ARROW;
 
 constexpr PascalTokenType PT_IDENTIFIER = PascalTokenType::IDENTIFIER;
 constexpr PascalTokenType PT_INTEGER = PascalTokenType::INTEGER;
