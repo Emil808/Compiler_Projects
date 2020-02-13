@@ -1,0 +1,71 @@
+./Chapter3cpp compile - looptest.pas
+001 PROGRAM LoopTest;
+>>> PROGRAM         line=001, pos= 0, text="PROGRAM"
+>>> IDENTIFIER      line=001, pos= 8, text="LoopTest"
+>>> SEMICOLON       line=001, pos=16, text=";"
+002 
+003 VAR
+>>> VAR             line=003, pos= 0, text="VAR"
+004     i : integer;
+>>> IDENTIFIER      line=004, pos= 4, text="i"
+>>> COLON           line=004, pos= 6, text=":"
+>>> IDENTIFIER      line=004, pos= 8, text="integer"
+>>> SEMICOLON       line=004, pos=15, text=";"
+005 
+006 BEGIN {main}
+>>> BEGIN           line=006, pos= 0, text="BEGIN"
+007     i := 1;
+>>> IDENTIFIER      line=007, pos= 4, text="i"
+>>> COLON_EQUALS    line=007, pos= 6, text=":="
+>>> INTEGER         line=007, pos= 9, text="1"
+>>>                 value=1
+>>> SEMICOLON       line=007, pos=10, text=";"
+008 
+009     LOOP
+>>> LOOP            line=009, pos= 4, text="LOOP"
+010         writeln('i = ', i);
+>>> IDENTIFIER      line=010, pos= 8, text="writeln"
+>>> LEFT_PAREN      line=010, pos=15, text="("
+>>> STRING          line=010, pos=16, text="'i = '"
+>>>                 value="i = "
+>>> COMMA           line=010, pos=22, text=","
+>>> IDENTIFIER      line=010, pos=24, text="i"
+>>> RIGHT_PAREN     line=010, pos=25, text=")"
+>>> SEMICOLON       line=010, pos=26, text=";"
+011         When i = 10 ==>;
+>>> WHEN            line=011, pos= 8, text="When"
+>>> IDENTIFIER      line=011, pos=13, text="i"
+>>> EQUALS          line=011, pos=15, text="="
+>>> INTEGER         line=011, pos=17, text="10"
+>>>                 value=10
+>>> EXIT_ARROW      line=011, pos=20, text="==>"
+>>> SEMICOLON       line=011, pos=23, text=";"
+012         i := i + 1;
+>>> IDENTIFIER      line=012, pos= 8, text="i"
+>>> COLON_EQUALS    line=012, pos=10, text=":="
+>>> IDENTIFIER      line=012, pos=13, text="i"
+>>> PLUS            line=012, pos=15, text="+"
+>>> INTEGER         line=012, pos=17, text="1"
+>>>                 value=1
+>>> SEMICOLON       line=012, pos=18, text=";"
+013     agaIn;
+>>> AGAIN           line=013, pos= 4, text="agaIn"
+>>> SEMICOLON       line=013, pos= 9, text=";"
+014 
+015     writeln('Done!');
+>>> IDENTIFIER      line=015, pos= 4, text="writeln"
+>>> LEFT_PAREN      line=015, pos=11, text="("
+>>> STRING          line=015, pos=12, text="'Done!'"
+>>>                 value="Done!"
+>>> RIGHT_PAREN     line=015, pos=19, text=")"
+>>> SEMICOLON       line=015, pos=20, text=";"
+016 END.
+>>> END             line=016, pos= 0, text="END"
+>>> DOT             line=016, pos= 3, text="."
+
+                  16 source lines.
+                   0 syntax errors.
+                0.00 seconds total parsing time.
+
+                   0 instructions generated.
+                0.00 seconds total code generation time.
