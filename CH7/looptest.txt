@@ -1,6 +1,3 @@
-PROGRAM LoopTest;
-VAR
-	i : integer;
 BEGIN {main}
 	i := 1;
 	LOOP
