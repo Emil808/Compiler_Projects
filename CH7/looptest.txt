@@ -1,9 +1,19 @@
 BEGIN {main}
-	i := 1;
-	LOOP
-		writeln('i = ', i);
-		When i = 10 ==>;
-		i := i + 1;
-		agaIn;
-	writeln('Done!');
+    i := 0;
+
+    LOOP
+        i := i + 2;
+        When i = 10 ==>;
+        i := i + 2;
+    agaIn;
+
+    IF i = 10 THEN BEGIN
+        i := i + 2;
+
+        LOOP
+            WHEN i = 13 ==>;
+            i := i + 4;
+            WHEN i > 20 ==>;
+        AGAIN;
+    END;
 END.

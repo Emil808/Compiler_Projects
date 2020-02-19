@@ -713,6 +713,7 @@ wci/frontend/pascal/parsers/StatementParser.o: wci/frontend/pascal/parsers/State
  wci/frontend/pascal/parsers/ForStatementParser.h \
  wci/frontend/pascal/parsers/IfStatementParser.h \
  wci/frontend/pascal/parsers/CaseStatementParser.h \
+ wci/frontend/pascal/parsers/LoopStatementParser.h \
  wci/frontend/pascal/parsers/../PascalError.h \
  wci/frontend/pascal/parsers/../../../intermediate/ICodeFactory.h \
  wci/frontend/pascal/parsers/../../../intermediate/ICodeNode.h \

@@ -40,7 +40,7 @@ ICodeNode *RepeatStatementParser::parse_statement(Token *token)
     StatementParser statement_parser(this);
     statement_parser.parse_list(token, loop_node, PT_UNTIL, MISSING_UNTIL);
 
-    token = current_token();
+    token = current_token(); //consume the UNTIL
 
     // Parse the expression.
     // The TEST node adopts the expression subtree as its only child.
