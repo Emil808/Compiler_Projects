@@ -84,6 +84,7 @@ void PascalError::initialize()
         PascalErrorCode::WRONG_NUMBER_OF_PARMS,
 		PascalErrorCode::MISSING_AGAIN,
 		PascalErrorCode::MISSING_EXIT_ARROW,
+		PascalErrorCode::UNEXPECTED_WHEN,
 
         // Fatal errors.
         PascalErrorCode::IO_ERROR,
@@ -151,6 +152,7 @@ void PascalError::initialize()
         "Wrong number of actual parameters",
 		"Missing AGAIN",
 		"Missing ==> (Exit Arrow)",
+		"Unexpected WHEN outside of Loop-Again Statement",
 
         // Fatal errors.
         "Object I/O error",

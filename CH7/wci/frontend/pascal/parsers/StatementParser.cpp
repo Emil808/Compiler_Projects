@@ -41,7 +41,7 @@ EnumSet<PascalTokenType> StatementParser::STMT_START_SET =
 
 EnumSet<PascalTokenType> StatementParser::STMT_FOLLOW_SET =
 {
-    PT_SEMICOLON, PT_END, PT_ELSE, PT_UNTIL, PT_DOT,
+    PT_SEMICOLON, PT_END, PT_ELSE, PT_UNTIL, PT_DOT, PT_AGAIN,
 };
 
 ICodeNode *StatementParser::parse_statement(Token *token) throw (string)
@@ -107,10 +107,15 @@ ICodeNode *StatementParser::parse_statement(Token *token) throw (string)
         	break;
         }
 
+
+
         default:
         {
             statement_node =
                 ICodeFactory::create_icode_node((ICodeNodeType) NT_NO_OP);
+            if((PascalTokenType) token->get_type() == PT_WHEN){ //todo: handle a WHEN statement at the outside of a loop-again statement
+            	error_handler.flag(token, UNEXPECTED_WHEN, this);
+            }
             break;
         }
     }

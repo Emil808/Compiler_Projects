@@ -61,6 +61,7 @@ ICodeNode *LoopStatementParser::parse_statement(Token *token)
     	{
     		token = next_token(token);  // consume the ;
     	}
+    	//todo: missing semicolon handler here
     }
 
     //error handling if AGAIN token is missing but reached end of file
@@ -71,7 +72,7 @@ ICodeNode *LoopStatementParser::parse_statement(Token *token)
         else
         {
             error_handler.flag(token, MISSING_AGAIN, this);
-        }
+        }//todo :handle moving on from missing again?
 
     return loop_node;
 }
