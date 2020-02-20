@@ -53,6 +53,14 @@ ICodeNode *LoopStatementParser::parse_statement(Token *token)
     		StatementParser statement_parser(this);
     		loop_node->add_child(statement_parser.parse_statement(token));
     	}
+    	token = current_token();
+    	TokenType token_type = token->get_type();
+
+    	// Look for the semicolon between statements.
+    	if (token_type == (TokenType) PT_SEMICOLON)
+    	{
+    		token = next_token(token);  // consume the ;
+    	}
     }
 
     //error handling if AGAIN token is missing but reached end of file
