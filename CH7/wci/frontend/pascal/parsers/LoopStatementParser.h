@@ -19,7 +19,9 @@ public:
      * Constructor.
      * @param parent the parent parser.
      */
-    LoopStatementParser(PascalParserTD *parent) : StatementParser(parent) {}
+    LoopStatementParser(PascalParserTD *parent) : StatementParser(parent) {
+    	initialize();
+    }
 
     /**
      * Parse a REPEAT statement.
@@ -28,6 +30,17 @@ public:
      * @throw a string message if an error occurred.
      */
     ICodeNode *parse_statement(Token *token) throw (string);
+
+private:
+    // Synchronization set for DO.
+    static EnumSet<PascalTokenType> LOOP_SET;
+
+    static bool INITIALIZED;
+
+    /**
+    * Initialize the synchronization set.
+    */
+    static void initialize();
 };
 
 }}}}  // namespace wci::frontend::pascal::parsers

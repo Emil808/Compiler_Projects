@@ -25,9 +25,34 @@ using namespace std;
 using namespace wci::frontend::pascal;
 using namespace wci::intermediate;
 using namespace wci::intermediate::icodeimpl;
+
+bool LoopStatementParser::INITIALIZED = false;
+
+EnumSet<PascalTokenType> LoopStatementParser::LOOP_SET;
+
+void LoopStatementParser::initialize()
+{
+    if (INITIALIZED) return;
+
+    LOOP_SET = StatementParser::STMT_START_SET;
+    LOOP_SET.insert(PascalTokenType::WHEN);
+
+    EnumSet<PascalTokenType>::iterator it;
+    for (it  = StatementParser::STMT_FOLLOW_SET.begin();
+         it != StatementParser::STMT_FOLLOW_SET.end();
+         it++)
+    {
+    	LOOP_SET.insert(*it);
+    }
+
+    INITIALIZED = true;
+}
+
 ICodeNode *LoopStatementParser::parse_statement(Token *token)
     throw (string)
 {
+    EnumSet<PascalTokenType> terminator_set(LOOP_SET);
+
     // Create LOOP node.
     ICodeNode *loop_node =
             ICodeFactory::create_icode_node((ICodeNodeType) NT_LOOP);
@@ -46,14 +71,15 @@ ICodeNode *LoopStatementParser::parse_statement(Token *token)
     		//parse WHEN statement
 
 
-            loop_node->add_child(when_parser.parse_statement(token));
+            loop_node->add_child(when_parser.parse_statement(token, true));
     	}
     	else{
     		// Parse Statement
     		StatementParser statement_parser(this);
     		loop_node->add_child(statement_parser.parse_statement(token));
     	}
-    	token = current_token();
+
+    	token = current_token(); // refresh token
     	TokenType token_type = token->get_type();
 
     	// Look for the semicolon between statements.
@@ -61,7 +87,12 @@ ICodeNode *LoopStatementParser::parse_statement(Token *token)
     	{
     		token = next_token(token);  // consume the ;
     	}
-    	//todo: missing semicolon handler here
+    	else
+    	{
+    		error_handler.flag(token, MISSING_SEMICOLON, this);
+    		token = synchronize(terminator_set);
+    	}
+
     }
 
     //error handling if AGAIN token is missing but reached end of file

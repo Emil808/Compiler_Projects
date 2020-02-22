@@ -16,6 +16,7 @@
 #include "IfStatementParser.h"
 #include "CaseStatementParser.h"
 #include "LoopStatementParser.h"
+#include "WhenStatementParser.h"
 #include "../PascalParserTD.h"
 #include "../PascalToken.h"
 #include "../PascalError.h"
@@ -106,16 +107,18 @@ ICodeNode *StatementParser::parse_statement(Token *token) throw (string)
         	statement_node = loop_parser.parse_statement(token);
         	break;
         }
-
-
+        case PT_WHEN:
+        {
+        	WhenStatementParser when_parser(this);
+        	statement_node = when_parser.parse_statement(token, false);
+        	break;
+        }
 
         default:
         {
             statement_node =
                 ICodeFactory::create_icode_node((ICodeNodeType) NT_NO_OP);
-            if((PascalTokenType) token->get_type() == PT_WHEN){ //todo: handle a WHEN statement at the outside of a loop-again statement
-            	error_handler.flag(token, UNEXPECTED_WHEN, this);
-            }
+
             break;
         }
     }
