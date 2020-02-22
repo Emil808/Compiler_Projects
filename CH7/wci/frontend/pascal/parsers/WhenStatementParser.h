@@ -20,7 +20,9 @@ public:
      * Constructor.
      * @param parent the parent parser.
      */
-    WhenStatementParser(PascalParserTD *parent) : StatementParser(parent){}
+    WhenStatementParser(PascalParserTD *parent) : StatementParser(parent){
+    	initialize();
+    }
 
     /**
      * Parse an IF statement.
@@ -28,7 +30,18 @@ public:
      * @return the root node of the generated parse tree.
      * @throw a string message if an error occurred.
      */
-    ICodeNode *parse_statement(Token *token) throw (string);
+    ICodeNode *parse_statement(Token *token, bool inLoop) throw (string);
+
+private:
+    // Synchronization set for DO.
+    static EnumSet<PascalTokenType> WHEN_SET;
+
+    static bool INITIALIZED;
+
+    /**
+    * Initialize the synchronization set.
+    */
+    static void initialize();
 };
 
 }}}}  // namespace wci::frontend::pascal::parsers
