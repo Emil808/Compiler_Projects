@@ -1,0 +1,10 @@
+BEGIN {main}
+    i := 1;
+
+    LOOP
+        When i = 10;
+        i := i + 1;
+    agaIn;
+
+    WHEN i >= 14 ==>;
+END.
