@@ -1,0 +1,100 @@
+./Chapter7cpp compile -ix looptest.txt
+001 BEGIN {main}
+002     i := 0;
+003 
+004     LOOP
+005         i := i + 2;
+006         When i = 10 ==>;
+007         i := i + 2;
+008     agaIn;
+009 
+010     IF i = 10 THEN BEGIN
+011         i := i + 2;
+012 
+013         LOOP
+014             WHEN i = 13 ==>;
+015             i := i + 4;
+016             WHEN i > 20 ==>;
+017         AGAIN;
+018     END;
+019 END.
+
+                  19 source lines.
+                   0 syntax errors.
+                0.00 seconds total parsing time.
+
+===== CROSS-REFERENCE TABLE =====
+
+Identifier       Line numbers    
+----------       ------------    
+i                002 005 005 006 007 007 010 011 011 014 015 015 016
+
+===== INTERMEDIATE CODE =====
+
+<COMPOUND line="1">
+    <ASSIGN line="2">
+        <VARIABLE id="i" level="0" />
+        <INTEGER_CONSTANT value="0" />
+    </ASSIGN>
+    <LOOP line="4">
+        <ASSIGN line="5">
+            <VARIABLE id="i" level="0" />
+            <ADD>
+                <VARIABLE id="i" level="0" />
+                <INTEGER_CONSTANT value="2" />
+            </ADD>
+        </ASSIGN>
+        <TEST>
+            <EQ>
+                <VARIABLE id="i" level="0" />
+                <INTEGER_CONSTANT value="10" />
+            </EQ>
+        </TEST>
+        <ASSIGN line="7">
+            <VARIABLE id="i" level="0" />
+            <ADD>
+                <VARIABLE id="i" level="0" />
+                <INTEGER_CONSTANT value="2" />
+            </ADD>
+        </ASSIGN>
+    </LOOP>
+    <IF line="10">
+        <EQ>
+            <VARIABLE id="i" level="0" />
+            <INTEGER_CONSTANT value="10" />
+        </EQ>
+        <COMPOUND line="10">
+            <ASSIGN line="11">
+                <VARIABLE id="i" level="0" />
+                <ADD>
+                    <VARIABLE id="i" level="0" />
+                    <INTEGER_CONSTANT value="2" />
+                </ADD>
+            </ASSIGN>
+            <LOOP line="13">
+                <TEST>
+                    <EQ>
+                        <VARIABLE id="i" level="0" />
+                        <INTEGER_CONSTANT value="13" />
+                    </EQ>
+                </TEST>
+                <ASSIGN line="15">
+                    <VARIABLE id="i" level="0" />
+                    <ADD>
+                        <VARIABLE id="i" level="0" />
+                        <INTEGER_CONSTANT value="4" />
+                    </ADD>
+                </ASSIGN>
+                <TEST>
+                    <GT>
+                        <VARIABLE id="i" level="0" />
+                        <INTEGER_CONSTANT value="20" />
+                    </GT>
+                </TEST>
+            </LOOP>
+        </COMPOUND>
+    </IF>
+</COMPOUND>
+
+                   0 instructions generated.
+                0.00 seconds total code generation time.

@@ -1,0 +1,19 @@
+./Chapter7cpp compile -ix loopErrors.txt
+001 BEGIN {main}
+002     i := 1;
+003 
+004     LOOP
+005         When i = 10;
+                       ^
+*** Missing ==> (Exit Arrow) [at ";"]
+006         i := i + 1;
+007     agaIn;
+008 
+009     WHEN i >= 14 ==>;
+        ^
+*** Unexpected WHEN outside of Loop-Again Statement [at "WHEN"]
+010 END.
+
+                  10 source lines.
+                   2 syntax errors.
+                0.00 seconds total parsing time.

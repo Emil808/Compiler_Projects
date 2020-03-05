@@ -1,0 +1,10 @@
+begin
+	i := 0; 
+
+	loop
+		i := i + 1; 
+		when i > 10 ==>; 
+		i2 := i*i; 
+		when i2 > 50 ==>;
+	again
+end. 
