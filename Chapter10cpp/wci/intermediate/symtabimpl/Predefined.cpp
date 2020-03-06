@@ -31,6 +31,7 @@ TypeSpec *Predefined::real_type;
 TypeSpec *Predefined::boolean_type;
 TypeSpec *Predefined::char_type;
 TypeSpec *Predefined::undefined_type;
+TypeSpec *Predefined::complex_type;
 
 // Predefined identifiers.
 SymTabEntry *Predefined::integer_id;
@@ -39,7 +40,9 @@ SymTabEntry *Predefined::boolean_id;
 SymTabEntry *Predefined::char_id;
 SymTabEntry *Predefined::false_id;
 SymTabEntry *Predefined::true_id;
-
+SymTabEntry *Predefined::complex_id;
+SymTabEntry *Predefined::re_id;
+SymTabEntry *Predefined::im_id;
 void Predefined::initialize(SymTabStack *symtab_stack)
 {
     initialize_types(symtab_stack);
@@ -79,6 +82,25 @@ void Predefined::initialize_types(SymTabStack *symtab_stack)
     char_type->set_identifier(char_id);
     char_id->set_definition((Definition) DF_TYPE);
     char_id->set_typespec(char_type);
+
+    // Type complex.
+    complex_id = symtab_stack->enter_local("complex");
+    complex_type = TypeFactory::create_type((TypeForm) TF_RECORD);
+    complex_type->set_identifier(complex_id);
+    complex_id->set_definition((Definition) DF_TYPE);
+    complex_id->set_typespec(complex_type);
+
+    //Filling complex_type record table
+    complex_type->set_record_symtab(symtab_stack->push());
+    vector<SymTabEntry *> complex_list;
+    re_id = symtab_stack->enter_local("re");
+    re_id->set_definition((Definition) DF_FIELD);
+    re_id->set_typespec(real_type);
+
+    im_id = symtab_stack->enter_local("im");
+    im_id->set_definition((Definition) DF_FIELD);
+    im_id->set_typespec(real_type);
+    symtab_stack->pop();
 
     // Undefined type.
     undefined_type = TypeFactory::create_type((TypeForm) TF_SCALAR);

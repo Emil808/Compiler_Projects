@@ -1,0 +1,17 @@
+type
+	rec0 = RECORD
+		a : integer; 
+		b : boolean;
+		c : char; 
+		r : real; 
+	END;
+
+var 
+	myrec : rec0; 
+ 
+
+begin 
+
+myrec.a := 3; 
+
+end. 
