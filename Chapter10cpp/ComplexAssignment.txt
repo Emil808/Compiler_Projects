@@ -1,6 +1,6 @@
 VAR
 	x, y, z: complex;
-
+ 
 BEGIN
 	x.re := 15;
 	x.im := 37; 
@@ -8,5 +8,6 @@ BEGIN
 	y.re := -12.34; 
 	y.im := 3.1415926; 
 
-	z := x; 
+	z := x;
+	
 END. 
