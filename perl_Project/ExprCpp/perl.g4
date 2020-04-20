@@ -1,5 +1,11 @@
-
 grammar perl;
+
+@header {
+#include "wci/intermediate/TypeSpec.h"
+using namespace wci::intermediate;
+}
+
+program : compound_stmt; 
 
 compound_stmt : (stmt)+ ;
 
@@ -17,14 +23,17 @@ while_stmt: WHILE '(' expr ')' '{' stmt '}';
 until_stmt: UNTIL '(' expr ')' '{' stmt '}';
 do_while_stmt: DO '{' compound_stmt '}' WHILE '(' expr ')' ';' ; 
 
-expr : expr POW_OP expr
+expr locals [ TypeSpec *type = nullptr ]
+	 : expr POW_OP expr
 	 | expr mul_div_op expr
 	 | expr add_sub_op expr
 	 | expr rel_op expr
 	 | number
+	 | signed_number
 	 | variable
 	 | '(' expr ')' 
 	 ; 
+	 
 // is part of perl that variables start with $
 variable : '$' IDENTIFIER ; 
 
@@ -39,8 +48,13 @@ ELSE_IF : 'elsif';
 WHILE : 'while'; 
 UNTIL : 'until'; 
 DO : 'do'; 
-number : sign? (INTEGER | REAL);
+
+
+ 
 sign   : '+' | '-' ;
+number locals [ TypeSpec *type = nullptr ] : INTEGER | REAL ;
+signed_number locals [ TypeSpec *type = nullptr ] : sign number ;
+
 
 
 IDENTIFIER : [a-zA-Z][a-zA-Z0-9]* ;

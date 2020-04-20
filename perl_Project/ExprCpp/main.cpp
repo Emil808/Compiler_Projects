@@ -5,6 +5,8 @@
 #include "perlLexer.h"
 #include "perlParser.h"
 
+#include "Pass1Visitor.h"
+
 using namespace antlrcpp;
 using namespace antlr4;
 using namespace std;
@@ -22,19 +24,21 @@ int main(int argc, const char *args[])
     perlLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
 
+    // Create a parser which parses the token stream
+    // to create a parse tree.
+    perlParser parser(&tokens);
+    tree::ParseTree *tree = parser.program();
+
+    Pass1Visitor *pass1 = new Pass1Visitor();
+    pass1->visit(tree);
+
     // Print the token stream.
     cout << "Tokens:" << endl;
     tokens.fill();
     for (Token *token : tokens.getTokens())
     {
-        std::cout << token->toString() << std::endl;
+       std::cout << token->toString() << std::endl;
     }
-
-    // Create a parser which parses the token stream
-    // to create a parse tree.
-    perlParser parser(&tokens);
-    tree::ParseTree *tree = parser.compound_stmt();
-
     // Print the parse tree in Lisp format.
     cout << endl << "Parse tree (Lisp format):" << endl;
     std::cout << tree->toStringTree(&parser) << endl;
