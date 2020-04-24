@@ -24,18 +24,18 @@ until_stmt: UNTIL '(' expr ')' '{' stmt '}';
 do_while_stmt: DO '{' compound_stmt '}' WHILE '(' expr ')' ';' ; 
 
 expr locals [ TypeSpec *type = nullptr ]
-	 : expr POW_OP expr
-	 | expr mul_div_op expr
-	 | expr add_sub_op expr
-	 | expr rel_op expr
-	 | number
-	 | signed_number
-	 | variable
-	 | '(' expr ')' 
+	 : expr POW_OP expr			# powExpr
+	 | expr mul_div_op expr		# muldivExpr
+	 | expr add_sub_op expr		# addsubExpr
+	 | expr rel_op expr			# relopExpr
+	 | number					# unsignednumExpr
+	 | signed_number			# signednumExpr
+	 | variable					# variableExpr
+	 | '(' expr ')' 			# parenthExpr
 	 ; 
 	 
 // is part of perl that variables start with $
-variable : '$' IDENTIFIER ; 
+variable  : '$' IDENTIFIER ; 
 
 mul_div_op : MUL_OP | DIV_OP | MOD_OP; 
 add_sub_op : ADD_OP | SUB_OP ; 
@@ -52,7 +52,10 @@ DO : 'do';
 
  
 sign   : '+' | '-' ;
-number locals [ TypeSpec *type = nullptr ] : INTEGER | REAL ;
+number locals [ TypeSpec *type = nullptr ] 
+	: INTEGER	# INTConst
+	| REAL 		# FloatConst
+	;
 signed_number locals [ TypeSpec *type = nullptr ] : sign number ;
 
 
