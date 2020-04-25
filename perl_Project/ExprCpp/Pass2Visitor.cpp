@@ -100,5 +100,44 @@ antlrcpp::Any Pass2Visitor::visitAssignment_stmt(perlParser::Assignment_stmtCont
     return value;
 }
 
+antlrcpp::Any Pass2Visitor::visitVariableExpr(perlParser::VariableExprContext *ctx){
+
+    string variable_name = ctx->variable()->IDENTIFIER()->toString();
+    TypeSpec *type = ctx->type;
+
+    string type_indicator = (type == Predefined::integer_type) ? "I"
+                          : (type == Predefined::real_type)    ? "F"
+                          : (type == Predefined::boolean_type) ? "Z"
+                          :                                      "?";
+
+    // Emit a field get instruction.
+    j_file << "\tgetstatic\t" << program_name
+           << "/" << variable_name << " " << type_indicator << endl;
+
+    return visitChildren(ctx);
+}
+
+antlrcpp::Any Pass2Visitor::visitSigned_number(perlParser::Signed_numberContext *ctx){
+    auto value = visitChildren(ctx);
+    TypeSpec *type = ctx->number()->type;
+
+    if (ctx->sign()->children[0] == ctx->sign()->SUB_OP())
+    {
+        string opcode = (type == Predefined::integer_type) ? "ineg"
+                      : (type == Predefined::real_type)    ? "fneg"
+                      :                                      "?neg";
+
+        // Emit a negate instruction.
+        j_file << "\t" << opcode << endl;
+    }
+
+    return value;
+}
+
+antlrcpp::Any Pass2Visitor::visitPowExpr(perlParser::PowExprContext *ctx){
+
+
+}
+
 
 

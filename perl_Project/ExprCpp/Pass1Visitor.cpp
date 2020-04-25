@@ -173,3 +173,8 @@ antlrcpp::Any Pass1Visitor::visitFloatConst(perlParser::FloatConstContext *ctx){
 	return visitChildren(ctx);
 }
 
+antlrcpp::Any Pass1Visitor::visitBOOLConst(perlParser::BOOLConstContext *ctx){
+	ctx->type = Predefined::boolean_type;
+	return visitChildren(ctx);
+}
+
