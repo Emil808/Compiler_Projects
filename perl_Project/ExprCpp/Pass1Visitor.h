@@ -39,6 +39,7 @@ public:
 
     antlrcpp::Any visitINTConst(perlParser::INTConstContext *ctx) override;
     antlrcpp::Any visitFloatConst(perlParser::FloatConstContext *ctx) override;
+    antlrcpp::Any visitBOOLConst(perlParser::BOOLConstContext *ctx) override;
 
 
 };
