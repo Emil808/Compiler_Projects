@@ -1,0 +1,28 @@
+antlrcpp::Any Pass2Visitor::visitIntegerConst(perlParser::IntegerConstContext *ctx)
+{
+    if (DEBUG_2) cout << "=== Pass 2: visitIntegerConst" << endl;
+
+    // Emit a load constant instruction.
+    j_file << "\tldc\t" << ctx->getText() << endl;
+    return visitChildren(ctx);
+}
+
+antlrcpp::Any Pass2Visitor::visitFloatConst(perlParser::FloatConstContext *ctx)
+{
+    if (DEBUG_2) cout << "=== Pass 2: visitFloatConst" << endl;
+
+    // Emit a load constant instruction.
+    j_file << "\tldc\t" << ctx->getText() << endl;
+
+    return visitChildren(ctx);
+}
+
+antlrcpp::Any Pass2Visitor::visitBoolConst(perlParser::BoolConstContext *ctx)
+{
+    if (DEBUG_2) cout << "=== Pass 2: visitBoolConst" << endl;
+
+    // Emit a load constant instruction.
+    j_file << "\tldc\t" << ctx->getText() << endl;
+
+    return visitChildren(ctx);
+}
