@@ -30,6 +30,7 @@ public:
 
     antlrcpp::Any visitProgram(perlParser::ProgramContext *ctx) override;
     antlrcpp::Any visitStmt(perlParser::StmtContext *ctx) override;
+    antlrcpp::Any visitAssignment_stmt(perlParser::Assignment_stmtContext *ctx) override;
 
     antlrcpp::Any visitSigned_number(perlParser::Signed_numberContext *ctx) override;
 

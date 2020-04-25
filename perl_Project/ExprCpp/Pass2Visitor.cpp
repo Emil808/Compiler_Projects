@@ -18,6 +18,8 @@ Pass2Visitor::Pass2Visitor()
 {
 }
 
+Pass2Visitor::~Pass2Visitor() {}
+
 antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
 {
 	// Emit the RunTimer and PascalTextIn fields.
@@ -52,7 +54,7 @@ antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
            << "/_standardIn LPascalTextIn;" << endl;
 
     // Emit code for the main program's compound statement.
-    visit(ctx->Compound_stmt());
+    visit(ctx->compound_stmt());
 
     // Emit the main program epilogue.
     j_file << endl;
@@ -79,6 +81,23 @@ antlrcpp::Any Pass2Visitor::visitStmt(perlParser::StmtContext *ctx){
     j_file << endl << "; " + ctx->getText() << endl << endl;
 
     return visitChildren(ctx);
+}
+
+antlrcpp::Any Pass2Visitor::visitAssignment_stmt(perlParser::Assignment_stmtContext *ctx){
+
+    auto value = visit(ctx->expr());
+
+    string type_indicator =
+                  (ctx->expr()->type == Predefined::integer_type) ? "I"
+                : (ctx->expr()->type == Predefined::real_type)    ? "F"
+                :                                                   "?";
+
+    // Emit a field put instruction.
+    j_file << "\tputstatic\t" << program_name
+           << "/" << ctx->variable()->IDENTIFIER()->toString()
+           << " " << type_indicator << endl;
+
+    return value;
 }
 
 

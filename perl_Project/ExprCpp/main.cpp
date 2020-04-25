@@ -6,7 +6,7 @@
 #include "perlParser.h"
 
 #include "Pass1Visitor.h"
-
+#include "Pass2Visitor.h"
 using namespace antlrcpp;
 using namespace antlr4;
 using namespace std;
@@ -31,6 +31,9 @@ int main(int argc, const char *args[])
 
     Pass1Visitor *pass1 = new Pass1Visitor();
     pass1->visit(tree);
+
+    Pass2Visitor *pass2 = new Pass2Visitor();
+    pass2->visit(tree);
 
     // Print the token stream.
     cout << "Tokens:" << endl;
