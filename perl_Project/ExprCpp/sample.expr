@@ -1,3 +1,14 @@
-$abc= 500*5+3;
+$abc= 500;
+$def = 40.03; 
+$ghi = 4 + 3; 
+$jkl = 12.523 - 2.40; 
+$mno = 5 * 8;  
+$pqr = 123.09 * 0.4; 
+$pqr1 = -4; 
+$intvar = $abc + $ghi; 
+$realvar = $def / $pqr; 
+$boolvar = $abc > $def; 
 
-
+$powop = 4 ** 5; 
+$powopflt = 3.2 ** 1.1; 
+$powopvar = $abc **2; 

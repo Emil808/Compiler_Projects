@@ -44,30 +44,122 @@ antlrcpp::Any Pass1Visitor::visitProgram(perlParser::ProgramContext *ctx){
 
 	return value;
 }
-
 antlrcpp::Any Pass1Visitor::visitAssignment_stmt(perlParser::Assignment_stmtContext *ctx){
 
 	string variable_name = ctx->variable()->IDENTIFIER()->toString();
-	SymTabEntry *variable_id = symtab_stack->enter_local(variable_name);
-	variable_id->set_definition((Definition) DF_VARIABLE);
 
-	variable_id_list.push_back(variable_id);
-	//variable_ctx_list.push_back(ctx);
+	SymTabEntry *variable_id = symtab_stack->lookup(variable_name);
 
+	if(!variable_id){ //first occurence of variable, save to symbol table.
+		variable_id = symtab_stack->enter_local(variable_name);
+
+		auto value = visitChildren(ctx);
+		variable_id->set_definition((Definition) DF_VARIABLE);
+
+		variable_id->set_typespec(ctx->expr()->type);
+		variable_id_list.push_back(variable_id);
+	}
 	return visitChildren(ctx);
-
 }
-
 antlrcpp::Any Pass1Visitor::visitVariableExpr(perlParser::VariableExprContext *ctx){
 
 	 string variable_name = ctx->variable()->IDENTIFIER()->toString();
 	 SymTabEntry *variable_id = symtab_stack->lookup(variable_name);
+
+
 	 ctx->type = variable_id->get_typespec();
 	 return visitChildren(ctx);
+}
 
+antlrcpp::Any Pass1Visitor::visitUnsignednumExpr(perlParser::UnsignednumExprContext *ctx){
+
+	 auto value = visit(ctx->number());
+	 ctx->type = ctx->number()->type;
+	 return value;
+}
+
+antlrcpp::Any Pass1Visitor::visitSigned_number(perlParser::Signed_numberContext *ctx){
+	 auto value = visit(ctx->number());
+	 ctx->type = ctx->number()->type;
+	 return value;
+}
+
+antlrcpp::Any Pass1Visitor::visitPowExpr(perlParser::PowExprContext *ctx){
+	auto value = visitChildren(ctx);
+	TypeSpec *type1 = ctx->expr(0)->type;
+	TypeSpec *type2 = ctx->expr(1)->type;
+
+	bool integer_mode =    (type1 == Predefined::integer_type)
+	                        && (type2 == Predefined::integer_type);
+	bool real_mode    =    (type1 == Predefined::real_type)
+	                        && (type2 == Predefined::real_type);
+
+	TypeSpec *type = integer_mode ? Predefined::integer_type
+	               : real_mode    ? Predefined::real_type
+	               :                nullptr;
+	ctx->type = type;
+
+	return value;
+}
+
+
+antlrcpp::Any Pass1Visitor::visitMuldivExpr(perlParser::MuldivExprContext *ctx){
+
+	auto value = visitChildren(ctx);
+    TypeSpec *type1 = ctx->expr(0)->type;
+    TypeSpec *type2 = ctx->expr(1)->type;
+
+    bool integer_mode =    (type1 == Predefined::integer_type)
+                        && (type2 == Predefined::integer_type);
+    bool real_mode    =    (type1 == Predefined::real_type)
+                        && (type2 == Predefined::real_type);
+
+    TypeSpec *type = integer_mode ? Predefined::integer_type
+                   : real_mode    ? Predefined::real_type
+                   :                nullptr;
+    ctx->type = type;
+
+    return value;
 
 }
 
+antlrcpp::Any Pass1Visitor::visitAddsubExpr(perlParser::AddsubExprContext *ctx){
+
+    auto value = visitChildren(ctx);
+
+    TypeSpec *type1 = ctx->expr(0)->type;
+    TypeSpec *type2 = ctx->expr(1)->type;
+
+    bool integer_mode =    (type1 == Predefined::integer_type)
+                        && (type2 == Predefined::integer_type);
+    bool real_mode    =    (type1 == Predefined::real_type)
+                        && (type2 == Predefined::real_type);
+
+    TypeSpec *type = integer_mode ? Predefined::integer_type
+                   : real_mode    ? Predefined::real_type
+                   :                nullptr;
+    ctx->type = type;
+
+    return value;
+}
+
+antlrcpp::Any Pass1Visitor::visitRelopExpr(perlParser::RelopExprContext *ctx){
+
+	auto value = visitChildren(ctx);
+
+
+    TypeSpec *type = Predefined::boolean_type;
+    ctx->type = type;
+
+    return value;
+}
+
+antlrcpp::Any Pass1Visitor::visitParenthExpr(perlParser::ParenthExprContext *ctx){
+
+    auto value = visitChildren(ctx);
+    ctx->type = ctx->expr()->type;
+    return value;
+}
 antlrcpp::Any Pass1Visitor::visitINTConst(perlParser::INTConstContext *ctx){
 
 	 ctx->type = Predefined::integer_type;
