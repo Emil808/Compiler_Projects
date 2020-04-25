@@ -20,16 +20,6 @@ Pass2Visitor::Pass2Visitor()
 
 antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
 {
-    auto value = visitChildren(ctx);
-
-    j_file.close();
-
-    if (DEBUG_2) cout << "=== Pass 2: visitProgram: closed " + j_file_name << endl;
-    return value;
-}
-
-antlrcpp::Any Pass2Visitor::visitCompound_stmt(perlParser::Compound_stmtContext *ctx){
-
 	// Emit the RunTimer and PascalTextIn fields.
     j_file << endl;
     j_file << ".field private static _runTimer LRunTimer;" << endl;
@@ -62,7 +52,7 @@ antlrcpp::Any Pass2Visitor::visitCompound_stmt(perlParser::Compound_stmtContext 
            << "/_standardIn LPascalTextIn;" << endl;
 
     // Emit code for the main program's compound statement.
-    visit(ctx->block()->compoundStmt());
+    visit(ctx->Compound_stmt());
 
     // Emit the main program epilogue.
     j_file << endl;
@@ -76,7 +66,20 @@ antlrcpp::Any Pass2Visitor::visitCompound_stmt(perlParser::Compound_stmtContext 
     j_file << ".limit stack 16" << endl;
     j_file << ".end method" << endl;
 
+
+    j_file.close();
+
+    if (DEBUG_2) cout << "=== Pass 2: visitProgram: closed " + j_file_name << endl;
     return nullptr;
+
 }
+
+antlrcpp::Any Pass2Visitor::visitStmt(perlParser::StmtContext *ctx){
+
+    j_file << endl << "; " + ctx->getText() << endl << endl;
+
+    return visitChildren(ctx);
+}
+
 
 

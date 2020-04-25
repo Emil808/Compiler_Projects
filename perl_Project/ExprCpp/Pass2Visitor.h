@@ -29,7 +29,7 @@ public:
     ostream& get_assembly_file();
 
     antlrcpp::Any visitProgram(perlParser::ProgramContext *ctx) override;
-    antlrcpp::Any visitCompound_stmt(perlParser::Compound_stmtContext *ctx) override;
+    antlrcpp::Any visitStmt(perlParser::StmtContext *ctx) override;
 
     antlrcpp::Any visitSigned_number(perlParser::Signed_numberContext *ctx) override;
 
