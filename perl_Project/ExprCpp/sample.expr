@@ -12,3 +12,17 @@ $boolvar = $abc > $def;
 $powop = 4 ** 5; 
 $powopflt = 3.2 ** 1.1; 
 $powopvar = $abc **2; 
+
+if(1 + 1){
+	$abc = 0; 
+}
+
+if(1 + 1) {
+	$abawe = 12; 
+}
+elseif(8){
+	$asdf = 14; 
+}
+else{
+	$adsfasdf = 0; 
+}

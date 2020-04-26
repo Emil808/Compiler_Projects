@@ -166,13 +166,24 @@ antlrcpp::Any Pass2Visitor::visitBOOLConst(perlParser::BOOLConstContext *ctx)
 
 antlrcpp::Any Pass2Visitor::visitWhile_stmt(perlParser::While_stmtContext *ctx){
 
-	// label loop label
-	// emit code for expression
-	// check expresion
-		//failed check, exit label
-	// visit statement
+	string loop_label, exit_label;
 
-	//exit label
+	loop_label = "L" << label_counter++;
+
+	exit_label = "L" << label_counter++;
+
+	j_file << loop_label << ":" << endl;
+
+	auto value = visit(ctx->expr());
+
+	j_file << "\tifle " << exit_label << endl;
+
+	value = visit(ctx->compound_stmt());
+
+	j_file << "\tgoto " << loop_label << endl
+		   << exit_label<< ":" << endl;
+
+	return value;
 
 }
 
@@ -258,34 +269,79 @@ antlrcpp::Any Pass2Visitor::visitRelopExpr(perlParser::RelopExprContext *ctx){
 		                        && (type2 == Predefined::integer_type);
 	bool real_mode    =    (type1 == Predefined::real_type)
 		                        && (type2 == Predefined::real_type);
+
 	string op = ctx->rel_op()->getText();
+
+	string label_x, label_y;
+
+	label_x = "L" << label_counter; //the "true" path
+	++label_counter;
+
+	label_y = "L" << label_counter; //the "false" path
+	++label_counter;
+
+	if(integer_mode){
+		j_file << "\tisub" << endl;
+
+	}
+	else{
+		j_file << "\tfsub" << endl;
+	}
 
 	if (op == "==")
 	{
-		opcode = "ifeq";
+		j_file << "\tifeq " << label_x << endl
+			   << "\ticonst_0" << endl
+			   << "\tgoto " << label_y << endl
+			   << label_x << ":" << endl
+			   << "\ticonst_1" << endl
+			   << label_y << ":" << endl;
 	}
 	else if (op == "!=")
 	{
-		opcode = "ifne";
+		j_file << "\tifneq " << label_x << endl
+			   << "\ticonst_0" << endl
+			   << "\tgoto " << label_y << endl
+			   << label_x << ":" << endl
+			   << "\ticonst_1" << endl
+			   << label_y << ":" << endl;
 	}
 	else if (op == "<")
 	{
-		opcode = "iflt";
+		j_file << "\tiflt " << label_x << endl
+			   << "\ticonst_0" << endl
+			   << "\tgoto " << label_y << endl
+			   << label_x << ":" << endl
+			   << "\ticonst_1" << endl
+			   << label_y << ":" << endl;
 	}
 	else if (op == "<=")
 	{
-		opcode = "ifle";
+		j_file << "\tifle " << label_x << endl
+			   << "\ticonst_0" << endl
+			   << "\tgoto " << label_y << endl
+			   << label_x << ":" << endl
+			   << "\ticonst_1" << endl
+			   << label_y << ":" << endl;
 	}
 	else if (op == ">")
 	{
-		opcode = "ifgt";
+		j_file << "\tifgt " << label_x << endl
+			   << "\ticonst_0" << endl
+			   << "\tgoto " << label_y << endl
+			   << label_x << ":" << endl
+			   << "\ticonst_1" << endl
+			   << label_y << ":" << endl;
 	}
 	else
 	{
-		opcode = "ifge";
+		j_file << "\tifge " << label_x << endl
+			   << "\ticonst_0" << endl
+			   << "\tgoto " << label_y << endl
+			   << label_x << ":" << endl
+			   << "\ticonst_1" << endl
+			   << label_y << ":" << endl;
 	}
-
-	j_file << "\t" << opcode << endl;
 
 	return value;
 }

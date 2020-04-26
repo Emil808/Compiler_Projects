@@ -18,7 +18,12 @@ stmt : assignment_stmt
 	 
 assignment_stmt : variable ASSIGN expr ';' ; 
 
-if_stmt : IF '(' expr ')' '{' compound_stmt '}' (ELSE_IF '(' expr ')' '{' compound_stmt '}')* (ELSE '{' compound_stmt '}')? ; 
+if_stmt : IF condition_block (ELSE_IF condition_block)* (ELSE else_block )? ; 
+	
+condition_block: '(' expr ')' '{' compound_stmt '}' ;
+else_block : '{' compound_stmt '}' ; 
+	
+
 while_stmt: WHILE '(' expr ')' '{' compound_stmt '}';
 until_stmt: UNTIL '(' expr ')' '{' compound_stmt '}';
 do_while_stmt: DO '{' compound_stmt '}' WHILE '(' expr ')' ';' ; 
@@ -44,7 +49,7 @@ rel_op : EQ_OP | NE_OP | LT_OP | LE_OP | GT_OP | GE_OP ;
 // Predefined symbols
 IF  : 'if';
 ELSE : 'else';
-ELSE_IF : 'elsif'; 
+ELSE_IF : 'elseif'; 
 WHILE : 'while'; 
 UNTIL : 'until'; 
 DO : 'do'; 
