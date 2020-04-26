@@ -18,9 +18,9 @@ stmt : assignment_stmt
 	 
 assignment_stmt : variable ASSIGN expr ';' ; 
 
-if_stmt : IF '(' expr ')' '{' stmt '}' (ELSE_IF '(' expr ')' '{' stmt '}')* (ELSE '{' stmt '}')? ; 
-while_stmt: WHILE '(' expr ')' '{' stmt '}';
-until_stmt: UNTIL '(' expr ')' '{' stmt '}';
+if_stmt : IF '(' expr ')' '{' compound_stmt '}' (ELSE_IF '(' expr ')' '{' compound_stmt '}')* (ELSE '{' compound_stmt '}')? ; 
+while_stmt: WHILE '(' expr ')' '{' compound_stmt '}';
+until_stmt: UNTIL '(' expr ')' '{' compound_stmt '}';
 do_while_stmt: DO '{' compound_stmt '}' WHILE '(' expr ')' ';' ; 
 
 expr locals [ TypeSpec *type = nullptr ]

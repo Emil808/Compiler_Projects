@@ -21,6 +21,7 @@ private:
 	string program_name;
 	string j_file_name;
 	ofstream j_file;
+	int label_counter;
 
 public:
 	Pass2Visitor();
@@ -45,6 +46,10 @@ public:
     antlrcpp::Any visitINTConst(perlParser::INTConstContext *ctx) override;
     antlrcpp::Any visitFloatConst(perlParser::FloatConstContext *ctx) override;
     antlrcpp::Any visitBOOLConst(perlParser::BOOLConstContext *ctx) override;
+
+    antlrcpp::Any visitRelopExpr(perlParser::RelopExprContext *ctx) override;
+    antlrcpp::Any visitMuldivExpr(perlParser::MuldivExprContext *ctx) override;
+    antlrcpp::Any visitAddsubExpr(perlParser::AddsubExprContext *ctx) override;
     //todo: other visitor functions in here
 
 };

@@ -16,6 +16,7 @@ const bool DEBUG_2 = false;
 Pass2Visitor::Pass2Visitor()
     : program_name(""), j_file(nullptr)
 {
+	label_counter = 0;
 }
 
 Pass2Visitor::~Pass2Visitor() {}
@@ -165,7 +166,130 @@ antlrcpp::Any Pass2Visitor::visitBOOLConst(perlParser::BOOLConstContext *ctx)
 
 antlrcpp::Any Pass2Visitor::visitWhile_stmt(perlParser::While_stmtContext *ctx){
 
+	// label loop label
+	// emit code for expression
+	// check expresion
+		//failed check, exit label
+	// visit statement
+
+	//exit label
 
 }
+
+antlrcpp::Any Pass2Visitor::visitAddsubExpr(perlParser::AddsubExprContext *ctx){
+	if (DEBUG_2) cout << "=== Pass 2: visitAddsubExpr" << endl;
+
+	auto value = visitChildren(ctx);
+
+    TypeSpec *type1 = ctx->expr(0)->type;
+    TypeSpec *type2 = ctx->expr(1)->type;
+
+    bool integer_mode =    (type1 == Predefined::integer_type)
+	                        && (type2 == Predefined::integer_type);
+    bool real_mode    =    (type1 == Predefined::real_type)
+	                        && (type2 == Predefined::real_type);
+
+    string op = ctx->add_sub_op()->getText();
+    string opcode;
+
+    if (op == "+")
+    {
+        opcode = integer_mode ? "iadd"
+               : real_mode    ? "fadd"
+               :                "????";
+    }
+    else
+    {
+        opcode = integer_mode ? "isub"
+               : real_mode    ? "fsub"
+               :                "????";
+    }
+
+    // Emit an add or subtract instruction.
+    j_file << "\t" << opcode << endl;
+
+    return value;
+}
+
+antlrcpp::Any Pass2Visitor::visitMuldivExpr(perlParser::MuldivExprContext *ctx){
+	if (DEBUG_2) cout << "=== Pass 2: visitMuldivExpr" << endl;
+
+    auto value = visitChildren(ctx);
+
+    TypeSpec *type1 = ctx->expr(0)->type;
+    TypeSpec *type2 = ctx->expr(1)->type;
+
+    bool integer_mode =    (type1 == Predefined::integer_type)
+	                        && (type2 == Predefined::integer_type);
+    bool real_mode    =    (type1 == Predefined::real_type)
+	                        && (type2 == Predefined::real_type);
+
+    string op = ctx->mul_div_op()->getText();
+    string opcode;
+
+    if (op == "*")
+    {
+        opcode = integer_mode ? "imul"
+               : real_mode    ? "fmul"
+               :                "????";
+    }
+    else
+    {
+        opcode = integer_mode ? "idpv"
+               : real_mode    ? "fdiv"
+               :                "????";
+    }
+
+    // Emit a multiply or divide instruction.
+    j_file << "\t" << opcode << endl;
+
+    return value;
+}
+
+antlrcpp::Any Pass2Visitor::visitRelopExpr(perlParser::RelopExprContext *ctx){
+	if (DEBUG_2) cout << "=== Pass 2: visitRelopExpr" << endl;
+
+	auto value = visitChildren(ctx);
+
+	TypeSpec *type1 = ctx->expr(0)->type;
+	TypeSpec *type2 = ctx->expr(1)->type;
+
+	bool integer_mode =    (type1 == Predefined::integer_type)
+		                        && (type2 == Predefined::integer_type);
+	bool real_mode    =    (type1 == Predefined::real_type)
+		                        && (type2 == Predefined::real_type);
+	string op = ctx->rel_op()->getText();
+
+	if (op == "==")
+	{
+		opcode = "ifeq";
+	}
+	else if (op == "!=")
+	{
+		opcode = "ifne";
+	}
+	else if (op == "<")
+	{
+		opcode = "iflt";
+	}
+	else if (op == "<=")
+	{
+		opcode = "ifle";
+	}
+	else if (op == ">")
+	{
+		opcode = "ifgt";
+	}
+	else
+	{
+		opcode = "ifge";
+	}
+
+	j_file << "\t" << opcode << endl;
+
+	return value;
+}
+
+
 
 
