@@ -134,10 +134,38 @@ antlrcpp::Any Pass2Visitor::visitSigned_number(perlParser::Signed_numberContext 
     return value;
 }
 
-antlrcpp::Any Pass2Visitor::visitPowExpr(perlParser::PowExprContext *ctx){
+antlrcpp::Any Pass2Visitor::visitINTConst(perlParser::INTConstContext *ctx)
+{
+    if (DEBUG_2) cout << "=== Pass 2: visitIntegerConst" << endl;
+
+    // Emit a load constant instruction.
+    j_file << "\tldc\t" << ctx->getText() << endl;
+    return visitChildren(ctx);
+}
+
+antlrcpp::Any Pass2Visitor::visitFloatConst(perlParser::FloatConstContext *ctx)
+{
+    if (DEBUG_2) cout << "=== Pass 2: visitFloatConst" << endl;
+
+    // Emit a load constant instruction.
+    j_file << "\tldc\t" << ctx->getText() << endl;
+
+    return visitChildren(ctx);
+}
+
+antlrcpp::Any Pass2Visitor::visitBOOLConst(perlParser::BOOLConstContext *ctx)
+{
+    if (DEBUG_2) cout << "=== Pass 2: visitBoolConst" << endl;
+
+    // Emit a load constant instruction.
+    j_file << "\tldc\t" << ctx->getText() << endl;
+
+    return visitChildren(ctx);
+}
+
+antlrcpp::Any Pass2Visitor::visitWhile_stmt(perlParser::While_stmtContext *ctx){
 
 
 }
-
 
 

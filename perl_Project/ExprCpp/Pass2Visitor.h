@@ -39,6 +39,7 @@ public:
     antlrcpp::Any visitMuldivExpr(perlParser::MuldivExprContext *ctx) override;
     antlrcpp::Any visitRelopExpr(perlParser::RelopExprContext *ctx) override;
 
+    antlrcpp::Any visitWhile_stmt(perlParser::While_stmtContext *ctx) override;
 
 
     antlrcpp::Any visitINTConst(perlParser::INTConstContext *ctx) override;
