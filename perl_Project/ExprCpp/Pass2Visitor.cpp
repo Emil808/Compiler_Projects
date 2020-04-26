@@ -23,6 +23,16 @@ Pass2Visitor::~Pass2Visitor() {}
 
 antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
 {
+	//for now name will be sample
+	string program_name = "sample";
+	j_file_name = program_name + ".j";
+	j_file.open(j_file_name);
+	if (j_file.fail())
+	{
+	    cout << "***** Cannot open assembly file." << endl;
+	    exit(-99);
+	}
+
 	// Emit the RunTimer and PascalTextIn fields.
     j_file << endl;
     j_file << ".field private static _runTimer LRunTimer;" << endl;
@@ -91,7 +101,8 @@ antlrcpp::Any Pass2Visitor::visitAssignment_stmt(perlParser::Assignment_stmtCont
     string type_indicator =
                   (ctx->expr()->type == Predefined::integer_type) ? "I"
                 : (ctx->expr()->type == Predefined::real_type)    ? "F"
-                :                                                   "?";
+                : (ctx->expr()->type == Predefined::boolean_type) ? "I"
+                : "?";
 
     // Emit a field put instruction.
     j_file << "\tputstatic\t" << program_name
@@ -168,9 +179,9 @@ antlrcpp::Any Pass2Visitor::visitWhile_stmt(perlParser::While_stmtContext *ctx){
 
 	string loop_label, exit_label;
 
-	loop_label = "L" << label_counter++;
+	loop_label = "L"+ std::to_string(label_counter++);
 
-	exit_label = "L" << label_counter++;
+	exit_label = "L"+ std::to_string(label_counter++);
 
 	j_file << loop_label << ":" << endl;
 
@@ -274,17 +285,17 @@ antlrcpp::Any Pass2Visitor::visitRelopExpr(perlParser::RelopExprContext *ctx){
 
 	string label_x, label_y;
 
-	label_x = "L" << label_counter; //the "true" path
+	label_x = "L" + std::to_string(label_counter); //the "true" path
 	++label_counter;
 
-	label_y = "L" << label_counter; //the "false" path
+	label_y = "L" + std::to_string(label_counter); //the "false" path
 	++label_counter;
 
 	if(integer_mode){
 		j_file << "\tisub" << endl;
 
 	}
-	else{
+	else if(real_mode){
 		j_file << "\tfsub" << endl;
 	}
 
