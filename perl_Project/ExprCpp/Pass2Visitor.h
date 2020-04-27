@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-
+#include <unordered_map>
 #include "wci/intermediate/SymTabStack.h"
 #include "wci/intermediate/SymTabEntry.h"
 #include "wci/intermediate/TypeSpec.h"
@@ -14,7 +14,7 @@
 
 using namespace wci;
 using namespace wci::intermediate;
-
+using namespace std;
 class Pass2Visitor : public perlBaseVisitor
 {
 private:
@@ -30,11 +30,13 @@ public:
     ostream& get_assembly_file();
 
     antlrcpp::Any visitProgram(perlParser::ProgramContext *ctx) override;
+    antlrcpp::Any visitVariable_delcaration(perlParser::Variable_delcarationContext *ctx) override;
     antlrcpp::Any visitStmt(perlParser::StmtContext *ctx) override;
     antlrcpp::Any visitAssignment_stmt(perlParser::Assignment_stmtContext *ctx) override;
     antlrcpp::Any visitVariableExpr(perlParser::VariableExprContext *ctx) override;
     antlrcpp::Any visitSigned_number(perlParser::Signed_numberContext *ctx) override;
 
+    antlrcpp::Any visitIf_stmt(perlParser::If_stmtContext *ctx) override;
     // antlrcpp::Any visitPowExpr(perlParser::PowExprContext *ctx) override;
     antlrcpp::Any visitAddsubExpr(perlParser::AddsubExprContext *ctx) override;
     antlrcpp::Any visitMuldivExpr(perlParser::MuldivExprContext *ctx) override;

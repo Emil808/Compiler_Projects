@@ -44,29 +44,47 @@ antlrcpp::Any Pass1Visitor::visitProgram(perlParser::ProgramContext *ctx){
 
 	return value;
 }
-antlrcpp::Any Pass1Visitor::visitAssignment_stmt(perlParser::Assignment_stmtContext *ctx){
 
+antlrcpp::Any Pass1Visitor::visitVariable_delcaration(perlParser::Variable_delcarationContext *ctx){
 	string variable_name = ctx->variable()->IDENTIFIER()->toString();
-
+	string type = ctx->TYPEID()->toString();
 	SymTabEntry *variable_id = symtab_stack->lookup(variable_name);
 
-	if(!variable_id){ //first occurence of variable, save to symbol table.
+
+	TypeSpec *type_spec;
+	if(type == "i") {
+		type_spec = Predefined::integer_type;
+	}
+	else if(type == "f"){
+		type_spec = Predefined::real_type;
+	}
+	else if (type == "b"){
+		type_spec = Predefined::boolean_type;
+
+	}
+	else{
+		type_spec = nullptr;
+	}
+
+
 		variable_id = symtab_stack->enter_local(variable_name);
 
 		auto value = visitChildren(ctx);
 		variable_id->set_definition((Definition) DF_VARIABLE);
 
-		variable_id->set_typespec(ctx->expr()->type);
+		variable_id->set_typespec(type_spec);
+
 		variable_id_list.push_back(variable_id);
-	}
+
 	return visitChildren(ctx);
+
 }
+
 antlrcpp::Any Pass1Visitor::visitVariableExpr(perlParser::VariableExprContext *ctx){
 
 	 string variable_name = ctx->variable()->IDENTIFIER()->toString();
 	 SymTabEntry *variable_id = symtab_stack->lookup(variable_name);
-
-
+	 std::cout << variable_id->get_name() << endl;
 	 ctx->type = variable_id->get_typespec();
 	 return visitChildren(ctx);
 }

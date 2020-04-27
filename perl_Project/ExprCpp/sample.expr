@@ -1,4 +1,18 @@
-$abc= 500;
+i$abc
+f$def
+i$ghi
+f$jkl
+i$mno
+f$pqr
+
+
+i$intvar
+f$realvar
+b$boolvar
+i$what
+f$bwa
+
+$abc = $ghi;
 $def = 40.03; 
 $ghi = 4 + 3; 
 $jkl = 12.523 - 2.40; 
@@ -11,4 +25,20 @@ $boolvar = $abc > $def;
 
 while($abc < $def){
 	$abc = 1 + 2; 
+}
+
+if($intvar){
+	$for = 6 + 8 * 5 / 4; 
+}
+$what = 3; 
+if($what){
+	$bwa = 9.3 + 0.3 * 6.3; 
+}
+else{
+	while($abc < $def){
+	$abc = 1 + 2; 
+	if($intvar){
+		$for = 6 + 8 * 5 / 4; 
+	}
+	}
 }

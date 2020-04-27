@@ -5,8 +5,16 @@ grammar perl;
 using namespace wci::intermediate;
 }
 
-program : compound_stmt; 
+program : declarations compound_stmt; 
 
+declarations: (variable_delcaration)*; 
+
+variable_delcaration : TYPEID variable; 
+
+TYPEID : 'i'
+	| 'f'
+	| 'b'
+	; 
 compound_stmt : (stmt)+ ;
 
 stmt : assignment_stmt
@@ -18,12 +26,10 @@ stmt : assignment_stmt
 	 
 assignment_stmt : variable ASSIGN expr ';' ; 
 
-if_stmt : IF condition_block (ELSE_IF condition_block)* (ELSE else_block )? ; 
-	
-condition_block: '(' expr ')' '{' compound_stmt '}' ;
-else_block : '{' compound_stmt '}' ; 
-	
+//don't now how to handle 0 or more else if statements in pass2
+if_stmt : IF '(' expr ')' '{' compound_stmt '}' (ELSE '{' compound_stmt '}' )? ; 
 
+	
 while_stmt: WHILE '(' expr ')' '{' compound_stmt '}';
 until_stmt: UNTIL '(' expr ')' '{' compound_stmt '}';
 do_while_stmt: DO '{' compound_stmt '}' WHILE '(' expr ')' ';' ; 

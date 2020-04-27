@@ -23,7 +23,9 @@ public:
     virtual ~Pass1Visitor();
 
     antlrcpp::Any visitProgram(perlParser::ProgramContext *ctx) override;
-    antlrcpp::Any visitAssignment_stmt(perlParser::Assignment_stmtContext *ctx) override;
+
+    antlrcpp::Any visitVariable_delcaration(perlParser::Variable_delcarationContext *ctx) override;
+
 
     antlrcpp::Any visitUnsignednumExpr(perlParser::UnsignednumExprContext *ctx) override;
     antlrcpp::Any visitSigned_number(perlParser::Signed_numberContext *ctx) override;

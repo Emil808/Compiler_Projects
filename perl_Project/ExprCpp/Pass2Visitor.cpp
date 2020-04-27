@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <unordered_map>
 
 #include "Pass2Visitor.h"
 #include "wci/intermediate/SymTabStack.h"
@@ -10,7 +11,7 @@
 using namespace wci;
 using namespace wci::intermediate;
 using namespace wci::intermediate::symtabimpl;
-
+using namespace std;
 const bool DEBUG_2 = false;
 
 Pass2Visitor::Pass2Visitor()
@@ -24,7 +25,7 @@ Pass2Visitor::~Pass2Visitor() {}
 antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
 {
 	//for now name will be sample
-	string program_name = "sample";
+	program_name = "sampleProgram";
 	j_file_name = program_name + ".j";
 	j_file.open(j_file_name);
 	if (j_file.fail())
@@ -32,11 +33,16 @@ antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
 	    cout << "***** Cannot open assembly file." << endl;
 	    exit(-99);
 	}
-
+	j_file << ".class public " << program_name << endl;
+	j_file << ".super java/lang/Object" << endl;
 	// Emit the RunTimer and PascalTextIn fields.
     j_file << endl;
     j_file << ".field private static _runTimer LRunTimer;" << endl;
     j_file << ".field private static _standardIn LPascalTextIn;" << endl;
+
+    //visit declarations
+    visit(ctx->declarations());
+    j_file << endl;
 
     // Emit the class constructor.
     j_file << ".method public <init>()V" << endl;
@@ -86,7 +92,22 @@ antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
     return nullptr;
 
 }
+antlrcpp::Any Pass2Visitor::visitVariable_delcaration(perlParser::Variable_delcarationContext *ctx){
 
+    string variable_name = ctx->variable()->IDENTIFIER()->toString();
+    string type = ctx->TYPEID()->toString();
+
+    // Emit a field declaration.
+    string type_indicator = (type == "i") ? "I"
+                          : (type == "f")    ? "F"
+                          : (type == "b") ? "I"
+                          :                                      "?";
+    j_file << ".field private static "
+           << variable_name << " " << type_indicator << endl;
+
+    return visitChildren(ctx);
+
+}
 antlrcpp::Any Pass2Visitor::visitStmt(perlParser::StmtContext *ctx){
 
     j_file << endl << "; " + ctx->getText() << endl << endl;
@@ -98,15 +119,17 @@ antlrcpp::Any Pass2Visitor::visitAssignment_stmt(perlParser::Assignment_stmtCont
 
     auto value = visit(ctx->expr());
 
+    string variable_name = ctx->variable()->IDENTIFIER()->toString();
     string type_indicator =
-                  (ctx->expr()->type == Predefined::integer_type) ? "I"
-                : (ctx->expr()->type == Predefined::real_type)    ? "F"
-                : (ctx->expr()->type == Predefined::boolean_type) ? "I"
-                : "?";
+                      (ctx->expr()->type == Predefined::integer_type) ? "I"
+                    : (ctx->expr()->type == Predefined::real_type)    ? "F"
+                    : (ctx->expr()->type == Predefined::boolean_type) ? "I"
+                    : "?";
+
 
     // Emit a field put instruction.
     j_file << "\tputstatic\t" << program_name
-           << "/" << ctx->variable()->IDENTIFIER()->toString()
+           << "/" << variable_name
            << " " << type_indicator << endl;
 
     return value;
@@ -198,6 +221,36 @@ antlrcpp::Any Pass2Visitor::visitWhile_stmt(perlParser::While_stmtContext *ctx){
 
 }
 
+antlrcpp::Any Pass2Visitor::visitIf_stmt(perlParser::If_stmtContext *ctx){
+
+	string else_label, exit_label;
+
+	else_label = "L"+ std::to_string(label_counter++);
+
+	exit_label = "L"+ std::to_string(label_counter++);
+
+	auto value = visit(ctx->expr());
+
+	if(ctx->ELSE()){
+		j_file << "\tifle " << else_label << endl;
+
+		value = visit(ctx->compound_stmt(0));
+
+		j_file << "\tgoto " << exit_label << endl;
+
+
+		j_file << else_label << ":" << endl;
+		value = visit(ctx->compound_stmt(1));
+	}
+	else{
+		j_file << "\tifle " << exit_label << endl;
+		value = visit(ctx->compound_stmt(0));
+	}
+	j_file << exit_label<< ":" << endl;
+
+	return value;
+}
+
 antlrcpp::Any Pass2Visitor::visitAddsubExpr(perlParser::AddsubExprContext *ctx){
 	if (DEBUG_2) cout << "=== Pass 2: visitAddsubExpr" << endl;
 
@@ -257,7 +310,7 @@ antlrcpp::Any Pass2Visitor::visitMuldivExpr(perlParser::MuldivExprContext *ctx){
     }
     else
     {
-        opcode = integer_mode ? "idpv"
+        opcode = integer_mode ? "idiv"
                : real_mode    ? "fdiv"
                :                "????";
     }
