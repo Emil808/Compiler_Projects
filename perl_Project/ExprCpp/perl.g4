@@ -22,6 +22,7 @@ stmt : assignment_stmt
 	 | while_stmt
 	 | until_stmt
 	 | do_while_stmt
+	 | printStmt
 	 ;
 	 
 assignment_stmt : variable ASSIGN expr ';' ; 
@@ -29,6 +30,10 @@ assignment_stmt : variable ASSIGN expr ';' ;
 //don't now how to handle 0 or more else if statements in pass2
 if_stmt : IF '(' expr ')' '{' compound_stmt '}' (ELSE '{' compound_stmt '}' )? ; 
 
+printStmt      : PRINTF '(' formatString printArg* ')' ';' ;
+
+formatString   : STRING ;
+printArg       : ',' expr ;
 	
 while_stmt: WHILE '(' expr ')' '{' compound_stmt '}';
 until_stmt: UNTIL '(' expr ')' '{' compound_stmt '}';
@@ -71,7 +76,7 @@ number locals [ TypeSpec *type = nullptr ]
 signed_number locals [ TypeSpec *type = nullptr ] : sign number ;
 
 
-
+PRINTF  : 'printf' ;
 IDENTIFIER : [a-zA-Z][a-zA-Z0-9]* ;
 INTEGER    : [0-9]+ ;
 REAL : INTEGER '.' INTEGER; 
@@ -96,3 +101,10 @@ GE_OP : '>=' ;
 
 NEWLINE : '\r'? '\n' -> skip  ;
 WS      : [ \t]+ -> skip ; 
+
+QUOTE  : '\'' ;
+STRING : QUOTE STRING_CHAR* QUOTE ;
+
+fragment STRING_CHAR : QUOTE QUOTE  // two consecutive quotes
+                     | ~('\'')      // any non-quote character
+                     ;

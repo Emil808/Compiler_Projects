@@ -35,7 +35,7 @@ public:
     antlrcpp::Any visitAssignment_stmt(perlParser::Assignment_stmtContext *ctx) override;
     antlrcpp::Any visitVariableExpr(perlParser::VariableExprContext *ctx) override;
     antlrcpp::Any visitSigned_number(perlParser::Signed_numberContext *ctx) override;
-
+    antlrcpp::Any visitPrintStmt(perlParser::PrintStmtContext *ctx) override;
     antlrcpp::Any visitIf_stmt(perlParser::If_stmtContext *ctx) override;
     // antlrcpp::Any visitPowExpr(perlParser::PowExprContext *ctx) override;
     antlrcpp::Any visitAddsubExpr(perlParser::AddsubExprContext *ctx) override;

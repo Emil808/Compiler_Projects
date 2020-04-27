@@ -322,6 +322,7 @@ antlrcpp::Any Pass2Visitor::visitMuldivExpr(perlParser::MuldivExprContext *ctx){
 }
 
 antlrcpp::Any Pass2Visitor::visitRelopExpr(perlParser::RelopExprContext *ctx){
+	//todo: does not cover comparing float
 	if (DEBUG_2) cout << "=== Pass 2: visitRelopExpr" << endl;
 
 	auto value = visitChildren(ctx);
@@ -410,6 +411,61 @@ antlrcpp::Any Pass2Visitor::visitRelopExpr(perlParser::RelopExprContext *ctx){
 	return value;
 }
 
+antlrcpp::Any Pass2Visitor::visitPrintStmt(perlParser::PrintStmtContext *ctx)
+{
+    // Get the format string without the surrounding the single quotes.
+    string str = ctx->formatString()->getText();
+    string format_string = str.substr(1, str.length() - 2);
 
+    // Emit code to push the java.lang.System.out object.
+    j_file << "\tgetstatic\tjava/lang/System/out Ljava/io/PrintStream;" << endl;
+
+    // Emit code to push the format string.
+    j_file << "\tldc\t\"" << format_string << "\"" << endl;
+
+    // Array size is the number of expressions to evaluate and print.
+    int array_size = ctx->printArg().size();
+
+    // Emit code to create the array of the correct size.
+    j_file << "\tldc\t" << array_size << endl;
+    j_file << "\tanewarray\tjava/lang/Object" << endl;
+
+    // Loop to generate code for each expression.
+    for (int i = 0; i < array_size; i++)
+    {
+        j_file << "\tdup" << endl;         // duplicate the array address
+        j_file << "\tldc\t" << i << endl;  // array element index
+
+        // Emit code to evaluate the expression.
+        visit(ctx->printArg(i)->expr());
+        TypeSpec *type = ctx->printArg(i)->expr()->type;
+
+        // Emit code to convert a scalar integer or float value
+        // to an Integer or Float object, respectively.
+        if (type == Predefined::integer_type)
+        {
+            j_file << "\tinvokestatic\tjava/lang/Integer.valueOf(I)"
+                   << "Ljava/lang/Integer;"
+                   << endl;
+        }
+        else
+        {
+            j_file << "\tinvokestatic\tjava/lang/Float.valueOf(F)"
+                   << "Ljava/lang/Float;"
+                   << endl;
+        }
+
+        j_file << "\taastore" << endl;  // store the value into the array
+    }
+
+    // Emit code to call java.io.PrintStream.printf.
+    j_file << "\tinvokevirtual java/io/PrintStream.printf"
+           << "(Ljava/lang/String;[Ljava/lang/Object;)"
+           << "Ljava/io/PrintStream;"
+           << endl;
+    j_file << "\tpop" << endl;
+
+    return nullptr;
+}
 
 
