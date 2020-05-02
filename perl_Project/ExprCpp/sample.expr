@@ -13,6 +13,9 @@ while($counter < 10){
 	if($counter < 5){
 		$number = $number * 2.4; 
 	}
+	elseif($counter == 5){
+		$number = 30.0; 
+	}
 	else{
 		$number = 0.4; 
 	

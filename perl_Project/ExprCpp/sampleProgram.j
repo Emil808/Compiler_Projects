@@ -38,7 +38,7 @@
 	ldc	1
 	putstatic	sampleProgram/counter I
 
-; while($counter<10){printf('Count: %d\t',$counter);if($counter<5){$number=$number*2.4;}else{$number=0.4;}$counter=$counter+1;printf('%f\n',$number);}
+; while($counter<10){printf('Count: %d\t',$counter);if($counter<5){$number=$number*2.4;}elseif($counter==5){$number=30.0;}else{$number=0.4;}$counter=$counter+1;printf('%f\n',$number);}
 
 L0:
 	getstatic	sampleProgram/counter I
@@ -66,7 +66,7 @@ L3:
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
 
-; if($counter<5){$number=$number*2.4;}else{$number=0.4;}
+; if($counter<5){$number=$number*2.4;}elseif($counter==5){$number=30.0;}else{$number=0.4;}
 
 	getstatic	sampleProgram/counter I
 	ldc	5
@@ -87,6 +87,23 @@ L7:
 	putstatic	sampleProgram/number F
 	goto L5
 L4:
+	getstatic	sampleProgram/counter I
+	ldc	5
+	isub
+	ifeq L9
+	iconst_0
+	goto L10
+L9:
+	iconst_1
+L10:
+	ifle L8
+
+; $number=30.0;
+
+	ldc	30.0
+	putstatic	sampleProgram/number F
+	goto L5
+L8:
 
 ; $number=0.4;
 

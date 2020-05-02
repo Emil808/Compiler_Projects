@@ -229,23 +229,51 @@ antlrcpp::Any Pass2Visitor::visitIf_stmt(perlParser::If_stmtContext *ctx){
 
 	exit_label = "L"+ std::to_string(label_counter++);
 
-	auto value = visit(ctx->expr());
+	auto value = visit(ctx->expr(0)); // visit IF (expr)
 
-	if(ctx->ELSE()){
+	if(ctx->ELSE_IF(0)){ //ELSE_IF blocks exist
+
+		/*IF compound statement*/
 		j_file << "\tifle " << else_label << endl;
-
 		value = visit(ctx->compound_stmt(0));
-
 		j_file << "\tgoto " << exit_label << endl;
 
+		/*ELSE_IF blocks*/
+		int size = ctx->ELSE_IF().size();
+		for(int i = 0; i < size; i++){
 
+			j_file << else_label << ":" << endl;
+			else_label = "L"+ std::to_string(label_counter++);
+			value = visit(ctx->expr(1+i));
+			j_file << "\tifle " << else_label << endl;
+			value = visit(ctx->compound_stmt(1+i));
+			j_file << "\tgoto " << exit_label << endl;
+		}
+		/*possible ELSE block*/
+		if(ctx->ELSE()){
+			j_file << else_label << ":" << endl;
+			value = visit(ctx->compound_stmt(size+1));
+			}
+
+	}
+	/*JUST IF and ELSE*/
+	else if(ctx->ELSE()){
+		/*IF block*/
+		j_file << "\tifle " << else_label << endl;
+		value = visit(ctx->compound_stmt(0));
+		j_file << "\tgoto " << exit_label << endl;
+
+		/*ELSE block*/
 		j_file << else_label << ":" << endl;
 		value = visit(ctx->compound_stmt(1));
 	}
+
+	/*JUST IF*/
 	else{
 		j_file << "\tifle " << exit_label << endl;
 		value = visit(ctx->compound_stmt(0));
 	}
+
 	j_file << exit_label<< ":" << endl;
 
 	return value;

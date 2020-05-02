@@ -28,7 +28,7 @@ stmt : assignment_stmt
 assignment_stmt : variable ASSIGN expr ';' ; 
 
 //don't now how to handle 0 or more else if statements in pass2
-if_stmt : IF '(' expr ')' '{' compound_stmt '}' (ELSE '{' compound_stmt '}' )? ; 
+if_stmt : IF '(' expr ')' '{' compound_stmt '}' (ELSE_IF '(' expr ')' '{' compound_stmt '}')* (ELSE '{' compound_stmt '}' )? ; 
 
 printStmt      : PRINTF '(' formatString printArg* ')' ';' ;
 
