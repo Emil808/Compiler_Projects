@@ -37,6 +37,8 @@ antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
 	j_file << ".super java/lang/Object" << endl;
 	// Emit the RunTimer and PascalTextIn fields.
     j_file << endl;
+
+    /*Global Variables*/
     j_file << ".field private static _runTimer LRunTimer;" << endl;
     j_file << ".field private static _standardIn LPascalTextIn;" << endl;
 
@@ -56,7 +58,10 @@ antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
     j_file << ".end method" << endl;
     j_file << endl;
 
-    // Emit the main program header and prologue.
+    /*Possible Methods Here*/
+
+
+    /*Main Program Header*/
     j_file << ".method public static main([Ljava/lang/String;)V" << endl;
     j_file << endl;
     j_file << "\tnew RunTimer" << endl;
@@ -70,10 +75,10 @@ antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
     j_file << "\tputstatic\t" + program_name
            << "/_standardIn LPascalTextIn;" << endl;
 
-    // Emit code for the main program's compound statement.
+   /*Main Program Code*/
     visit(ctx->compound_stmt());
 
-    // Emit the main program epilogue.
+    /*Main Program Epilogue*/
     j_file << endl;
     j_file << "\tgetstatic     " << program_name
                << "/_runTimer LRunTimer;" << endl;
@@ -216,6 +221,48 @@ antlrcpp::Any Pass2Visitor::visitWhile_stmt(perlParser::While_stmtContext *ctx){
 
 	j_file << "\tgoto " << loop_label << endl
 		   << exit_label<< ":" << endl;
+
+	return value;
+
+}
+
+antlrcpp::Any Pass2Visitor::visitDo_while_stmt(perlParser::Do_while_stmtContext *ctx){
+
+	string loop_label, exit_label;
+
+	loop_label = "L"+ std::to_string(label_counter++);
+	exit_label = "L"+ std::to_string(label_counter++);
+
+	j_file << loop_label << ":" << endl;
+
+	auto value = visit(ctx->compound_stmt());
+
+	value = visit(ctx->expr());
+	j_file << "\tifle " << exit_label << endl;
+	j_file << "\tgoto " << loop_label << endl
+		   << exit_label<< ":" << endl;
+
+	return value;
+
+}
+
+antlrcpp::Any Pass2Visitor::visitUntil_stmt(perlParser::Until_stmtContext *ctx){
+
+	string loop_label, exit_label;
+
+	loop_label = "L"+ std::to_string(label_counter++);
+	exit_label = "L"+ std::to_string(label_counter++);
+
+	j_file << loop_label << endl;
+
+	/*Emit Condition Code*/
+	auto value = visit(ctx->expr());
+	j_file << "\tifgt " << exit_label << endl;
+
+	/*Emit Code in loop*/
+	value = visit(ctx->compound_stmt());
+	j_file << "\tgoto " << loop_label << endl
+		   << exit_label << ":" << endl;
 
 	return value;
 

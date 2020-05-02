@@ -16,6 +16,9 @@ while($counter < 10){
 	elseif($counter == 5){
 		$number = 30.0; 
 	}
+	elseif($counter == 8){
+		$number = 55.23434; 
+	}
 	else{
 		$number = 0.4; 
 	
@@ -31,3 +34,12 @@ $negative = $negative - 4;
 printf('%d\n', $negative);
 $negative = $negative * 8; 
 printf('%d\n', $negative);
+
+printf('Do While Loop\n'); 
+
+$counter = 0; 
+do{
+	printf('In loop, %d\n', $counter); 
+	$counter = $counter+1; 
+}
+while ($counter < 3); 

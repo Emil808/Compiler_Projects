@@ -38,7 +38,7 @@
 	ldc	1
 	putstatic	sampleProgram/counter I
 
-; while($counter<10){printf('Count: %d\t',$counter);if($counter<5){$number=$number*2.4;}elseif($counter==5){$number=30.0;}else{$number=0.4;}$counter=$counter+1;printf('%f\n',$number);}
+; while($counter<10){printf('Count: %d\t',$counter);if($counter<5){$number=$number*2.4;}elseif($counter==5){$number=30.0;}elseif($counter==8){$number=55.23434;}else{$number=0.4;}$counter=$counter+1;printf('%f\n',$number);}
 
 L0:
 	getstatic	sampleProgram/counter I
@@ -66,7 +66,7 @@ L3:
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
 
-; if($counter<5){$number=$number*2.4;}elseif($counter==5){$number=30.0;}else{$number=0.4;}
+; if($counter<5){$number=$number*2.4;}elseif($counter==5){$number=30.0;}elseif($counter==8){$number=55.23434;}else{$number=0.4;}
 
 	getstatic	sampleProgram/counter I
 	ldc	5
@@ -104,6 +104,23 @@ L10:
 	putstatic	sampleProgram/number F
 	goto L5
 L8:
+	getstatic	sampleProgram/counter I
+	ldc	8
+	isub
+	ifeq L12
+	iconst_0
+	goto L13
+L12:
+	iconst_1
+L13:
+	ifle L11
+
+; $number=55.23434;
+
+	ldc	55.23434
+	putstatic	sampleProgram/number F
+	goto L5
+L11:
 
 ; $number=0.4;
 
@@ -195,6 +212,57 @@ L1:
 	aastore
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
+
+; printf('Do While Loop\n');
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"Do While Loop\n"
+	ldc	0
+	anewarray	java/lang/Object
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; $counter=0;
+
+	ldc	0
+	putstatic	sampleProgram/counter I
+
+; do{printf('In loop, %d\n',$counter);$counter=$counter+1;}while($counter<3);
+
+L14:
+
+; printf('In loop, %d\n',$counter);
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"In loop, %d\n"
+	ldc	1
+	anewarray	java/lang/Object
+	dup
+	ldc	0
+	getstatic	sampleProgram/counter I
+	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
+	aastore
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; $counter=$counter+1;
+
+	getstatic	sampleProgram/counter I
+	ldc	1
+	iadd
+	putstatic	sampleProgram/counter I
+	getstatic	sampleProgram/counter I
+	ldc	3
+	isub
+	iflt L16
+	iconst_0
+	goto L17
+L16:
+	iconst_1
+L17:
+	ifle L15
+	goto L14
+L15:
 
 	getstatic     sampleProgram/_runTimer LRunTimer;
 	invokevirtual RunTimer.printElapsedTime()V
