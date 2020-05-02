@@ -152,11 +152,11 @@ antlrcpp::Any Pass2Visitor::visitVariableExpr(perlParser::VariableExprContext *c
     return visitChildren(ctx);
 }
 
-antlrcpp::Any Pass2Visitor::visitSigned_number(perlParser::Signed_numberContext *ctx){
+antlrcpp::Any Pass2Visitor::visitSignednumExpr(perlParser::SignednumExprContext *ctx){
     auto value = visitChildren(ctx);
-    TypeSpec *type = ctx->number()->type;
+    TypeSpec *type = ctx->signed_number()->number()->type;
 
-    if (ctx->sign()->children[0] == ctx->sign()->SUB_OP())
+    if (ctx->signed_number()->sign()->children[0] == ctx->signed_number()->sign()->SUB_OP())
     {
         string opcode = (type == Predefined::integer_type) ? "ineg"
                       : (type == Predefined::real_type)    ? "fneg"

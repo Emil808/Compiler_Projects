@@ -67,13 +67,13 @@ DO : 'do';
 
 
  
-sign   : '+' | '-' ;
+sign   : ADD_OP | SUB_OP ;
 number locals [ TypeSpec *type = nullptr ] 
 	: INTEGER	# INTConst
 	| REAL 		# FloatConst
 	| BOOL 		# BOOLConst
 	;
-signed_number locals [ TypeSpec *type = nullptr ] : sign number ;
+signed_number : sign number ;
 
 
 PRINTF  : 'printf' ;
@@ -81,7 +81,7 @@ IDENTIFIER : [a-zA-Z][a-zA-Z0-9]* ;
 INTEGER    : [0-9]+ ;
 REAL : INTEGER '.' INTEGER; 
 BOOL : TRUE | FALSE; 
-//need another data type
+
 TRUE : 'TRUE'; 
 FALSE: 'FALSE'; 
 MUL_OP :   '*' ;

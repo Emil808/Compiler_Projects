@@ -28,7 +28,7 @@ public:
 
 
     antlrcpp::Any visitUnsignednumExpr(perlParser::UnsignednumExprContext *ctx) override;
-    antlrcpp::Any visitSigned_number(perlParser::Signed_numberContext *ctx) override;
+    antlrcpp::Any visitSignednumExpr(perlParser::SignednumExprContext *ctx) override;
 
     antlrcpp::Any visitPowExpr(perlParser::PowExprContext *ctx) override;
     antlrcpp::Any visitAddsubExpr(perlParser::AddsubExprContext *ctx) override;

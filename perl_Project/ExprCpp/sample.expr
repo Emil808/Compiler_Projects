@@ -1,17 +1,30 @@
 i$counter
 f$number
+i$negative
 
 $number = 0.3;
 
 $counter = 1; 
+ 
+
 
 while($counter < 10){
+	printf('Count: %d\t', $counter); 
 	if($counter < 5){
 		$number = $number * 2.4; 
 	}
 	else{
 		$number = 0.4; 
+	
 	}
+	
 	$counter = $counter + 1; 
 	printf('%f\n', $number); 
+	
 }
+$negative = -1;
+printf('%d\n', $negative);
+$negative = $negative - 4; 
+printf('%d\n', $negative);
+$negative = $negative * 8; 
+printf('%d\n', $negative);

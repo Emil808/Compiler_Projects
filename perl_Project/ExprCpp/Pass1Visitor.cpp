@@ -96,9 +96,10 @@ antlrcpp::Any Pass1Visitor::visitUnsignednumExpr(perlParser::UnsignednumExprCont
 	 return value;
 }
 
-antlrcpp::Any Pass1Visitor::visitSigned_number(perlParser::Signed_numberContext *ctx){
-	 auto value = visit(ctx->number());
-	 ctx->type = ctx->number()->type;
+antlrcpp::Any Pass1Visitor::visitSignednumExpr(perlParser::SignednumExprContext *ctx){
+	 auto value = visit(ctx->signed_number());
+	 ctx->type = ctx->signed_number()->number()->type;
+
 	 return value;
 }
 
