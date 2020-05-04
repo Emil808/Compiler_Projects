@@ -36,7 +36,7 @@ public:
     antlrcpp::Any visitParenthExpr(perlParser::ParenthExprContext *ctx) override;
     antlrcpp::Any visitVariableExpr(perlParser::VariableExprContext *ctx) override;
     antlrcpp::Any visitShiftExpr(perlParser::ShiftExprContext *ctx) override;
-    antlrcpp::Any visitBitopExpr(perlParser::Bit_opContext *ctx) override;
+    antlrcpp::Any visitBitopExpr(perlParser::BitExprContext *ctx) override;
     antlrcpp::Any visitINTConst(perlParser::INTConstContext *ctx) override;
     antlrcpp::Any visitFloatConst(perlParser::FloatConstContext *ctx) override;
     antlrcpp::Any visitBOOLConst(perlParser::BOOLConstContext *ctx) override;

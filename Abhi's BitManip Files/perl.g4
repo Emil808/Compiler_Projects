@@ -46,7 +46,7 @@ expr locals [ TypeSpec *type = nullptr ]
 	 | expr add_sub_op expr		# addsubExpr
 	 | expr rel_op expr			# relopExpr
 	 | expr shift_op expr			# shiftExpr
-	 | expr bit_op expr			# shiftExpr
+	 | expr bit_op expr			# bitExpr
 	 | number					# unsignednumExpr
 	 | signed_number			# signednumExpr
 	 | variable					# variableExpr

@@ -474,7 +474,7 @@ AND_OP: '&';
 NAND_OP: '/&';
 NOR_OP: '/|';*/
 
-antlrcpp::Any Pass2Visitor:: visitBitopExpr(perlParser::Bit_opContext *ctx) {
+antlrcpp::Any Pass2Visitor:: visitBitopExpr(perlParser::BitExprContext *ctx) {
 	if (DEBUG_2) cout << "=== Pass 2: visitShiftExpr" << endl;
 	    auto value = visitChildren(ctx);
 	    TypeSpec *type1 = ctx->expr(0)->type;
@@ -482,7 +482,7 @@ antlrcpp::Any Pass2Visitor:: visitBitopExpr(perlParser::Bit_opContext *ctx) {
 
 	    bool integer_mode =    (type1 == Predefined::integer_type)
 		                        && (type2 == Predefined::integer_type);
-	    string op = ctx->shift_op()->getText();
+	    string op = ctx->bit_op()->getText();
 	    string opcode;
 	    string opcode2;
         //logical and art left shifts are the exact same

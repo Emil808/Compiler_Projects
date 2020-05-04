@@ -158,7 +158,7 @@ antlrcpp::Any Pass1Visitor::visitShiftExpr(perlParser::ShiftExprContext *ctx){
 	    return value;
 }
 
-antlrcpp::Any Pass1Visitor::visitBitopExpr(perlParser::Bit_opContext *ctx){
+antlrcpp::Any Pass1Visitor::visitBitopExpr(perlParser::BitExprContext *ctx){
 	auto value = visitChildren(ctx);
 	TypeSpec *type1 = ctx->expr(0)->type;
 	TypeSpec *type2 = ctx->expr(1)->type;
