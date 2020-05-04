@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>perl.g4</title>
+<style type="text/css">
+body { 
+  color: #000;
+  font-family: sans-serif;
+  font-size: 12px;
+  margin: 20px 5px 10px 20px;
+}
+/* resets */
+ul {
+  list-style: none;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+img {
+  border: 0;
+}
+.clear {
+  clear: both;
+}
+.container {
+  position: relative;
+}
+/* Grammar name */
+h1 {
+  font-size: 20px;
+}
+/*Grammar documentation*/
+.gdoc {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+#index {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  overflow: auto;
+}
+#index h2 {
+  margin: 0;
+}
+#index ol {
+  padding-left: 30px;
+  list-style-type: square;
+  color: #364559;
+}
+#index ol li {
+  margin: 2px 0;
+}
+#index ol li a {
+  color: #366199;
+  font-family: monospace;
+}
+#rules {
+  margin-left: 210px;
+  padding-left: 20px;
+  border-left: 1px solid #AAA;
+}
+.rule {
+  margin-bottom: 30px;
+}
+/* Rule name*/
+.rule h3 {
+  color: #364559;
+  background-color: #DADFE6;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 4px 5px;
+  border-bottom: 1px solid #828B99;
+}
+.rule h3 a.topLink {
+  font-family: sans-serif;
+  font-size: 10px;
+  color: #000;
+  margin-left: 20px;
+}
+.rule h3, .rule .ebnf div {
+  font-family: monospace;
+}
+/* Sections: ebnf, railroad*/
+.doc, .ebnf, .railroad {
+  padding-left: 20px;
+}
+.doc h4, .ebnf h4, .railroad h4 {
+  font-size: 12px;
+  margin: 15px 0 10px -20px;
+}
+.ebnf div {
+  background-color: #F7F7F7;
+  border-top: 1px solid #E8E8E8;
+  border-bottom: 1px solid #E8E8E8;
+  padding: 10px 5px;
+}
+.ebnf div .literal {
+  color: #0000FF;
+}
+.ebnf div .keyword {
+  color: #7F0055;
+  font-weight: bold;
+}
+.ebnf div .rule {
+  color: #004084;
+  font-weight: bold;
+}
+.ebnf div .token {
+  font-style:italic;
+}
+.railroad img {
+  display: block;
+}
+footer {
+  float: right;
+}
+</style>
+</head>
+<body>
+<h1><a href="perl.g4.html" name="top">perl</a></h1>
+<p class="gdoc"></p>
+<div class="container">
+<div id="index">
+<h2>Rules</h2>
+<ol>
+  <li><a href="#compound_stmt">compound_stmt</a></li>
+  <li><a href="#stmt">stmt</a></li>
+  <li><a href="#assignment_stmt">assignment_stmt</a></li>
+  <li><a href="#if_stmt">if_stmt</a></li>
+  <li><a href="#while_stmt">while_stmt</a></li>
+  <li><a href="#until_stmt">until_stmt</a></li>
+  <li><a href="#expr">expr</a></li>
+  <li><a href="#variable">variable</a></li>
+  <li><a href="#mul_div_op">mul_div_op</a></li>
+  <li><a href="#add_sub_op">add_sub_op</a></li>
+  <li><a href="#rel_op">rel_op</a></li>
+  <li><a href="#IF">IF</a></li>
+  <li><a href="#ELSE">ELSE</a></li>
+  <li><a href="#ELSE_IF">ELSE_IF</a></li>
+  <li><a href="#WHILE">WHILE</a></li>
+  <li><a href="#UNTIL">UNTIL</a></li>
+  <li><a href="#number">number</a></li>
+  <li><a href="#sign">sign</a></li>
+  <li><a href="#IDENTIFIER">IDENTIFIER</a></li>
+  <li><a href="#INTEGER">INTEGER</a></li>
+  <li><a href="#REAL">REAL</a></li>
+  <li><a href="#MUL_OP">MUL_OP</a></li>
+  <li><a href="#DIV_OP">DIV_OP</a></li>
+  <li><a href="#ADD_OP">ADD_OP</a></li>
+  <li><a href="#SUB_OP">SUB_OP</a></li>
+  <li><a href="#POW_OP">POW_OP</a></li>
+  <li><a href="#MOD_OP">MOD_OP</a></li>
+  <li><a href="#ASSIGN">ASSIGN</a></li>
+  <li><a href="#EQ_OP">EQ_OP</a></li>
+  <li><a href="#NE_OP">NE_OP</a></li>
+  <li><a href="#LT_OP">LT_OP</a></li>
+  <li><a href="#LE_OP">LE_OP</a></li>
+  <li><a href="#GT_OP">GT_OP</a></li>
+  <li><a href="#GE_OP">GE_OP</a></li>
+  <li><a href="#NEWLINE">NEWLINE</a></li>
+  <li><a href="#WS">WS</a></li>
+</ol>
+</div>
+
+<div id="rules">
+<ul>
+  <li class="rule" id="compound_stmt">
+  <h3>compound_stmt <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">compound_stmt</span> :  <span class="operator">(</span><a href="#stmt" class="rule">stmt</a><span class="operator">)</span><span class="operator">+</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/compound_stmt.png" />
+  </div>
+  </li>
+  <li class="rule" id="stmt">
+  <h3>stmt <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">stmt</span> :  <a href="#assignment_stmt" class="rule">assignment_stmt</a> <span class="operator">|</span> <a href="#if_stmt" class="rule">if_stmt</a> <span class="operator">|</span> <a href="#while_stmt" class="rule">while_stmt</a> <span class="operator">|</span> <a href="#until_stmt" class="rule">until_stmt</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/stmt.png" />
+  </div>
+  </li>
+  <li class="rule" id="assignment_stmt">
+  <h3>assignment_stmt <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">assignment_stmt</span> :  <a href="#variable" class="rule">variable</a> <a href="#ASSIGN" class="token">ASSIGN</a> <a href="#expr" class="rule">expr</a> <span class="literal">';'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/assignment_stmt.png" />
+  </div>
+  </li>
+  <li class="rule" id="if_stmt">
+  <h3>if_stmt <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">if_stmt</span> :  <a href="#IF" class="token">IF</a> <span class="literal">'('</span> <a href="#expr" class="rule">expr</a> <span class="literal">')'</span> <span class="literal">'{'</span> <a href="#stmt" class="rule">stmt</a> <span class="literal">'}'</span> <span class="operator">(</span><a href="#ELSE_IF" class="token">ELSE_IF</a> <span class="literal">'('</span> <a href="#expr" class="rule">expr</a> <span class="literal">')'</span> <span class="literal">'{'</span> <a href="#stmt" class="rule">stmt</a> <span class="literal">'}'</span><span class="operator">)</span><span class="operator">+</span> <span class="operator">(</span><a href="#ELSE" class="token">ELSE</a> <span class="literal">'{'</span> <a href="#stmt" class="rule">stmt</a> <span class="literal">'}'</span><span class="operator">)</span><span class="operator">?</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/if_stmt.png" />
+  </div>
+  </li>
+  <li class="rule" id="while_stmt">
+  <h3>while_stmt <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">while_stmt</span> :  <a href="#WHILE" class="token">WHILE</a> <span class="literal">'('</span> <a href="#expr" class="rule">expr</a> <span class="literal">')'</span> <span class="literal">'{'</span> <a href="#stmt" class="rule">stmt</a> <span class="literal">'}'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/while_stmt.png" />
+  </div>
+  </li>
+  <li class="rule" id="until_stmt">
+  <h3>until_stmt <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">until_stmt</span> :  <a href="#UNTIL" class="token">UNTIL</a> <span class="literal">'('</span> <a href="#expr" class="rule">expr</a> <span class="literal">')'</span> <span class="literal">'{'</span> <a href="#stmt" class="rule">stmt</a> <span class="literal">'}'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/until_stmt.png" />
+  </div>
+  </li>
+  <li class="rule" id="expr">
+  <h3>expr <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">expr</span> :  <a href="#expr" class="rule">expr</a> <a href="#POW_OP" class="token">POW_OP</a> <a href="#expr" class="rule">expr</a> <span class="operator">|</span> <a href="#expr" class="rule">expr</a> <a href="#mul_div_op" class="rule">mul_div_op</a> <a href="#expr" class="rule">expr</a> <span class="operator">|</span> <a href="#expr" class="rule">expr</a> <a href="#add_sub_op" class="rule">add_sub_op</a> <a href="#expr" class="rule">expr</a> <span class="operator">|</span> <a href="#expr" class="rule">expr</a> <a href="#rel_op" class="rule">rel_op</a> <a href="#expr" class="rule">expr</a> <span class="operator">|</span> <a href="#number" class="rule">number</a> <span class="operator">|</span> <a href="#variable" class="rule">variable</a> <span class="operator">|</span> <span class="literal">'('</span> <a href="#expr" class="rule">expr</a> <span class="literal">')'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/expr.png" />
+  </div>
+  </li>
+  <li class="rule" id="variable">
+  <h3>variable <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">variable</span> :  <span class="literal">'$'</span> <a href="#IDENTIFIER" class="token">IDENTIFIER</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/variable.png" />
+  </div>
+  </li>
+  <li class="rule" id="mul_div_op">
+  <h3>mul_div_op <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">mul_div_op</span> :  <a href="#MUL_OP" class="token">MUL_OP</a> <span class="operator">|</span> <a href="#DIV_OP" class="token">DIV_OP</a> <span class="operator">|</span> <a href="#MOD_OP" class="token">MOD_OP</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/mul_div_op.png" />
+  </div>
+  </li>
+  <li class="rule" id="add_sub_op">
+  <h3>add_sub_op <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">add_sub_op</span> :  <a href="#ADD_OP" class="token">ADD_OP</a> <span class="operator">|</span> <a href="#SUB_OP" class="token">SUB_OP</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/add_sub_op.png" />
+  </div>
+  </li>
+  <li class="rule" id="rel_op">
+  <h3>rel_op <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">rel_op</span> :  <a href="#EQ_OP" class="token">EQ_OP</a> <span class="operator">|</span> <a href="#NE_OP" class="token">NE_OP</a> <span class="operator">|</span> <a href="#LT_OP" class="token">LT_OP</a> <span class="operator">|</span> <a href="#LE_OP" class="token">LE_OP</a> <span class="operator">|</span> <a href="#GT_OP" class="token">GT_OP</a> <span class="operator">|</span> <a href="#GE_OP" class="token">GE_OP</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/rel_op.png" />
+  </div>
+  </li>
+  <li class="rule" id="IF">
+  <h3>IF <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">IF</span> :  <span class="literal">'if'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/IF.png" />
+  </div>
+  </li>
+  <li class="rule" id="ELSE">
+  <h3>ELSE <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ELSE</span> :  <span class="literal">'else'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ELSE.png" />
+  </div>
+  </li>
+  <li class="rule" id="ELSE_IF">
+  <h3>ELSE_IF <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ELSE_IF</span> :  <span class="literal">'elsif'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ELSE_IF.png" />
+  </div>
+  </li>
+  <li class="rule" id="WHILE">
+  <h3>WHILE <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">WHILE</span> :  <span class="literal">'while'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/WHILE.png" />
+  </div>
+  </li>
+  <li class="rule" id="UNTIL">
+  <h3>UNTIL <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">UNTIL</span> :  <span class="literal">'until'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/UNTIL.png" />
+  </div>
+  </li>
+  <li class="rule" id="number">
+  <h3>number <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">number</span> :  <a href="#sign" class="rule">sign</a><span class="operator">?</span> <span class="operator">(</span><a href="#INTEGER" class="token">INTEGER</a> <span class="operator">|</span> <a href="#REAL" class="token">REAL</a><span class="operator">)</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/number.png" />
+  </div>
+  </li>
+  <li class="rule" id="sign">
+  <h3>sign <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">sign</span> :  <span class="literal">'+'</span> <span class="operator">|</span> <span class="literal">'-'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/sign.png" />
+  </div>
+  </li>
+  <li class="rule" id="IDENTIFIER">
+  <h3>IDENTIFIER <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">IDENTIFIER</span> :  [<span class="literal">a-zA-Z</span>][<span class="literal">a-zA-Z0-9</span>]<span class="operator">*</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/IDENTIFIER.png" />
+  </div>
+  </li>
+  <li class="rule" id="INTEGER">
+  <h3>INTEGER <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">INTEGER</span> :  [<span class="literal">0-9</span>]<span class="operator">+</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/INTEGER.png" />
+  </div>
+  </li>
+  <li class="rule" id="REAL">
+  <h3>REAL <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">REAL</span> :  <a href="#INTEGER" class="token">INTEGER</a> <span class="literal">'.'</span> <a href="#INTEGER" class="token">INTEGER</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/REAL.png" />
+  </div>
+  </li>
+  <li class="rule" id="MUL_OP">
+  <h3>MUL_OP <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">MUL_OP</span> :  <span class="literal">'*'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/MUL_OP.png" />
+  </div>
+  </li>
+  <li class="rule" id="DIV_OP">
+  <h3>DIV_OP <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">DIV_OP</span> :  <span class="literal">'/'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/DIV_OP.png" />
+  </div>
+  </li>
+  <li class="rule" id="ADD_OP">
+  <h3>ADD_OP <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ADD_OP</span> :  <span class="literal">'+'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ADD_OP.png" />
+  </div>
+  </li>
+  <li class="rule" id="SUB_OP">
+  <h3>SUB_OP <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">SUB_OP</span> :  <span class="literal">'-'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/SUB_OP.png" />
+  </div>
+  </li>
+  <li class="rule" id="POW_OP">
+  <h3>POW_OP <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">POW_OP</span> :  <span class="literal">'**'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/POW_OP.png" />
+  </div>
+  </li>
+  <li class="rule" id="MOD_OP">
+  <h3>MOD_OP <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">MOD_OP</span> :  <span class="literal">'%'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/MOD_OP.png" />
+  </div>
+  </li>
+  <li class="rule" id="ASSIGN">
+  <h3>ASSIGN <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">ASSIGN</span> :  <span class="literal">'='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/ASSIGN.png" />
+  </div>
+  </li>
+  <li class="rule" id="EQ_OP">
+  <h3>EQ_OP <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">EQ_OP</span> :  <span class="literal">'=='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/EQ_OP.png" />
+  </div>
+  </li>
+  <li class="rule" id="NE_OP">
+  <h3>NE_OP <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">NE_OP</span> :  <span class="literal">'!='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/NE_OP.png" />
+  </div>
+  </li>
+  <li class="rule" id="LT_OP">
+  <h3>LT_OP <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">LT_OP</span> :  <span class="literal">'<'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/LT_OP.png" />
+  </div>
+  </li>
+  <li class="rule" id="LE_OP">
+  <h3>LE_OP <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">LE_OP</span> :  <span class="literal">'<='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/LE_OP.png" />
+  </div>
+  </li>
+  <li class="rule" id="GT_OP">
+  <h3>GT_OP <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">GT_OP</span> :  <span class="literal">'>'</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/GT_OP.png" />
+  </div>
+  </li>
+  <li class="rule" id="GE_OP">
+  <h3>GE_OP <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">GE_OP</span> :  <span class="literal">'>='</span> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/GE_OP.png" />
+  </div>
+  </li>
+  <li class="rule" id="NEWLINE">
+  <h3>NEWLINE <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">NEWLINE</span> :  <span class="literal">'\r'</span><span class="operator">?</span> <span class="literal">'\n'</span> <span class="operator">-></span> <a href="#skip" class="rule">skip</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/NEWLINE.png" />
+  </div>
+  </li>
+  <li class="rule" id="WS">
+  <h3>WS <a class="topLink" title="Go to top" href="perl.g4.html">Top</a></h3>
+  <div class="doc">
+    <p>
+    </p>
+  </div>
+  <div class="ebnf">
+  <h4>Text notation:</h4>
+  <div>
+    <span class="rule">WS</span> :  [<span class="literal"> \t</span>]<span class="operator">+</span> <span class="operator">-></span> <a href="#skip" class="rule">skip</a> ;
+  </div>
+  </div>
+  <div class="railroad">
+  <h4>Visual notation:</h4>
+  <img border="0" src="images/WS.png" />
+  </div>
+  </li>
+</ul>
+</div>
+</div>
+<footer>Generated by: <a href="https://github.com/jknack/antlr4ide">ANTLR 4 IDE</a>. Copyright (c) 2013 <a href="https://twitter.com/edgarespina">Edgar Espina</a></footer>
+</body>
+</html>

@@ -1,0 +1,11 @@
+Count: 1	0.720000
+Count: 2	1.728000
+Count: 3	4.147201
+Count: 4	9.953281
+Count: 5	0.400000
+Count: 6	0.400000
+Count: 7	0.400000
+Count: 8	0.400000
+Count: 9	0.400000
+
+                0.04 seconds total execution time.
