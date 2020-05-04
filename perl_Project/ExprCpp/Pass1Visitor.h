@@ -29,16 +29,14 @@ public:
 
     antlrcpp::Any visitUnsignednumExpr(perlParser::UnsignednumExprContext *ctx) override;
     antlrcpp::Any visitSignednumExpr(perlParser::SignednumExprContext *ctx) override;
-
-    antlrcpp::Any visitPowExpr(perlParser::PowExprContext *ctx) override;
+    antlrcpp::Any visitPowerExpr(perlParser::PowerExprContext *ctx) override;
     antlrcpp::Any visitAddsubExpr(perlParser::AddsubExprContext *ctx) override;
     antlrcpp::Any visitMuldivExpr(perlParser::MuldivExprContext *ctx) override;
     antlrcpp::Any visitRelopExpr(perlParser::RelopExprContext *ctx) override;
     antlrcpp::Any visitParenthExpr(perlParser::ParenthExprContext *ctx) override;
-
-
     antlrcpp::Any visitVariableExpr(perlParser::VariableExprContext *ctx) override;
-
+    antlrcpp::Any visitShiftExpr(perlParser::ShiftExprContext *ctx) override;
+    antlrcpp::Any visitBitopExpr(perlParser::BitopExprContext *ctx) override;
     antlrcpp::Any visitINTConst(perlParser::INTConstContext *ctx) override;
     antlrcpp::Any visitFloatConst(perlParser::FloatConstContext *ctx) override;
     antlrcpp::Any visitBOOLConst(perlParser::BOOLConstContext *ctx) override;
