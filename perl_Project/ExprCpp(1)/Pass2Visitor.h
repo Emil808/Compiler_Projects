@@ -43,8 +43,7 @@ public:
     antlrcpp::Any visitRelopExpr(perlParser::RelopExprContext *ctx) override;
     antlrcpp::Any visitShiftExpr(perlParser::ShiftExprContext *ctx) override;
     antlrcpp::Any visitBitopExpr(perlParser::BitopExprContext *ctx) override;
-   // antlrcpp::Any visitShiftExpr(perlParser::ShiftopExprContext *ctx) override;
-    //antlrcpp::Any visitBit_OPExpr(perlParser::Bit_opContext ctx) override;
+ 
     antlrcpp::Any visitWhile_stmt(perlParser::While_stmtContext *ctx) override;
     antlrcpp::Any visitUntil_stmt(perlParser::Until_stmtContext *ctx) override;
     antlrcpp::Any visitDo_while_stmt(perlParser::Do_while_stmtContext *ctx) override;

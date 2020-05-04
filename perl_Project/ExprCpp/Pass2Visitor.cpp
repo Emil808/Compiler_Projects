@@ -396,6 +396,97 @@ antlrcpp::Any Pass2Visitor::visitMuldivExpr(perlParser::MuldivExprContext *ctx){
     return value;
 }
 
+antlrcpp::Any Pass2Visitor:: visitShiftExpr(perlParser::ShiftExprContext *ctx) {
+	if (DEBUG_2) cout << "=== Pass 2: visitShiftExpr" << endl;
+
+	    auto value = visitChildren(ctx);
+
+	    TypeSpec *type1 = ctx->expr(0)->type;
+	    TypeSpec *type2 = ctx->expr(1)->type;
+
+	    bool integer_mode =    (type1 == Predefined::integer_type)
+		                        && (type2 == Predefined::integer_type);
+	    bool real_mode    =    (type1 == Predefined::real_type)
+		                        && (type2 == Predefined::real_type);
+
+	    string op = ctx->shift_op()->getText();
+	    string opcode;
+        //logical and art left shifts are the exact same
+	    if (op == "<<")
+	    {
+	        opcode = integer_mode ? "ishl"
+	               : real_mode    ? "fshl"
+	               :                "????";
+	    }
+	    else if (op == ">>")
+	    {
+	        opcode = integer_mode ? "ishr"
+	               : real_mode    ? "ishr"
+	               :                "????";
+	    }
+
+	    // Emit a multiply or divide instruction.
+	    j_file << "\t" << opcode << endl;
+
+	    return value;
+}
+
+/*OR_OP: '|';
+AND_OP: '&';
+NAND_OP: '/&';
+NOR_OP: '/|';*/
+
+antlrcpp::Any Pass2Visitor:: visitBitopExpr(perlParser::BitopExprContext *ctx) {
+	if (DEBUG_2) cout << "=== Pass 2: visitShiftExpr" << endl;
+	    auto value = visitChildren(ctx);
+	    TypeSpec *type1 = ctx->expr(0)->type;
+	    TypeSpec *type2 = ctx->expr(1)->type;
+
+	    bool integer_mode =    (type1 == Predefined::integer_type)
+		                        && (type2 == Predefined::integer_type);
+	    string op = ctx->bit_op()->getText();
+	    string opcode;
+	    string opcode2;
+        //logical and art left shifts are the exact same
+	    if (op == "|")
+	    {
+	        opcode = integer_mode ? "ior"
+	               :                "????";
+	        j_file << "\t" << opcode << endl;
+	    }
+	    else if (op == "&")
+	    {
+	        opcode = integer_mode ? "iand"
+	               :                "????";
+	        j_file << "\t" << opcode << endl;
+	    }
+	    else if (op == "/&")
+	   	{
+	    	    opcode = integer_mode ? "iand"
+	    		               :       "????";
+	   	        opcode2 = "ineg";
+	   	        j_file << "\t" << opcode << endl;
+	   	        j_file << "\t" << opcode2 << endl;
+	    }
+	    else if (op == "/|")
+		{
+	    	 opcode = integer_mode ? "ior"
+	    		               : "????";
+				opcode2 = "ineg";
+				j_file << "\t" << opcode << endl;
+				j_file << "\t" << opcode2 << endl;
+		}
+
+	    // Emit a multiply or divide instruction.
+
+	    return value;
+}
+
+
+
+
+
+
 antlrcpp::Any Pass2Visitor::visitRelopExpr(perlParser::RelopExprContext *ctx){
 	//todo: does not cover comparing float
 	if (DEBUG_2) cout << "=== Pass 2: visitRelopExpr" << endl;
@@ -542,5 +633,86 @@ antlrcpp::Any Pass2Visitor::visitPrintStmt(perlParser::PrintStmtContext *ctx)
 
     return nullptr;
 }
+
+antlrcpp::Any Pass2Visitor::visitPowerExpr(perlParser::PowerExprContext *ctx){
+	if (DEBUG_2) cout << "=== Pass 2: visitPowExpr" << endl;
+
+	string loop_label, zero_pow_label, one_pow_label;
+
+	loop_label = "L"+ std::to_string(label_counter++);
+	zero_pow_label = "L"+ std::to_string(label_counter++);
+	one_pow_label = "L"+ std::to_string(label_counter++);
+
+	auto value = visitChildren(ctx);
+
+	TypeSpec *type1 = ctx->expr(0)->type;
+	TypeSpec *type2 = ctx->expr(1)->type;
+
+	bool integer_mode =    (type1 == Predefined::integer_type)
+		                        && (type2 == Predefined::integer_type);
+	bool real_mode    =    (type1 == Predefined::real_type)
+		                        && (type2 == Predefined::real_type);
+
+	string op = ctx->power_op()->getText();
+	string opcode, store, load, dec;
+
+	if (op == "^")
+	{
+		opcode = integer_mode ? "imul"
+			   : real_mode ? "fmul"
+			   : "????";
+
+		store = integer_mode ? "istore_"
+			   : real_mode ? "fstore_"
+			   : "????";
+
+		load = integer_mode ? "iload_"
+			   : real_mode ? "fload_"
+			   : "????";
+
+		dec = integer_mode ? "isub"
+			   : real_mode ? "fsub"
+			   : "????";
+	}
+
+	j_file << "\t" << store << "1" << endl
+		   << "\t" << store << "0" << endl
+
+		   // Checking for exponent input of 0
+		   << "\t" << load << "1" << endl
+		   << "\t" << "ldc 0" << endl
+		   << "\t" << dec << endl
+		   << "\t" << "ifeq " << zero_pow_label << endl
+
+		   << "\t" << load << "0" << endl
+		   << loop_label << ":" << endl
+
+		   // Checking if the exponent is 1
+		   << "\t" << load << "1" << endl
+		   << "\t" << "ldc 1" << endl
+		   << "\t" << dec << endl
+		   << "\t" << "ifeq " << one_pow_label << endl
+
+		   // Computing the power
+		   << "\t" << load << "0" << endl
+		   << "\t" << opcode << endl
+		   << "\t" << load << "1" << endl
+		   << "\t" << "ldc 1" << endl
+		   << "\t" << dec << endl
+		   << "\t" << store << "1" << endl
+		   << "\t" << "goto " << loop_label << endl
+
+		   // Push a 1 to store into the variable when exponent is 0
+		   << zero_pow_label << ":" << endl
+		   << "\t" << "ldc 1" << endl
+
+		   // Finished calculating power
+		   << one_pow_label << ":" << endl;
+
+	return value;
+}
+
+
+
 
 

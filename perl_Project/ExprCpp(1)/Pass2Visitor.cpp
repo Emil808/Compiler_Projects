@@ -361,44 +361,6 @@ antlrcpp::Any Pass2Visitor::visitAddsubExpr(perlParser::AddsubExprContext *ctx){
     return value;
 }
 
-
-
-/*
-antlrcpp::Any visitShiftExpr(perlParser::ShiftopExprContext *ctx){
-	if (DEBUG_2) cout << "=== Pass 2: visitAddsubExpr" << endl;
-
-		auto value = visitChildren(ctx);
-
-	    TypeSpec *type1 = ctx->expr(0)->type;
-	    TypeSpec *type2 = ctx->expr(1)->type;
-
-	    bool integer_mode =    (type1 == Predefined::integer_type)
-		                        && (type2 == Predefined::integer_type);
-	    bool real_mode    =    (type1 == Predefined::real_type)
-		                        && (type2 == Predefined::real_type);
-
-	    string op = ctx->add_sub_op()->getText();
-	    string opcode;
-
-	    if (op == "+")
-	    {
-	        opcode = integer_mode ? "iadd"
-	               : real_mode    ? "fadd"
-	               :                "????";
-	    }
-	    else
-	    {
-	        opcode = integer_mode ? "isub"
-	               : real_mode    ? "fsub"
-	               :                "????";
-	    }
-
-	    // Emit an add or subtract instruction.
-	    j_file << "\t" << opcode << endl;
-
-	    return value;
-}*/
-
 antlrcpp::Any Pass2Visitor::visitMuldivExpr(perlParser::MuldivExprContext *ctx){
 	if (DEBUG_2) cout << "=== Pass 2: visitMuldivExpr" << endl;
 
