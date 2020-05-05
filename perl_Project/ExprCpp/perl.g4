@@ -5,7 +5,7 @@ grammar perl;
 using namespace wci::intermediate;
 }
 
-program : declarations main_method; 
+program : declarations method_delcarations main_method; 
 
 main_method : MAIN '{' compound_stmt '}'; 
 
@@ -13,18 +13,16 @@ declarations: (variable_delcaration)*;
 
 variable_delcaration : TYPEID variable; 
 
-function : FUNCTION_ID '(' parameters ')' TYPEID '{' compound_stmt return_stmt'}' ';' ; 
-procedure : FUNCTION_ID '(' parameters ')' '{' compound_stmt '}' ';' ; 
+method_delcarations : (function | procedure)* ;
+
+function : IDENTIFIER '(' parameters ')' TYPEID '{' compound_stmt'}' ';' ; 
+procedure : IDENTIFIER '(' parameters ')' '{' compound_stmt '}' ';' ; 
 parameters : (variable)*;
-return_stmt : 'return' variable
-			| 'return' number
-			; 
-FUNCTION_ID : [a-zA-Z]('_')*[a-zA-Z0-9]*;
+
 
 
 TYPEID : 'i'
 	| 'f'
-	// Add type for exponent?
 	| 'b'
 	; 
 compound_stmt : (stmt)+ ;
@@ -35,9 +33,13 @@ stmt : assignment_stmt
 	 | until_stmt
 	 | do_while_stmt
 	 | printStmt
+	 | return_stmt
 	 ;
 	 
 assignment_stmt : variable ASSIGN expr ';' ; 
+return_stmt : 'return' variable
+			| 'return' number
+			; 
 
 
 if_stmt : IF '(' expr ')' '{' compound_stmt '}' (ELSE_IF '(' expr ')' '{' compound_stmt '}')* (ELSE '{' compound_stmt '}' )? ; 

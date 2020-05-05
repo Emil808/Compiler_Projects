@@ -186,6 +186,10 @@ public:
      */
     Object get_attribute(const SymTabKey key);
 
+    void set_slot(int slot_num);
+
+    int get_slot();
+
     static map <DefinitionImpl, string> DEFINITION_WORDS;
 
 private:
@@ -202,6 +206,9 @@ private:
     TypeSpec *typespec;        // type specification
     vector<int> line_numbers;  // source line numbers
     map<SymTabKey, Object> contents;
+
+    // additions for personal perl
+    int slot; // local var slot number
 };
 
 }}}  // namespace wci::intermediate::symtabimpl

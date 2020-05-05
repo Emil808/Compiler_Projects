@@ -59,6 +59,8 @@ void SymTabEntryImpl::initialize()
         DEFINITION_WORDS[defns[i]] = defn_words[i];
     }
 
+    slot = -1;
+
     INITIALIZED = true;
 }
 
@@ -105,5 +107,9 @@ Object SymTabEntryImpl::get_attribute(const SymTabKey key)
     return (contents.find(key) != contents.end()) ? contents[key]
                                                   : Object();  // empty
 }
+
+void SymTabEntryImpl::set_slot(int slot_num){ slot = slot_num; }
+
+int SymTabEntryImpl::get_slot(){ return slot; }
 
 }}}  // namespace wci::intermediate::symtabimpl

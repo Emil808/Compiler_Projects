@@ -122,6 +122,17 @@ antlrcpp::Any Pass2Visitor::visitVariable_delcaration(perlParser::Variable_delca
     return visitChildren(ctx);
 
 }
+
+antlrcpp::Any Pass2Visitor::visitFunction(perlParser::FunctionContext *ctx){
+	//emit function header
+	//local variable delcarations
+
+	//visit compound statement
+
+
+}
+
+
 antlrcpp::Any Pass2Visitor::visitStmt(perlParser::StmtContext *ctx){
 
     j_file << endl << "; " + ctx->getText() << endl << endl;

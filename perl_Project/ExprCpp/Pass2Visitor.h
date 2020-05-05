@@ -52,6 +52,8 @@ public:
     antlrcpp::Any visitFloatConst(perlParser::FloatConstContext *ctx) override;
     antlrcpp::Any visitBOOLConst(perlParser::BOOLConstContext *ctx) override;
 
+    antlrcpp::Any visitFunction(perlParser::FunctionContext *ctx) override;
+
     //todo: other visitor functions in here
 
 };
