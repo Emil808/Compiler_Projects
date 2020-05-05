@@ -3,9 +3,11 @@
 
 .field private static _runTimer LRunTimer;
 .field private static _standardIn LPascalTextIn;
+
 .field private static counter I
 .field private static number F
 .field private static negative I
+
 
 .method public <init>()V
 
@@ -27,6 +29,8 @@
 	dup
 	invokenonvirtual PascalTextIn/<init>()V
 	putstatic	sampleProgram/_standardIn LPascalTextIn;
+
+
 
 ; $number=0.3;
 

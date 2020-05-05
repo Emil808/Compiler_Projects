@@ -14,6 +14,15 @@ using namespace wci::intermediate::symtabimpl;
 using namespace std;
 const bool DEBUG_2 = false;
 
+
+typedef struct{
+	string Identifier;
+	int slot;
+
+}local_var_entry;
+
+vector<local_var_entry> local_variables;
+
 Pass2Visitor::Pass2Visitor()
     : program_name(""), j_file(nullptr)
 {
@@ -76,7 +85,7 @@ antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
            << "/_standardIn LPascalTextIn;" << endl;
 
    /*Main Program Code*/
-    visit(ctx->compound_stmt());
+    visit(ctx->main_method());
 
     /*Main Program Epilogue*/
     j_file << endl;

@@ -5,11 +5,22 @@ grammar perl;
 using namespace wci::intermediate;
 }
 
-program : declarations compound_stmt; 
+program : declarations main_method; 
+
+main_method : MAIN '{' compound_stmt '}'; 
 
 declarations: (variable_delcaration)*; 
 
 variable_delcaration : TYPEID variable; 
+
+function : FUNCTION_ID '(' parameters ')' TYPEID '{' compound_stmt return_stmt'}' ';' ; 
+procedure : FUNCTION_ID '(' parameters ')' '{' compound_stmt '}' ';' ; 
+parameters : (variable)*;
+return_stmt : 'return' variable
+			| 'return' number
+			; 
+FUNCTION_ID : [a-zA-Z]('_')*[a-zA-Z0-9]*;
+
 
 TYPEID : 'i'
 	| 'f'
@@ -73,6 +84,9 @@ ELSE_IF : 'elseif';
 WHILE : 'while'; 
 UNTIL : 'until'; 
 DO : 'do'; 
+MAIN : 'main';
+TRUE : 'TRUE'; 
+FALSE: 'FALSE'; 
 
 sign   : ADD_OP | SUB_OP ;
 number locals [ TypeSpec *type = nullptr ] 
@@ -90,8 +104,8 @@ EXPONENT   : INTEGER POWER_OP INTEGER | INTEGER;	// New
 REAL : INTEGER '.' INTEGER; 
 BOOL : TRUE | FALSE; 
 
-TRUE : 'TRUE'; 
-FALSE: 'FALSE'; 
+
+
 MUL_OP :   '*' ;
 DIV_OP :   '/' ;
 ADD_OP :   '+' ;
@@ -116,7 +130,7 @@ NAND_OP: '/&';
 NOR_OP: '/|';
 Neg_OP:'/~';
 Two_Comp_OP:'//';
-//f
+
 
 NEWLINE : '\r'? '\n' -> skip  ;
 WS      : [ \t]+ -> skip ; 
