@@ -28,11 +28,11 @@ int main(int argc, const char *args[])
     // to create a parse tree.
     perlParser parser(&tokens);
     tree::ParseTree *tree = parser.program();
-
+    SymTabStack *symtab_stack;
     Pass1Visitor *pass1 = new Pass1Visitor();
-    pass1->visit(tree);
+    symtab_stack = pass1->visit(tree);
 
-    Pass2Visitor *pass2 = new Pass2Visitor();
+    Pass2Visitor *pass2 = new Pass2Visitor(symtab_stack);
     pass2->visit(tree);
 
     // Print the token stream.

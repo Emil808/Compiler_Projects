@@ -14,17 +14,10 @@ using namespace wci::intermediate::symtabimpl;
 using namespace std;
 const bool DEBUG_2 = false;
 
+bool in_main;
 
-typedef struct{
-	string Identifier;
-	int slot;
-
-}local_var_entry;
-
-vector<local_var_entry> local_variables;
-
-Pass2Visitor::Pass2Visitor()
-    : program_name(""), j_file(nullptr)
+Pass2Visitor::Pass2Visitor(SymTabStack *symtab_stack_in)
+    : program_name(""), j_file(nullptr), symtab_stack(symtab_stack_in)
 {
 	label_counter = 0;
 }
@@ -68,7 +61,8 @@ antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
     j_file << endl;
 
     /*Possible Methods Here*/
-
+    in_main = false;
+    visit(ctx->method_delcarations());
 
     /*Main Program Header*/
     j_file << ".method public static main([Ljava/lang/String;)V" << endl;
@@ -85,6 +79,7 @@ antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
            << "/_standardIn LPascalTextIn;" << endl;
 
    /*Main Program Code*/
+    in_main = true;
     visit(ctx->main_method());
 
     /*Main Program Epilogue*/
@@ -126,13 +121,41 @@ antlrcpp::Any Pass2Visitor::visitVariable_delcaration(perlParser::Variable_delca
 antlrcpp::Any Pass2Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	//emit function header
 	//local variable delcarations
+	string function_name = ctx->IDENTIFIER()->toString();
 
+	j_file << endl << ".method private static " << function_name
+		   << "(" ;
+	auto value = visit(ctx->parameters());
+	j_file << ")" ;
 	//visit compound statement
 
-
+	return value;
 }
 
+antlrcpp::Any Pass2Visitor::visitParameters(perlParser::ParametersContext *ctx){
+	int variable_amount = ctx->variable_delcaration().size();
+	string type_indicator;
 
+	// problem with scoping of variable.see pass1visitor
+
+	string name;
+	SymTabEntry *variable_id;
+	TypeSpec *type;
+	for(int var = 0; var < variable_amount; var++){
+		//get type
+		name = ctx->variable_delcaration(var)->variable()->IDENTIFIER()->toString();
+		variable_id = symtab_stack->lookup(name);
+		type = variable_id->get_typespec();
+		type_indicator =
+					( type == Predefined::integer_type) ? "I"
+		            : (type == Predefined::real_type)    ? "F"
+		            : (type == Predefined::boolean_type) ? "I"
+		            : "?";
+		//emit parameter
+	    j_file << type_indicator;
+	}
+	return nullptr;
+}
 antlrcpp::Any Pass2Visitor::visitStmt(perlParser::StmtContext *ctx){
 
     j_file << endl << "; " + ctx->getText() << endl << endl;

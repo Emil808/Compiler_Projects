@@ -59,13 +59,11 @@ void SymTabEntryImpl::initialize()
         DEFINITION_WORDS[defns[i]] = defn_words[i];
     }
 
-    slot = -1;
-
     INITIALIZED = true;
 }
 
 SymTabEntryImpl::SymTabEntryImpl(const string name, SymTab *symtab)
-    : name(name), definition((Definition) -1), symtab(symtab),
+    : name(name), definition((Definition) -1), symtab(symtab), slot(-1),
       typespec(nullptr)
 {
     initialize();

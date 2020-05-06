@@ -118,6 +118,10 @@ public:
      * @return the attribute value.
      */
     virtual Object get_attribute(const SymTabKey key) = 0;
+
+    virtual void set_slot(int slot_num) = 0;
+
+    virtual int get_slot() = 0;
 };
 
 }} // namespace wci::intermediate

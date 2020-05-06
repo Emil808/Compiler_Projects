@@ -18,13 +18,14 @@ using namespace std;
 class Pass2Visitor : public perlBaseVisitor
 {
 private:
+	SymTabStack *symtab_stack;
 	string program_name;
 	string j_file_name;
 	ofstream j_file;
 	int label_counter;
 
 public:
-	Pass2Visitor();
+	Pass2Visitor(SymTabStack *symtab_stack);
     virtual ~Pass2Visitor();
 
     ostream& get_assembly_file();
@@ -53,6 +54,7 @@ public:
     antlrcpp::Any visitBOOLConst(perlParser::BOOLConstContext *ctx) override;
 
     antlrcpp::Any visitFunction(perlParser::FunctionContext *ctx) override;
+    antlrcpp::Any visitParameters(perlParser::ParametersContext *ctx) override;
 
     //todo: other visitor functions in here
 

@@ -11,15 +11,13 @@ main_method : MAIN '{' compound_stmt '}';
 
 declarations: (variable_delcaration)*; 
 
-variable_delcaration : TYPEID variable; 
-
 method_delcarations : (function | procedure)* ;
 
-function : IDENTIFIER '(' parameters ')' TYPEID '{' compound_stmt'}' ';' ; 
-procedure : IDENTIFIER '(' parameters ')' '{' compound_stmt '}' ';' ; 
-parameters : (variable)*;
+function locals [int locals_var, int stack_var]: IDENTIFIER '(' parameters ')' TYPEID '{' declarations compound_stmt'}' ';' ; 
+procedure locals [int locals_var, int stack_var]: IDENTIFIER '(' parameters ')' '{' declarations compound_stmt '}' ';' ; 
+parameters : (variable_delcaration)*;
 
-
+variable_delcaration : TYPEID variable ';'; 
 
 TYPEID : 'i'
 	| 'f'

@@ -1,6 +1,6 @@
-i$counter
-f$number
-i$negative 
+i$counter;
+f$number;
+i$negative;
 
 main{
 $number = 0.3;
