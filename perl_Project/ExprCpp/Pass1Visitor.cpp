@@ -81,8 +81,6 @@ antlrcpp::Any Pass1Visitor::visitVariable_delcaration(perlParser::Variable_delca
 }
 antlrcpp::Any Pass1Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	auto value = visitChildren(ctx);
-	// assign slot number to each parameter,
-	int parameter_amount = ctx->parameters()->variable_delcaration().size();
 
 	/* Problem
 	 * each function/procedure should have their own symbol table, currently this does not happen.
@@ -97,27 +95,6 @@ antlrcpp::Any Pass1Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	 * then have that as the symbol table to use to check the variables for their slot numbers
 	 *
 	 */
-
-	string param_name;
-	SymTabEntry *variable_id;
-	for(int i = 0; i < parameter_amount; i++){
-		param_name = ctx->parameters()->variable_delcaration(i)->variable()->IDENTIFIER()->toString();
-		variable_id = symtab_stack->lookup(param_name);
-		variable_id->set_slot(i);
-	}
-
-	int locals_amount = ctx->declarations()->variable_delcaration().size();
-
-	// assign local variables with slot number
-	for(int i =  parameter_amount; i < parameter_amount + locals_amount; i++){
-		param_name = ctx->parameters()->variable_delcaration(i)->variable()->IDENTIFIER()->toString();
-		variable_id = symtab_stack->lookup(param_name);
-		variable_id->set_slot(i);
-	}
-
-
-	// assign locals amount
-	ctx->locals_var = locals_amount + parameter_amount + 1; // +1 for the return slot
 
 
 	return value;
