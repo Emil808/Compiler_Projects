@@ -19,7 +19,8 @@
 .end method
 
 
-.method private static increment(I)
+.method private static increment(I)I
+
 ; return$a+1;
 
 	iload 0

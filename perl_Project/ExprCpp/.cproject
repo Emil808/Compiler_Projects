@@ -53,8 +53,6 @@
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="/home/abhi/Desktop/boost_top"/>
-                                    									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/target/generated-sources/antlr4}&quot;"/>
                                     									
                                     <listOptionValue builtIn="false" value="/usr/local/include/antlr4-runtime"/>
@@ -81,7 +79,7 @@
                                     								
                                 </option>
                                 								
-                                <option id="gnu.c.compiler.option.dialect.std.1498250983" superClass="gnu.c.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.c.compiler.dialect.c11" valueType="enumerated"/>
+                                <option id="gnu.c.compiler.option.dialect.std.1498250983" name="Language standard" superClass="gnu.c.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.c.compiler.dialect.c11" valueType="enumerated"/>
                                 								
                                 <inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1001827632" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
                                 							
@@ -259,6 +257,18 @@
             		
         </scannerConfigBuildInfo>
         		
+        <scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1469511714;cdt.managedbuild.config.gnu.exe.debug.1469511714.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.718101837;cdt.managedbuild.tool.gnu.cpp.compiler.input.407498541">
+            			
+            <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+            		
+        </scannerConfigBuildInfo>
+        		
+        <scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1469511714;cdt.managedbuild.config.gnu.exe.debug.1469511714.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.972594254;cdt.managedbuild.tool.gnu.c.compiler.input.1001827632">
+            			
+            <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+            		
+        </scannerConfigBuildInfo>
+        		
         <scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.267880523;cdt.managedbuild.config.gnu.exe.release.267880523.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.373816493;cdt.managedbuild.tool.gnu.cpp.compiler.input.143823705">
             			
             <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
@@ -278,5 +288,7 @@
         </scannerConfigBuildInfo>
         	
     </storageModule>
+    	
+    <storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
     
 </cproject>

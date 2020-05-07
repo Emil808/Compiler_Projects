@@ -139,6 +139,7 @@ antlrcpp::Any Pass2Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	    	: (return_type == "f")    ? "F"
 	    	: (return_type == "i") ? "I"
 	    	: "?";
+	j_file << return_type << endl;
 	//visit compound statement
 	value = visit(ctx->compound_stmt());
 

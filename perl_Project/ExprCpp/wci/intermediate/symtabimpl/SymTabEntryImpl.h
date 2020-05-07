@@ -30,7 +30,7 @@ enum class SymTabKeyImpl
 
     // Procedure or function.
     ROUTINE_CODE, ROUTINE_SYMTAB, ROUTINE_ICODE,
-    ROUTINE_PARMS, ROUTINE_ROUTINES,
+    ROUTINE_PARMS, ROUTINE_ROUTINES, ROUTINE_SIGNATURE,
 
     // Variable or record field value.
     DATA_VALUE
@@ -43,6 +43,7 @@ constexpr SymTabKeyImpl ROUTINE_ICODE = SymTabKeyImpl::ROUTINE_ICODE;
 constexpr SymTabKeyImpl ROUTINE_PARMS = SymTabKeyImpl::ROUTINE_PARMS;
 constexpr SymTabKeyImpl ROUTINE_ROUTINES = SymTabKeyImpl::ROUTINE_ROUTINES;
 constexpr SymTabKeyImpl DATA_VALUE = SymTabKeyImpl::DATA_VALUE;
+constexpr SymTabKeyImpl ROUTINE_SIGNATURE = SymTabKeyImpl::ROUTINE_SIGNATURE;
 
 /**
  * How a Pascal symbol table entry is defined.
