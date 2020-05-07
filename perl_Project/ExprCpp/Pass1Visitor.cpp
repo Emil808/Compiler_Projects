@@ -6,14 +6,20 @@
 #include "wci/intermediate/SymTabFactory.h"
 #include "wci/intermediate/symtabimpl/Predefined.h"
 #include "wci/util/CrossReferencer.h"
+#include "wci/intermediate/icodeimpl/ICodeImpl.h"
 
 using namespace std;
 using namespace wci;
 using namespace wci::intermediate;
 using namespace wci::intermediate::symtabimpl;
 using namespace wci::util;
+using namespace wci::intermediate::icodeimpl;
 
 const bool DEBUG_1 = true;
+
+bool in_method;
+int slot_number;
+string method_name;
 
 Pass1Visitor::Pass1Visitor()
 {
@@ -37,6 +43,9 @@ antlrcpp::Any Pass1Visitor::visitProgram(perlParser::ProgramContext *ctx){
 	                              symtab_stack->push());
 	symtab_stack->set_program_id(program_id);
 
+	in_method = false;
+	slot_number = -1;
+
 	auto value = visitChildren(ctx);
 
 	CrossReferencer cross_referencer;
@@ -48,8 +57,10 @@ antlrcpp::Any Pass1Visitor::visitProgram(perlParser::ProgramContext *ctx){
 antlrcpp::Any Pass1Visitor::visitVariable_delcaration(perlParser::Variable_delcarationContext *ctx){
 	string variable_name = ctx->variable()->IDENTIFIER()->toString();
 	string type = ctx->TYPEID()->toString();
+
 	SymTabEntry *variable_id = symtab_stack->lookup(variable_name);
 
+	//problem:duplicate names
 
 	TypeSpec *type_spec;
 	if(type == "i") {
@@ -66,9 +77,18 @@ antlrcpp::Any Pass1Visitor::visitVariable_delcaration(perlParser::Variable_delca
 		type_spec = nullptr;
 	}
 
+		if(in_method){
+			variable_name = method_name + "/" + variable_name;
+		}
 
 		variable_id = symtab_stack->enter_local(variable_name);
 
+		if(in_method){
+			variable_id->set_slot(slot_number++);
+		}
+		else{
+			variable_id->set_slot(-1);
+		}
 		auto value = visitChildren(ctx);
 		variable_id->set_definition((Definition) DF_VARIABLE);
 
@@ -80,57 +100,40 @@ antlrcpp::Any Pass1Visitor::visitVariable_delcaration(perlParser::Variable_delca
 
 }
 antlrcpp::Any Pass1Visitor::visitFunction(perlParser::FunctionContext *ctx){
+
+	in_method = true;
+	slot_number = 0;
+	method_name = ctx->IDENTIFIER()->toString();
 	auto value = visitChildren(ctx);
-	// assign slot number to each parameter,
-	int parameter_amount = ctx->parameters()->variable_delcaration().size();
 
-	/* Problem
-	 * each function/procedure should have their own symbol table, currently this does not happen.
-	 * the Main program should have a vector of symbol tables,
-	 * as we visit a new function or procedure
-	 * push a new symbol table to the symbol table stack,
-	 * then use that one as one to use to keep track of local variables for the stack
-	 *
-	 * need to pass this vector of symbol tables from pass1 to pass 2.
-	 *
-	 * pass2, when visiting a function/procedure, find the symbol table that the method uses
-	 * then have that as the symbol table to use to check the variables for their slot numbers
-	 *
-	 */
+	in_method = false;
 
-	string param_name;
-	SymTabEntry *variable_id;
-	for(int i = 0; i < parameter_amount; i++){
-		param_name = ctx->parameters()->variable_delcaration(i)->variable()->IDENTIFIER()->toString();
-		variable_id = symtab_stack->lookup(param_name);
-		variable_id->set_slot(i);
-	}
+	ctx->locals_var = slot_number + 1;
 
-	int locals_amount = ctx->declarations()->variable_delcaration().size();
+	ctx->stack_var = 4; // unsure how to calculate used stack size
+	slot_number = -1;
+	return value;
+}
+antlrcpp::Any Pass1Visitor::visitParameters(perlParser::ParametersContext *ctx){
 
-	// assign local variables with slot number
-	for(int i =  parameter_amount; i < parameter_amount + locals_amount; i++){
-		param_name = ctx->parameters()->variable_delcaration(i)->variable()->IDENTIFIER()->toString();
-		variable_id = symtab_stack->lookup(param_name);
-		variable_id->set_slot(i);
-	}
-
-
-	// assign locals amount
-	ctx->locals_var = locals_amount + parameter_amount + 1; // +1 for the return slot
-
+	auto value = visitChildren(ctx);
 
 	return value;
+
 }
 
 antlrcpp::Any Pass1Visitor::visitVariableExpr(perlParser::VariableExprContext *ctx){
 
 	 string variable_name = ctx->variable()->IDENTIFIER()->toString();
+	 if(in_method){
+		 variable_name = method_name + "/" + variable_name;
+	 }
 	 SymTabEntry *variable_id = symtab_stack->lookup(variable_name);
 	 std::cout << variable_id->get_name() << endl;
 	 ctx->type = variable_id->get_typespec();
 	 return visitChildren(ctx);
 }
+
 
 antlrcpp::Any Pass1Visitor::visitUnsignednumExpr(perlParser::UnsignednumExprContext *ctx){
 

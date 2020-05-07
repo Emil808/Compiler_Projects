@@ -15,6 +15,7 @@ using namespace std;
 const bool DEBUG_2 = false;
 
 bool in_main;
+string method_name_p2;
 
 Pass2Visitor::Pass2Visitor(SymTabStack *symtab_stack_in)
     : program_name(""), j_file(nullptr), symtab_stack(symtab_stack_in)
@@ -45,6 +46,7 @@ antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
     j_file << ".field private static _standardIn LPascalTextIn;" << endl;
 
     //visit declarations
+    in_main = true;
     visit(ctx->declarations());
     j_file << endl;
 
@@ -63,7 +65,7 @@ antlrcpp::Any Pass2Visitor::visitProgram(perlParser::ProgramContext *ctx)
     /*Possible Methods Here*/
     in_main = false;
     visit(ctx->method_delcarations());
-
+    in_main = true;
     /*Main Program Header*/
     j_file << ".method public static main([Ljava/lang/String;)V" << endl;
     j_file << endl;
@@ -111,8 +113,12 @@ antlrcpp::Any Pass2Visitor::visitVariable_delcaration(perlParser::Variable_delca
                           : (type == "f")    ? "F"
                           : (type == "b") ? "I"
                           :                                      "?";
-    j_file << ".field private static "
-           << variable_name << " " << type_indicator << endl;
+
+
+    if(in_main){
+    	j_file << ".field private static "
+    		   << variable_name << " " << type_indicator << endl;
+    }
 
     return visitChildren(ctx);
 
@@ -120,30 +126,52 @@ antlrcpp::Any Pass2Visitor::visitVariable_delcaration(perlParser::Variable_delca
 
 antlrcpp::Any Pass2Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	//emit function header
-	//local variable delcarations
+	// todo: generate function signature to be used for function call
 	string function_name = ctx->IDENTIFIER()->toString();
-
+	method_name_p2 = function_name;
 	j_file << endl << ".method private static " << function_name
 		   << "(" ;
 	auto value = visit(ctx->parameters());
 	j_file << ")" ;
-	//visit compound statement
 
+	string return_type = ctx->TYPEID()->toString();
+	return_type = (return_type == "i") ? "I"
+	    	: (return_type == "f")    ? "F"
+	    	: (return_type == "i") ? "I"
+	    	: "?";
+	//visit compound statement
+	value = visit(ctx->compound_stmt());
+
+	//todo: check if function has atleast one return statement
+
+	j_file << ".limit locals " << ctx->locals_var << endl
+		   << ".limit stack " << ctx->stack_var << endl
+		   << ".end method" << endl << endl;
+	//function epiloge
 	return value;
 }
 
+antlrcpp::Any Pass2Visitor::visitReturn_stmt(perlParser::Return_stmtContext *ctx){
+	auto value = visitChildren(ctx);
+	string type_indicator =
+			(ctx->expr()->type == Predefined::integer_type) ? "i"
+	    	: (ctx->expr()->type == Predefined::real_type)    ? "f"
+	    	: (ctx->expr()->type == Predefined::boolean_type) ? "i"
+	    	: "?";
+	j_file << "\t" << type_indicator << "return" << endl;
+	return value;
+}
 antlrcpp::Any Pass2Visitor::visitParameters(perlParser::ParametersContext *ctx){
 	int variable_amount = ctx->variable_delcaration().size();
 	string type_indicator;
 
-	// problem with scoping of variable.see pass1visitor
-
 	string name;
 	SymTabEntry *variable_id;
 	TypeSpec *type;
-	for(int var = 0; var < variable_amount; var++){
+
+	for(int i = 0; i < variable_amount; i++){
 		//get type
-		name = ctx->variable_delcaration(var)->variable()->IDENTIFIER()->toString();
+		name = method_name_p2 + "/" + ctx->variable_delcaration(i)->variable()->IDENTIFIER()->toString();
 		variable_id = symtab_stack->lookup(name);
 		type = variable_id->get_typespec();
 		type_indicator =
@@ -168,35 +196,69 @@ antlrcpp::Any Pass2Visitor::visitAssignment_stmt(perlParser::Assignment_stmtCont
     auto value = visit(ctx->expr());
 
     string variable_name = ctx->variable()->IDENTIFIER()->toString();
-    string type_indicator =
-                      (ctx->expr()->type == Predefined::integer_type) ? "I"
-                    : (ctx->expr()->type == Predefined::real_type)    ? "F"
-                    : (ctx->expr()->type == Predefined::boolean_type) ? "I"
-                    : "?";
 
+    if(!in_main){
+    	variable_name = method_name_p2 + "/" + variable_name;
+    }
+    SymTabEntry *variable_id = symtab_stack->lookup(variable_name);
+    int slot_number = variable_id->get_slot();
+
+    //if in method or using a global variable in a method
+    if(!in_main && slot_number != -1){
+    	string type_indicator =
+    	                      (ctx->expr()->type == Predefined::integer_type) ? "i"
+    	                    : (ctx->expr()->type == Predefined::real_type)    ? "f"
+    	                    : (ctx->expr()->type == Predefined::boolean_type) ? "i"
+    	                    : "?";
+
+    	j_file << "\t" << type_indicator << "store " << slot_number << endl;
+    }
+    // else in main
+    else{
+    	string type_indicator =
+                          (ctx->expr()->type == Predefined::integer_type) ? "I"
+                        : (ctx->expr()->type == Predefined::real_type)    ? "F"
+                        : (ctx->expr()->type == Predefined::boolean_type) ? "I"
+                        : "?";
 
     // Emit a field put instruction.
     j_file << "\tputstatic\t" << program_name
            << "/" << variable_name
            << " " << type_indicator << endl;
-
+    }
     return value;
 }
 
 antlrcpp::Any Pass2Visitor::visitVariableExpr(perlParser::VariableExprContext *ctx){
 
     string variable_name = ctx->variable()->IDENTIFIER()->toString();
+    if(!in_main){
+        	variable_name = method_name_p2 + "/" + variable_name;
+        }
+    SymTabEntry *variable_id = symtab_stack->lookup(variable_name);
+    int slot_number = variable_id->get_slot();
+
     TypeSpec *type = ctx->type;
 
-    string type_indicator = (type == Predefined::integer_type) ? "I"
+    if(!in_main && slot_number != -1){
+        string type_indicator =
+        	                      (type == Predefined::integer_type) ? "i"
+        	                    : (type == Predefined::real_type)    ? "f"
+        	                    : (type == Predefined::boolean_type) ? "i"
+        	                    : "?";
+        j_file << "\t" << type_indicator << "load " << slot_number << endl;
+    }
+    else{
+    	string type_indicator = (type == Predefined::integer_type) ? "I"
                           : (type == Predefined::real_type)    ? "F"
                           : (type == Predefined::boolean_type) ? "Z"
                           :                                      "?";
 
     // Emit a field get instruction.
-    j_file << "\tgetstatic\t" << program_name
-           << "/" << variable_name << " " << type_indicator << endl;
+    	j_file << "\tgetstatic\t" << program_name
+    		   << "/" << variable_name << " " << type_indicator << endl;
 
+    }
     return visitChildren(ctx);
 }
 

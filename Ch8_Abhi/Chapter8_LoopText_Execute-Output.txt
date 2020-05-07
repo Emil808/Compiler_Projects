@@ -1,0 +1,86 @@
+abhi@abhi-VirtualBox:~/eclipse-workspace/Ch8$ make execute flags=ix src=LoopTest2.txt
+./Chapter8cpp execute -ix LoopTest2.txt
+001 BEGIN
+002     i := 0;
+003     
+004     LOOP
+005         i := i + 1;
+006         WHEN i > 10 ==>;
+007         i2 := i*i;
+008         WHEN i2 > 50 ==>;
+009     AGAIN
+010 END.
+
+                  10 source lines.
+                   0 syntax errors.
+                0.02 seconds total parsing time.
+
+===== CROSS-REFERENCE TABLE =====
+
+Identifier       Line numbers    
+----------       ------------    
+i                002 005 005 006 007 007
+i2               007 008
+
+===== INTERMEDIATE CODE =====
+
+<COMPOUND line="1">
+    <ASSIGN line="2">
+        <VARIABLE id="i" level="0" />
+        <INTEGER_CONSTANT value="0" />
+    </ASSIGN>
+    <LOOP line="4">
+        <ASSIGN line="5">
+            <VARIABLE id="i" level="0" />
+            <ADD>
+                <VARIABLE id="i" level="0" />
+                <INTEGER_CONSTANT value="1" />
+            </ADD>
+        </ASSIGN>
+        <TEST>
+            <GT>
+                <VARIABLE id="i" level="0" />
+                <INTEGER_CONSTANT value="10" />
+            </GT>
+        </TEST>
+        <NO_OP line="6" />
+        <ASSIGN line="7">
+            <VARIABLE id="i2" level="0" />
+            <MULTIPLY>
+                <VARIABLE id="i" level="0" />
+                <VARIABLE id="i" level="0" />
+            </MULTIPLY>
+        </ASSIGN>
+        <TEST>
+            <GT>
+                <VARIABLE id="i2" level="0" />
+                <INTEGER_CONSTANT value="50" />
+            </GT>
+        </TEST>
+        <NO_OP line="8" />
+    </LOOP>
+</COMPOUND>
+
+===== OUTPUT =====
+
+>>> AT LINE 002: i = 0
+>>> AT LINE 005: i = 1
+>>> AT LINE 007: i2 = 1
+>>> AT LINE 005: i = 2
+>>> AT LINE 007: i2 = 4
+>>> AT LINE 005: i = 3
+>>> AT LINE 007: i2 = 9
+>>> AT LINE 005: i = 4
+>>> AT LINE 007: i2 = 16
+>>> AT LINE 005: i = 5
+>>> AT LINE 007: i2 = 25
+>>> AT LINE 005: i = 6
+>>> AT LINE 007: i2 = 36
+>>> AT LINE 005: i = 7
+>>> AT LINE 007: i2 = 49
+>>> AT LINE 005: i = 8
+>>> AT LINE 007: i2 = 64
+
+                  25 statements executed.
+                   0 runtime errors.
+                0.00 seconds total execution time.
