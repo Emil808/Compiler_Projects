@@ -126,7 +126,7 @@ antlrcpp::Any Pass2Visitor::visitVariable_delcaration(perlParser::Variable_delca
 
 antlrcpp::Any Pass2Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	//emit function header
-
+	// todo: generate function signature to be used for function call
 	string function_name = ctx->IDENTIFIER()->toString();
 	method_name_p2 = function_name;
 	j_file << endl << ".method private static " << function_name
