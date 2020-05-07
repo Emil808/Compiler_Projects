@@ -108,7 +108,7 @@ $power = 15;
 $power = $power /& 3;
 printf('15/&3 = %d\n',$power);
 $power = 15;
-$power = $power ?| 3;
+$power = $power /| 3;
 printf('15/|3 = %d\n',$power);
 
 /*

@@ -453,11 +453,12 @@ L20:
 	ldc	15
 	putstatic	sampleProgram/power I
 
-; $power=$power|3;
+; $power=$power/|3;
 
 	getstatic	sampleProgram/power I
 	ldc	3
 	ior
+	ineg
 	putstatic	sampleProgram/power I
 
 ; printf('15/|3 = %d\n',$power);
