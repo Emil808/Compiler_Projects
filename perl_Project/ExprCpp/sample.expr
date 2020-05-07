@@ -51,7 +51,7 @@ Negitive number test
 -1 -4 = -5
 -5 * 8 = -40
 */
-printf('negitive numbers');
+printf('\nnegitive numbers');
 $negative = -1;
 printf('%d\n', $negative);
 $negative = $negative - 4; 
@@ -63,7 +63,7 @@ printf('%d\n', $negative);
 Do while loop
 counts to 3
 */
-printf('Do While Loop\n'); 
+printf('\nDo While Loop\n'); 
 $counter = 0; 
 do{
 	printf('In loop, %d\n', $counter); 
@@ -75,7 +75,7 @@ while ($counter < 3);
 power test
 3^2 = 9
 */
-printf('Powers\n');
+printf('\nPowers\n');
 $power = 3;
 $power = $power ^ 2;
 printf('3^2 = %d\n',$power);
@@ -84,8 +84,8 @@ printf('3^2 = %d\n',$power);
 division test
 9/3 = 3
 */
-printf('Div\n');
-$power = $power / 2;
+printf('\nDiv\n');
+$power = $power / 3;
 printf('9/3 = %d\n',$power);
 
 /*
@@ -97,7 +97,7 @@ Test of the bit manipulation
 1111 /& 0011 = 1100
 1111 /| 0011 = 0000
 */
-printf('Bit Manipulation\n');
+printf('\nBit Manipulation\n');
 $power = 15;
 $power = $power & 3;
 printf('15&3 = %d\n',$power);
@@ -117,7 +117,7 @@ Bit shifting test
 8<<2 = 10_0000
 10_0000 = 32
 */
-printf('Bit shifting\n');
+printf('\nBit shifting\n');
 $power = 8;
 $power = $power << 2;
 printf('8<<2 = %d\n',$power);
@@ -126,8 +126,8 @@ printf('8<<2 = %d\n',$power);
 Test of the modulus operation
 9%3 should result in 0
 */
-printf('Mod\n');
+printf('\nMod\n');
 $power = 9;
 $power = $power % 2;
-printf('9%3 = %d\n',$power);
+printf('9%%2 = %d\n',$power);
 }

@@ -152,10 +152,10 @@ L5:
 	goto L0
 L1:
 
-; printf('negitive numbers');
+; printf('\nnegitive numbers');
 
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"negitive numbers"
+	ldc	"\nnegitive numbers"
 	ldc	0
 	anewarray	java/lang/Object
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
@@ -223,10 +223,10 @@ L1:
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
 
-; printf('Do While Loop\n');
+; printf('\nDo While Loop\n');
 
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"Do While Loop\n"
+	ldc	"\nDo While Loop\n"
 	ldc	0
 	anewarray	java/lang/Object
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
@@ -274,10 +274,10 @@ L17:
 	goto L14
 L15:
 
-; printf('Powers\n');
+; printf('\nPowers\n');
 
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"Powers\n"
+	ldc	"\nPowers\n"
 	ldc	0
 	anewarray	java/lang/Object
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
@@ -330,19 +330,19 @@ L20:
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
 
-; printf('Div\n');
+; printf('\nDiv\n');
 
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"Div\n"
+	ldc	"\nDiv\n"
 	ldc	0
 	anewarray	java/lang/Object
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
 
-; $power=$power/2;
+; $power=$power/3;
 
 	getstatic	sampleProgram/power I
-	ldc	2
+	ldc	3
 	idiv
 	putstatic	sampleProgram/power I
 
@@ -360,10 +360,10 @@ L20:
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
 
-; printf('Bit Manipulation\n');
+; printf('\nBit Manipulation\n');
 
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"Bit Manipulation\n"
+	ldc	"\nBit Manipulation\n"
 	ldc	0
 	anewarray	java/lang/Object
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
@@ -474,10 +474,10 @@ L20:
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
 
-; printf('Bit shifting\n');
+; printf('\nBit shifting\n');
 
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"Bit shifting\n"
+	ldc	"\nBit shifting\n"
 	ldc	0
 	anewarray	java/lang/Object
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
@@ -509,10 +509,10 @@ L20:
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
 
-; printf('Mod\n');
+; printf('\nMod\n');
 
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"Mod\n"
+	ldc	"\nMod\n"
 	ldc	0
 	anewarray	java/lang/Object
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
@@ -527,13 +527,13 @@ L20:
 
 	getstatic	sampleProgram/power I
 	ldc	2
-	idiv
+	irem
 	putstatic	sampleProgram/power I
 
-; printf('9%3 = %d\n',$power);
+; printf('9%%2 = %d\n',$power);
 
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"9%3 = %d\n"
+	ldc	"9%%2 = %d\n"
 	ldc	1
 	anewarray	java/lang/Object
 	dup
