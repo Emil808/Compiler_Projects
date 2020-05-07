@@ -4,15 +4,14 @@ f$number;
 i$negative;
 i$power;
 
+//functions
+/*
 increment(i$a;)i{
 	return $a + 1; 
 };
-
-
-//functions
+*/
 
 //main
-
 main{
 $number = 0.3;
 $counter = 1;  
