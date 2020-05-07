@@ -110,7 +110,7 @@ antlrcpp::Any Pass1Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	variable_id = symtab_stack->enter_local(method_name);
 
 	variable_id->set_definition((Definition) DF_FUNCTION);
-	TypeSpec *type_spec;
+	TypeSpec *type_spec = nullptr;
 
 	variable_id->set_typespec(type_spec);
 

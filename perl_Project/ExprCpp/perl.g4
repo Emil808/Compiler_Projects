@@ -22,6 +22,8 @@ parameters : (variable_delcaration)*;
 
 variable_delcaration : TYPEID variable ';'; 
 
+
+
 TYPEID : 'i'
 	| 'f'
 	| 'b'
