@@ -573,9 +573,8 @@ antlrcpp::Any Pass2Visitor:: visitBitopExpr(perlParser::BitopExprContext *ctx) {
 	    }
 	    else if (op == "/&")
 	   	{
-	    	    opcode = integer_mode ? "iand"
-	    		               :       "????";
-	   	        opcode2 = "ineg";
+	    	    opcode = integer_mode ? "iand" : "????";
+	    	    opcode2 = integer_mode ? "ineg" : "????";
 	   	        j_file << "\t" << opcode << endl;
 	   	        j_file << "\t" << opcode2 << endl;
 	    }
@@ -583,9 +582,14 @@ antlrcpp::Any Pass2Visitor:: visitBitopExpr(perlParser::BitopExprContext *ctx) {
 		{
 	    	 opcode = integer_mode ? "ior"
 	    		               : "????";
-				opcode2 = "ineg";
+	    	 opcode2 = integer_mode ? "ineg" : "????";
 				j_file << "\t" << opcode << endl;
 				j_file << "\t" << opcode2 << endl;
+		}
+	    else if (op == "/~")
+		{
+	    	 opcode = integer_mode ? "ineg" : "????";
+				j_file << "\t" << opcode << endl;
 		}
 
 	    // Emit a multiply or divide instruction.

@@ -75,7 +75,7 @@ shift_op: LShift_OP | RShift_OP;
 
 add_sub_op : ADD_OP | SUB_OP ; 
 rel_op : EQ_OP | NE_OP | LT_OP | LE_OP | GT_OP | GE_OP ; 
-bit_op: OR_OP | AND_OP | NAND_OP | NOR_OP;
+bit_op: OR_OP | AND_OP | NAND_OP | NOR_OP | Neg_OP;
 //Neg_OP | Two_Comp_OP;
 
 // Predefined symbols
