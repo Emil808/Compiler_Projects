@@ -431,7 +431,8 @@ L20:
 	getstatic	sampleProgram/power I
 	ldc	3
 	iand
-	ineg
+	ldc	2147483647
+	ixor
 	putstatic	sampleProgram/power I
 
 ; printf('15/&3 = %d\n',$power);
@@ -458,7 +459,8 @@ L20:
 	getstatic	sampleProgram/power I
 	ldc	3
 	ior
-	ineg
+	ldc	2147483647
+	ixor
 	putstatic	sampleProgram/power I
 
 ; printf('15/|3 = %d\n',$power);

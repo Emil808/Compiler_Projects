@@ -574,21 +574,24 @@ antlrcpp::Any Pass2Visitor:: visitBitopExpr(perlParser::BitopExprContext *ctx) {
 	    else if (op == "/&")
 	   	{
 	    	    opcode = integer_mode ? "iand" : "????";
-	    	    opcode2 = integer_mode ? "ineg" : "????";
+	    	    opcode2 = integer_mode ? "ixor" : "????";
 	   	        j_file << "\t" << opcode << endl;
+	   	        j_file << "\tldc\t" << INT_MAX << endl;
 	   	        j_file << "\t" << opcode2 << endl;
 	    }
 	    else if (op == "/|")
 		{
 	    	 opcode = integer_mode ? "ior"
 	    		               : "????";
-	    	 opcode2 = integer_mode ? "ineg" : "????";
+	    	 opcode2 = integer_mode ? "ixor" : "????";
 				j_file << "\t" << opcode << endl;
+				j_file << "\tldc\t" << INT_MAX << endl;
 				j_file << "\t" << opcode2 << endl;
 		}
 	    else if (op == "/~")
 		{
-	    	 opcode = integer_mode ? "ineg" : "????";
+	    	 j_file << "\tldc\t" << INT_MAX << endl;
+	    	 opcode = integer_mode ? "ixor" : "????";
 				j_file << "\t" << opcode << endl;
 		}
 

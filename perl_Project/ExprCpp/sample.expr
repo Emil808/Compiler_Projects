@@ -105,6 +105,11 @@ printf('15/&3 = %d\n',$power);
 $power = 15;
 $power = $power /| 3;
 printf('15/|3 = %d\n',$power);
+/*
+$power = 7;
+$power = $power /~ $power;
+printf('15/~3 = %d\n',$power);
+*/
 
 /*
 Bit shifting test
