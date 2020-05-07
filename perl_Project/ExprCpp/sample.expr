@@ -1,16 +1,36 @@
+//declarations;
 i$counter;
 f$number;
 i$negative;
+i$power;
 
 increment(i$a;)i{
 	return $a + 1; 
 };
 
+
+//functions
+
+//main
+
 main{
 $number = 0.3;
-
 $counter = 1; 
+Count: 1	0.720000
+Count: 2	1.728000
+Count: 3	4.147201
+Count: 4	9.953281
+Count: 5	30.000000
+Count: 6	0.400000
+Count: 7	0.400000
+Count: 8	55.234341
+Count: 9	0.400000
  
+/*
+While loop test
+floating point number test in a while loop
+number = 0.3
+*/
 while($counter < 10){
 	printf('Count: %d\t', $counter); 
 	if($counter < 5){
@@ -31,6 +51,13 @@ while($counter < 10){
 	printf('%f\n', $number); 
 	
 }
+
+/*
+Negitive number test
+-1 -4 = -5
+-5 * 8 = -40
+*/
+printf('\nnegitive numbers');
 $negative = -1;
 printf('%d\n', $negative);
 $negative = $negative - 4; 
@@ -38,12 +65,75 @@ printf('%d\n', $negative);
 $negative = $negative * 8; 
 printf('%d\n', $negative);
 
-printf('Do While Loop\n'); 
-
+/*
+Do while loop
+counts to 3
+*/
+printf('\nDo While Loop\n'); 
 $counter = 0; 
 do{
 	printf('In loop, %d\n', $counter); 
 	$counter = $counter+1; 
 }
 while ($counter < 3); 
+
+/*
+power test
+3^2 = 9
+*/
+printf('\nPowers\n');
+$power = 3;
+$power = $power ^ 2;
+printf('3^2 = %d\n',$power);
+
+/*
+division test
+9/3 = 3
+*/
+printf('\nDiv\n');
+$power = $power / 3;
+printf('9/3 = %d\n',$power);
+
+/*
+Test of the bit manipulation
+15 = 1111
+3 = 0011
+1111 & 0011 = 0011
+1111 | 0011 = 1111
+1111 /& 0011 = 1100
+1111 /| 0011 = 0000
+*/
+printf('\nBit Manipulation\n');
+$power = 15;
+$power = $power & 3;
+printf('15&3 = %d\n',$power);
+$power = 15;
+$power = $power | 3;
+printf('15|3 = %d\n',$power);
+$power = 15;
+$power = $power /& 3;
+printf('15/&3 = %d\n',$power);
+$power = 15;
+$power = $power ?| 3;
+printf('15/|3 = %d\n',$power);
+
+/*
+Bit shifting test
+8 == 1000
+8<<2 = 10_0000
+10_0000 = 32
+*/
+printf('\nBit shifting\n');
+$power = 8;
+$power = $power << 2;
+printf('8<<2 = %d\n',$power);
+
+/*
+Test of the modulus operation
+9%3 should result in 0
+*/
+printf('\nMod\n');
+$power = 9;
+$power = $power % 2;
+printf('9%%2 = %d\n',$power);
 }

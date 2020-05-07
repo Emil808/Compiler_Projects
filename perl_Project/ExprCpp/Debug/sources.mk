@@ -24,7 +24,6 @@ C_DEPS :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 . \
-target/generated-sources/antlr4 \
 wci \
 wci/intermediate \
 wci/intermediate/icodeimpl \

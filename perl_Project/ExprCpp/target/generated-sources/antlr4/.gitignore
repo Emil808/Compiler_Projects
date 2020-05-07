@@ -10,3 +10,13 @@
 /perlParser.h
 /perlVisitor.cpp
 /perlVisitor.h
+/perlBaseVisitor.java
+/perlLexer.java
+/perlParser.java
+/perlVisitor.java
+/perlBaseListener.java
+/perlListener.java
+/perlBaseListener.cpp
+/perlBaseListener.h
+/perlListener.cpp
+/perlListener.h

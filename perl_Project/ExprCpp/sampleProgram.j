@@ -6,6 +6,7 @@
 .field private static counter I
 .field private static number F
 .field private static negative I
+.field private static power I
 
 .method public <init>()V
 
@@ -163,6 +164,15 @@ L5:
 	goto L0
 L1:
 
+; printf('\nnegitive numbers');
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"\nnegitive numbers"
+	ldc	0
+	anewarray	java/lang/Object
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
 ; $negative=-1;
 
 	ldc	1
@@ -225,10 +235,10 @@ L1:
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
 
-; printf('Do While Loop\n');
+; printf('\nDo While Loop\n');
 
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"Do While Loop\n"
+	ldc	"\nDo While Loop\n"
 	ldc	0
 	anewarray	java/lang/Object
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
@@ -275,6 +285,276 @@ L17:
 	ifle L15
 	goto L14
 L15:
+
+; printf('\nPowers\n');
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"\nPowers\n"
+	ldc	0
+	anewarray	java/lang/Object
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; $power=3;
+
+	ldc	3
+	putstatic	sampleProgram/power I
+
+; $power=$power^2;
+
+	getstatic	sampleProgram/power I
+	ldc	2
+	istore_1
+	istore_0
+	iload_1
+	ldc 0
+	isub
+	ifeq L19
+	iload_0
+L18:
+	iload_1
+	ldc 1
+	isub
+	ifeq L20
+	iload_0
+	imul
+	iload_1
+	ldc 1
+	isub
+	istore_1
+	goto L18
+L19:
+	ldc 1
+L20:
+	putstatic	sampleProgram/power I
+
+; printf('3^2 = %d\n',$power);
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"3^2 = %d\n"
+	ldc	1
+	anewarray	java/lang/Object
+	dup
+	ldc	0
+	getstatic	sampleProgram/power I
+	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
+	aastore
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; printf('\nDiv\n');
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"\nDiv\n"
+	ldc	0
+	anewarray	java/lang/Object
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; $power=$power/3;
+
+	getstatic	sampleProgram/power I
+	ldc	3
+	idiv
+	putstatic	sampleProgram/power I
+
+; printf('9/3 = %d\n',$power);
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"9/3 = %d\n"
+	ldc	1
+	anewarray	java/lang/Object
+	dup
+	ldc	0
+	getstatic	sampleProgram/power I
+	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
+	aastore
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; printf('\nBit Manipulation\n');
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"\nBit Manipulation\n"
+	ldc	0
+	anewarray	java/lang/Object
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; $power=15;
+
+	ldc	15
+	putstatic	sampleProgram/power I
+
+; $power=$power&3;
+
+	getstatic	sampleProgram/power I
+	ldc	3
+	iand
+	putstatic	sampleProgram/power I
+
+; printf('15&3 = %d\n',$power);
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"15&3 = %d\n"
+	ldc	1
+	anewarray	java/lang/Object
+	dup
+	ldc	0
+	getstatic	sampleProgram/power I
+	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
+	aastore
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; $power=15;
+
+	ldc	15
+	putstatic	sampleProgram/power I
+
+; $power=$power|3;
+
+	getstatic	sampleProgram/power I
+	ldc	3
+	ior
+	putstatic	sampleProgram/power I
+
+; printf('15|3 = %d\n',$power);
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"15|3 = %d\n"
+	ldc	1
+	anewarray	java/lang/Object
+	dup
+	ldc	0
+	getstatic	sampleProgram/power I
+	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
+	aastore
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; $power=15;
+
+	ldc	15
+	putstatic	sampleProgram/power I
+
+; $power=$power/&3;
+
+	getstatic	sampleProgram/power I
+	ldc	3
+	iand
+	ineg
+	putstatic	sampleProgram/power I
+
+; printf('15/&3 = %d\n',$power);
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"15/&3 = %d\n"
+	ldc	1
+	anewarray	java/lang/Object
+	dup
+	ldc	0
+	getstatic	sampleProgram/power I
+	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
+	aastore
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; $power=15;
+
+	ldc	15
+	putstatic	sampleProgram/power I
+
+; $power=$power|3;
+
+	getstatic	sampleProgram/power I
+	ldc	3
+	ior
+	putstatic	sampleProgram/power I
+
+; printf('15/|3 = %d\n',$power);
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"15/|3 = %d\n"
+	ldc	1
+	anewarray	java/lang/Object
+	dup
+	ldc	0
+	getstatic	sampleProgram/power I
+	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
+	aastore
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; printf('\nBit shifting\n');
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"\nBit shifting\n"
+	ldc	0
+	anewarray	java/lang/Object
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; $power=8;
+
+	ldc	8
+	putstatic	sampleProgram/power I
+
+; $power=$power<<2;
+
+	getstatic	sampleProgram/power I
+	ldc	2
+	ishl
+	putstatic	sampleProgram/power I
+
+; printf('8<<2 = %d\n',$power);
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"8<<2 = %d\n"
+	ldc	1
+	anewarray	java/lang/Object
+	dup
+	ldc	0
+	getstatic	sampleProgram/power I
+	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
+	aastore
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; printf('\nMod\n');
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"\nMod\n"
+	ldc	0
+	anewarray	java/lang/Object
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; $power=9;
+
+	ldc	9
+	putstatic	sampleProgram/power I
+
+; $power=$power%2;
+
+	getstatic	sampleProgram/power I
+	ldc	2
+	irem
+	putstatic	sampleProgram/power I
+
+; printf('9%%2 = %d\n',$power);
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"9%%2 = %d\n"
+	ldc	1
+	anewarray	java/lang/Object
+	dup
+	ldc	0
+	getstatic	sampleProgram/power I
+	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
+	aastore
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
 
 	getstatic     sampleProgram/_runTimer LRunTimer;
 	invokevirtual RunTimer.printElapsedTime()V

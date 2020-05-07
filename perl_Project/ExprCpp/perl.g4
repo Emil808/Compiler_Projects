@@ -7,13 +7,13 @@ using namespace wci::intermediate;
 using namespace wci::intermediate::icodeimpl;
 }
 
-program : declarations method_delcarations main_method; 
+program : declarations method_delcarations main_method;
 
-main_method : MAIN '{' compound_stmt '}'; 
+main_method : MAIN '{' (compound_stmt)* (NEWLINE)*'}'; 
 
 declarations: (variable_delcaration)*; 
 
-method_delcarations : (function | procedure)* ;
+method_delcarations : (function | procedure)*;
 
 function locals [int locals_var, int stack_var]: IDENTIFIER '(' parameters ')' TYPEID '{' declarations compound_stmt'}' ';' ; 
 procedure locals [int locals_var, int stack_var]: IDENTIFIER '(' parameters ')' '{' declarations compound_stmt '}' ';' ; 
@@ -50,7 +50,7 @@ printArg       : ',' expr ;
 	
 while_stmt: WHILE '(' expr ')' '{' compound_stmt '}';
 until_stmt: UNTIL '(' expr ')' '{' compound_stmt '}';
-do_while_stmt: DO '{' compound_stmt '}' WHILE '(' expr ')' ';' ; 
+do_while_stmt: DO '{' compound_stmt '}' WHILE '(' expr ')' ';' ;
 
 expr locals [ TypeSpec *type = nullptr ]
 	 : expr power_op expr		# powerExpr		
@@ -130,7 +130,7 @@ AND_OP: '&';
 NAND_OP: '/&';
 NOR_OP: '/|';
 Neg_OP:'/~';
-Two_Comp_OP:'//';
+Two_Comp_OP:'#';
 
 
 NEWLINE : '\r'? '\n' -> skip  ;
@@ -138,6 +138,13 @@ WS      : [ \t]+ -> skip ;
 
 QUOTE  : '\'' ;
 STRING : QUOTE STRING_CHAR* QUOTE ;
+
+BLOCK_COMMENT
+	: '/*' .*? '*/' -> channel(HIDDEN)
+	;
+LINE_COMMENT
+	: '//' ~[\r\n]* -> channel(HIDDEN)
+	;
 
 fragment STRING_CHAR : QUOTE QUOTE  // two consecutive quotes
                      | ~('\'')      // any non-quote character

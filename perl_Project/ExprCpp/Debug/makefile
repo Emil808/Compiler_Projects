@@ -14,7 +14,6 @@ RM := rm -rf
 -include wci/intermediate/icodeimpl/subdir.mk
 -include wci/intermediate/subdir.mk
 -include wci/subdir.mk
--include target/generated-sources/antlr4/subdir.mk
 -include subdir.mk
 -include objects.mk
 

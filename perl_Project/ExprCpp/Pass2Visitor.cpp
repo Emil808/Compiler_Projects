@@ -488,10 +488,16 @@ antlrcpp::Any Pass2Visitor::visitMuldivExpr(perlParser::MuldivExprContext *ctx){
                : real_mode    ? "fmul"
                :                "????";
     }
-    else
+    else if (op == "/")
     {
         opcode = integer_mode ? "idiv"
                : real_mode    ? "fdiv"
+               :                "????";
+    }
+    else
+    {
+        opcode = integer_mode ? "irem"
+               : real_mode    ? "frem"
                :                "????";
     }
 
