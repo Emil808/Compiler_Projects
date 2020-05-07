@@ -576,8 +576,13 @@ antlrcpp::Any Pass2Visitor:: visitBitopExpr(perlParser::BitopExprContext *ctx) {
 	    	    opcode = integer_mode ? "iand" : "????";
 	    	    opcode2 = integer_mode ? "ixor" : "????";
 	   	        j_file << "\t" << opcode << endl;
+
 	   	        j_file << "\tldc\t" << INT_MAX << endl;
-	   	        j_file << "\t" << opcode2 << endl;
+	   	        j_file << "\tixor" << endl;
+				j_file << "\tldc\t" << INT_MAX << endl;
+				j_file << "\tiadd\t" << endl;
+				j_file << "\tldc\t" << 1 << endl;
+				j_file << "\tiadd\t" << endl;
 	    }
 	    else if (op == "/|")
 		{
@@ -585,12 +590,17 @@ antlrcpp::Any Pass2Visitor:: visitBitopExpr(perlParser::BitopExprContext *ctx) {
 	    		               : "????";
 	    	 opcode2 = integer_mode ? "ixor" : "????";
 				j_file << "\t" << opcode << endl;
+
 				j_file << "\tldc\t" << INT_MAX << endl;
-				j_file << "\t" << opcode2 << endl;
+				j_file << "\tixor" << endl;
+				j_file << "\tldc\t" << INT_MAX << endl;
+				j_file << "\tiadd\t" << endl;
+				j_file << "\tldc\t" << 1 << endl;
+				j_file << "\tiadd\t" << endl;
 		}
 	    else if (op == "/~")
 		{
-	    	 j_file << "\tldc\t" << INT_MAX << endl;
+	    	 j_file << "\tldc\t" << 0 << endl;
 	    	 opcode = integer_mode ? "ixor" : "????";
 				j_file << "\t" << opcode << endl;
 		}

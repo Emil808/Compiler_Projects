@@ -85,7 +85,7 @@ printf('9/3 = %d\n',$power);
 
 /*
 Test of the bit manipulation
-15 = 1111
+15 = 1111_1111_1111_1111
 3 = 0011
 1111 & 0011 = 0011
 1111 | 0011 = 1111
@@ -95,16 +95,16 @@ Test of the bit manipulation
 printf('\nBit Manipulation\n');
 $power = 15;
 $power = $power & 3;
-printf('15&3 = %d\n',$power);
+printf('15 (0...0_1111) & 3 (0...0_0011) = [%d] = 3 (0...0_0011)\n',$power);
 $power = 15;
 $power = $power | 3;
-printf('15|3 = %d\n',$power);
+printf('15 (0...0_1111) | 3 (0...0_0011) = [%d] = 15 (0...0_1111)\n',$power);
 $power = 15;
 $power = $power /& 3;
-printf('15/&3 = %d\n',$power);
+printf('15 (0...0_1111) /& 3 (0...0_0011) = [%d] = -4 (1...1_1100)\n',$power);
 $power = 15;
 $power = $power /| 3;
-printf('15/|3 = %d\n',$power);
+printf('15 (0...0_1111) /| 3 (0...0_0011) = [%d] = -16 (1...1_0000)\n',$power);
 /*
 $power = 7;
 $power = $power /~ $power;

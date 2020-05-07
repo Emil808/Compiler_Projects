@@ -381,10 +381,10 @@ L20:
 	iand
 	putstatic	sampleProgram/power I
 
-; printf('15&3 = %d\n',$power);
+; printf('15 (0...0_1111) & 3 (0...0_0011) = [%d] = 3 (0...0_0011)\n',$power);
 
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"15&3 = %d\n"
+	ldc	"15 (0...0_1111) & 3 (0...0_0011) = [%d] = 3 (0...0_0011)\n"
 	ldc	1
 	anewarray	java/lang/Object
 	dup
@@ -407,10 +407,10 @@ L20:
 	ior
 	putstatic	sampleProgram/power I
 
-; printf('15|3 = %d\n',$power);
+; printf('15 (0...0_1111) | 3 (0...0_0011) = [%d] = 15 (0...0_1111)\n',$power);
 
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"15|3 = %d\n"
+	ldc	"15 (0...0_1111) | 3 (0...0_0011) = [%d] = 15 (0...0_1111)\n"
 	ldc	1
 	anewarray	java/lang/Object
 	dup
@@ -433,12 +433,16 @@ L20:
 	iand
 	ldc	2147483647
 	ixor
+	ldc	2147483647
+	iadd	
+	ldc	1
+	iadd	
 	putstatic	sampleProgram/power I
 
-; printf('15/&3 = %d\n',$power);
+; printf('15 (0...0_1111) /& 3 (0...0_0011) = [%d] = -4 (1...1_1100)\n',$power);
 
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"15/&3 = %d\n"
+	ldc	"15 (0...0_1111) /& 3 (0...0_0011) = [%d] = -4 (1...1_1100)\n"
 	ldc	1
 	anewarray	java/lang/Object
 	dup
@@ -461,12 +465,16 @@ L20:
 	ior
 	ldc	2147483647
 	ixor
+	ldc	2147483647
+	iadd	
+	ldc	1
+	iadd	
 	putstatic	sampleProgram/power I
 
-; printf('15/|3 = %d\n',$power);
+; printf('15 (0...0_1111) /| 3 (0...0_0011) = [%d] = -16 (1...1_0000)\n',$power);
 
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"15/|3 = %d\n"
+	ldc	"15 (0...0_1111) /| 3 (0...0_0011) = [%d] = -16 (1...1_0000)\n"
 	ldc	1
 	anewarray	java/lang/Object
 	dup
