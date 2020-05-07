@@ -2,7 +2,9 @@ grammar perl;
 
 @header {
 #include "wci/intermediate/TypeSpec.h"
+#include "wci/intermediate/icodeimpl/ICodeImpl.h"
 using namespace wci::intermediate;
+using namespace wci::intermediate::icodeimpl;
 }
 
 program : declarations method_delcarations main_method; 
@@ -15,6 +17,7 @@ method_delcarations : (function | procedure)* ;
 
 function locals [int locals_var, int stack_var]: IDENTIFIER '(' parameters ')' TYPEID '{' declarations compound_stmt'}' ';' ; 
 procedure locals [int locals_var, int stack_var]: IDENTIFIER '(' parameters ')' '{' declarations compound_stmt '}' ';' ; 
+
 parameters : (variable_delcaration)*;
 
 variable_delcaration : TYPEID variable ';'; 
@@ -35,9 +38,7 @@ stmt : assignment_stmt
 	 ;
 	 
 assignment_stmt : variable ASSIGN expr ';' ; 
-return_stmt : 'return' variable
-			| 'return' number
-			; 
+return_stmt : 'return' expr ';'; 
 
 
 if_stmt : IF '(' expr ')' '{' compound_stmt '}' (ELSE_IF '(' expr ')' '{' compound_stmt '}')* (ELSE '{' compound_stmt '}' )? ; 
@@ -52,7 +53,7 @@ until_stmt: UNTIL '(' expr ')' '{' compound_stmt '}';
 do_while_stmt: DO '{' compound_stmt '}' WHILE '(' expr ')' ';' ; 
 
 expr locals [ TypeSpec *type = nullptr ]
-	 : expr power_op expr		# powerExpr		// New
+	 : expr power_op expr		# powerExpr		
 	 | expr mul_div_op expr		# muldivExpr
 	 | expr add_sub_op expr		# addsubExpr
 	 | expr rel_op expr			# relopExpr

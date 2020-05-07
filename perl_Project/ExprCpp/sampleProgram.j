@@ -17,6 +17,18 @@
 .limit stack 1
 .end method
 
+
+.method private static increment(I)
+; return$a+1;
+
+	iload 0
+	ldc	1
+	iadd
+	ireturn
+.limit locals 2
+.limit stack 4
+.end method
+
 .method public static main([Ljava/lang/String;)V
 
 	new RunTimer

@@ -5,6 +5,8 @@ target/generated-sources/antlr4/perlLexer.o: \
  /home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/SymTab.h \
  /home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/ICode.h \
  /home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/../Object.h \
+ /home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/icodeimpl/ICodeImpl.h \
+ /home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/icodeimpl/../ICode.h \
  ../target/generated-sources/antlr4/perlLexer.h \
  /usr/local/include/antlr4-runtime/antlr4-runtime.h \
  /usr/local/include/antlr4-runtime/antlr4-common.h \
@@ -172,6 +174,10 @@ target/generated-sources/antlr4/perlLexer.o: \
 /home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/ICode.h:
 
 /home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/../Object.h:
+
+/home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/icodeimpl/ICodeImpl.h:
+
+/home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/icodeimpl/../ICode.h:
 
 ../target/generated-sources/antlr4/perlLexer.h:
 

@@ -5,6 +5,8 @@ Pass1Visitor.o: ../Pass1Visitor.cpp ../Pass1Visitor.h \
  ../wci/intermediate/SymTabEntry.h \
  /home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/target/generated-sources/antlr4/perlBaseVisitor.h \
  /home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/TypeSpec.h \
+ /home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/icodeimpl/ICodeImpl.h \
+ /home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/icodeimpl/../ICode.h \
  /usr/local/include/antlr4-runtime/antlr4-runtime.h \
  /usr/local/include/antlr4-runtime/antlr4-common.h \
  /usr/local/include/antlr4-runtime/support/guid.h \
@@ -177,7 +179,8 @@ Pass1Visitor.o: ../Pass1Visitor.cpp ../Pass1Visitor.h \
  ../wci/intermediate/symtabimpl/../TypeSpec.h \
  ../wci/util/CrossReferencer.h ../wci/util/../intermediate/SymTab.h \
  ../wci/util/../intermediate/SymTabStack.h \
- ../wci/util/../intermediate/TypeSpec.h ../wci/util/../Object.h
+ ../wci/util/../intermediate/TypeSpec.h ../wci/util/../Object.h \
+ ../wci/intermediate/icodeimpl/ICodeImpl.h
 
 ../Pass1Visitor.h:
 
@@ -198,6 +201,10 @@ Pass1Visitor.o: ../Pass1Visitor.cpp ../Pass1Visitor.h \
 /home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/target/generated-sources/antlr4/perlBaseVisitor.h:
 
 /home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/TypeSpec.h:
+
+/home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/icodeimpl/ICodeImpl.h:
+
+/home/emil/eclipse-workspace/Zane_Projects/Compiler_Projects/perl_Project/ExprCpp/wci/intermediate/icodeimpl/../ICode.h:
 
 /usr/local/include/antlr4-runtime/antlr4-runtime.h:
 
@@ -548,3 +555,5 @@ Pass1Visitor.o: ../Pass1Visitor.cpp ../Pass1Visitor.h \
 ../wci/util/../intermediate/TypeSpec.h:
 
 ../wci/util/../Object.h:
+
+../wci/intermediate/icodeimpl/ICodeImpl.h:

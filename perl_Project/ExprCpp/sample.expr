@@ -2,6 +2,10 @@ i$counter;
 f$number;
 i$negative;
 
+increment(i$a;)i{
+	return $a + 1; 
+};
+
 main{
 $number = 0.3;
 
