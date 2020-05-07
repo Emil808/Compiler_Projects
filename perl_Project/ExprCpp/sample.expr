@@ -5,11 +5,11 @@ i$negative;
 i$power;
 
 //functions
-/*
+
 increment(i$a;)i{
 	return $a + 1; 
 };
-*/
+
 
 //main
 main{

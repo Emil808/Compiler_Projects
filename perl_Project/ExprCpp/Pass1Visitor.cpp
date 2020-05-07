@@ -104,7 +104,45 @@ antlrcpp::Any Pass1Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	in_method = true;
 	slot_number = 0;
 	method_name = ctx->IDENTIFIER()->toString();
+
+	SymTabEntry *variable_id = symtab_stack->lookup(method_name);
+
+	variable_id = symtab_stack->enter_local(method_name);
+
+	variable_id->set_definition((Definition) DF_FUNCTION);
+	TypeSpec *type_spec = nullptr;
+
+	variable_id->set_typespec(type_spec);
+
+	variable_id_list.push_back(variable_id);
+
+	string method_signature = method_name;
+
 	auto value = visitChildren(ctx);
+
+	int param_amount = ctx->parameters()->variable_delcaration().size();
+
+	string type_id;
+	method_signature = method_name + "(";
+	for(int i = 0; i < param_amount; i++){
+
+		type_id = ctx->parameters()->variable_delcaration(i)->TYPEID()->toString();
+		type_id = (type_id == "i") ? "I"
+	            : (type_id == "f") ? "F"
+	            : (type_id == "b") ? "I"
+	            : "?";
+		method_signature.append(type_id);
+	}
+	method_signature.append(")");
+
+	type_id = ctx->TYPEID()->toString();
+			type_id = (type_id == "i") ? "I"
+		            : (type_id == "f") ? "F"
+		            : (type_id == "b") ? "I"
+		            : "?";
+	method_signature.append(type_id);
+
+	variable_id->set_attribute((SymTabKey) ROUTINE_SIGNATURE, method_signature);
 
 	in_method = false;
 

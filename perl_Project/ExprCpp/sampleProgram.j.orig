@@ -18,6 +18,7 @@
 .limit stack 1
 .end method
 
+<<<<<<< HEAD
 
 .method private static increment(I)I
 
@@ -31,6 +32,8 @@
 .limit stack 4
 .end method
 
+=======
+>>>>>>> ac1e2c2a99de469dfcda0962ee0a435c41f3acaa
 .method public static main([Ljava/lang/String;)V
 
 	new RunTimer
