@@ -54,6 +54,10 @@ while_stmt: WHILE '(' expr ')' '{' compound_stmt '}';
 until_stmt: UNTIL '(' expr ')' '{' compound_stmt '}';
 do_while_stmt: DO '{' compound_stmt '}' WHILE '(' expr ')' ';' ;
 
+function_call : IDENTIFIER '(' arguments ')'; 
+
+arguments : (expr)*;
+
 expr locals [ TypeSpec *type = nullptr ]
 	 : expr power_op expr		# powerExpr		
 	 | expr mul_div_op expr		# muldivExpr
@@ -65,6 +69,7 @@ expr locals [ TypeSpec *type = nullptr ]
 	 | signed_number			# signednumExpr
 	 | variable					# variableExpr
 	 | '(' expr ')' 			# parenthExpr
+	 | function_call			# functionExpr
 	 
 	 ; 
 	 

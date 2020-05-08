@@ -3,6 +3,7 @@
 #include <unordered_map>
 
 #include "Pass2Visitor.h"
+#include "wci/intermediate/SymTabFactory.h"
 #include "wci/intermediate/SymTabStack.h"
 #include "wci/intermediate/SymTabEntry.h"
 #include "wci/intermediate/TypeSpec.h"
@@ -159,6 +160,7 @@ antlrcpp::Any Pass2Visitor::visitReturn_stmt(perlParser::Return_stmtContext *ctx
 	    	: (ctx->expr()->type == Predefined::real_type)    ? "f"
 	    	: (ctx->expr()->type == Predefined::boolean_type) ? "i"
 	    	: "?";
+	// todo: push onto return slot: in pass1 assign the return_stmt ctx with an int for its slot number
 	j_file << "\t" << type_indicator << "return" << endl;
 	return value;
 }
@@ -185,6 +187,25 @@ antlrcpp::Any Pass2Visitor::visitParameters(perlParser::ParametersContext *ctx){
 	}
 	return nullptr;
 }
+
+antlrcpp::Any Pass2Visitor::visitFunctionExpr(perlParser::FunctionExprContext *ctx){
+
+	//visit the expressions in the arguments, last thing they do is place their values on the stack
+	auto value = visitChildren(ctx);
+
+	SymTabEntry *variable_id = symtab_stack->lookup(ctx->function_call()->IDENTIFIER()->toString());
+
+	Object signature = variable_id->get_attribute((SymTabKey) ROUTINE_SIGNATURE);
+
+	string function_signature = stringify(signature);
+
+	j_file << "\tinvokestatic " << function_signature << endl;
+	//invoke static,
+
+
+
+	return value;
+}
 antlrcpp::Any Pass2Visitor::visitStmt(perlParser::StmtContext *ctx){
 
     j_file << endl << "; " + ctx->getText() << endl << endl;
@@ -202,6 +223,7 @@ antlrcpp::Any Pass2Visitor::visitAssignment_stmt(perlParser::Assignment_stmtCont
     	variable_name = method_name_p2 + "/" + variable_name;
     }
     SymTabEntry *variable_id = symtab_stack->lookup(variable_name);
+    TypeSpec *type = variable_id->get_typespec();
     int slot_number = variable_id->get_slot();
 
     //if in method or using a global variable in a method
@@ -217,9 +239,9 @@ antlrcpp::Any Pass2Visitor::visitAssignment_stmt(perlParser::Assignment_stmtCont
     // else in main
     else{
     	string type_indicator =
-                          (ctx->expr()->type == Predefined::integer_type) ? "I"
-                        : (ctx->expr()->type == Predefined::real_type)    ? "F"
-                        : (ctx->expr()->type == Predefined::boolean_type) ? "I"
+                          (type == Predefined::integer_type) ? "I"
+                        : (type == Predefined::real_type)    ? "F"
+                        : (type == Predefined::boolean_type) ? "I"
                         : "?";
 
     // Emit a field put instruction.

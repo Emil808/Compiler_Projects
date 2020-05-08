@@ -57,6 +57,7 @@ public:
     antlrcpp::Any visitFunction(perlParser::FunctionContext *ctx) override;
     antlrcpp::Any visitReturn_stmt(perlParser::Return_stmtContext *ctx) override;
     antlrcpp::Any visitParameters(perlParser::ParametersContext *ctx) override;
+    antlrcpp::Any visitFunctionExpr(perlParser::FunctionExprContext *ctx) override;
 
     //todo: other visitor functions in here
 

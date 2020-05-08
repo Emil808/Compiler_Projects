@@ -6,16 +6,16 @@ i$bravo;
 f$charlie;
 f$delta; 
 
-increment(ia;)i{
+increment(i$a;)i{
 	return $a + 1; 
-}
+};
 
 //main
 main{
 
 	$alpha = 13;
 	$bravo = 54;
-	
+	$counter = increment($alpha); 
 	while($bravo > 40){
 	
 		if($bravo & 2){

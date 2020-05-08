@@ -4,9 +4,10 @@
 .field private static _runTimer LRunTimer;
 .field private static _standardIn LPascalTextIn;
 .field private static counter I
-.field private static number F
-.field private static negative I
-.field private static power I
+.field private static alpha I
+.field private static bravo I
+.field private static charlie F
+.field private static delta F
 
 .method public <init>()V
 
@@ -42,23 +43,29 @@
 	invokenonvirtual PascalTextIn/<init>()V
 	putstatic	sampleProgram/_standardIn LPascalTextIn;
 
-; $number=0.3;
+; $alpha=13;
 
-	ldc	0.3
-	putstatic	sampleProgram/number F
+	ldc	13
+	putstatic	sampleProgram/alpha I
 
-; $counter=1;
+; $bravo=54;
 
-	ldc	1
+	ldc	54
+	putstatic	sampleProgram/bravo I
+
+; $counter=increment($alpha);
+
+	getstatic	sampleProgram/alpha I
+	invokestatic perl_Program/increment(I)I
 	putstatic	sampleProgram/counter I
 
-; while($counter<10){printf('Count: %d\t',$counter);if($counter<5){$number=$number*2.4;}elseif($counter==5){$number=30.0;}elseif($counter==8){$number=55.23434;}else{$number=0.4;}$counter=$counter+1;printf('%f\n',$number);}
+; while($bravo>40){if($bravo&2){printf('Has a 2: %d\n',$bravo);}elseif($bravo&4){printf('Has a 4: %d\n',$bravo);}else{printf('No 4 or 2\n');}$bravo=$bravo-1;}
 
 L0:
-	getstatic	sampleProgram/counter I
-	ldc	10
+	getstatic	sampleProgram/bravo I
+	ldc	40
 	isub
-	iflt L2
+	ifgt L2
 	iconst_0
 	goto L3
 L2:
@@ -66,507 +73,67 @@ L2:
 L3:
 	ifle L1
 
-; printf('Count: %d\t',$counter);
+; if($bravo&2){printf('Has a 2: %d\n',$bravo);}elseif($bravo&4){printf('Has a 4: %d\n',$bravo);}else{printf('No 4 or 2\n');}
 
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"Count: %d\t"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/counter I
-	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; if($counter<5){$number=$number*2.4;}elseif($counter==5){$number=30.0;}elseif($counter==8){$number=55.23434;}else{$number=0.4;}
-
-	getstatic	sampleProgram/counter I
-	ldc	5
-	isub
-	iflt L6
-	iconst_0
-	goto L7
-L6:
-	iconst_1
-L7:
+	getstatic	sampleProgram/bravo I
+	ldc	2
+	iand
 	ifle L4
 
-; $number=$number*2.4;
+; printf('Has a 2: %d\n',$bravo);
 
-	getstatic	sampleProgram/number F
-	ldc	2.4
-	fmul
-	putstatic	sampleProgram/number F
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"Has a 2: %d\n"
+	ldc	1
+	anewarray	java/lang/Object
+	dup
+	ldc	0
+	getstatic	sampleProgram/bravo I
+	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
+	aastore
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
 	goto L5
 L4:
-	getstatic	sampleProgram/counter I
-	ldc	5
-	isub
-	ifeq L9
-	iconst_0
-	goto L10
-L9:
-	iconst_1
-L10:
-	ifle L8
+	getstatic	sampleProgram/bravo I
+	ldc	4
+	iand
+	ifle L6
 
-; $number=30.0;
+; printf('Has a 4: %d\n',$bravo);
 
-	ldc	30.0
-	putstatic	sampleProgram/number F
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"Has a 4: %d\n"
+	ldc	1
+	anewarray	java/lang/Object
+	dup
+	ldc	0
+	getstatic	sampleProgram/bravo I
+	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
+	aastore
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
 	goto L5
-L8:
-	getstatic	sampleProgram/counter I
-	ldc	8
-	isub
-	ifeq L12
-	iconst_0
-	goto L13
-L12:
-	iconst_1
-L13:
-	ifle L11
+L6:
 
-; $number=55.23434;
+; printf('No 4 or 2\n');
 
-	ldc	55.23434
-	putstatic	sampleProgram/number F
-	goto L5
-L11:
-
-; $number=0.4;
-
-	ldc	0.4
-	putstatic	sampleProgram/number F
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"No 4 or 2\n"
+	ldc	0
+	anewarray	java/lang/Object
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
 L5:
 
-; $counter=$counter+1;
+; $bravo=$bravo-1;
 
-	getstatic	sampleProgram/counter I
+	getstatic	sampleProgram/bravo I
 	ldc	1
-	iadd
-	putstatic	sampleProgram/counter I
-
-; printf('%f\n',$number);
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"%f\n"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/number F
-	invokestatic	java/lang/Float.valueOf(F)Ljava/lang/Float;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
+	isub
+	putstatic	sampleProgram/bravo I
 	goto L0
 L1:
-
-; printf('\nnegitive numbers');
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"\nnegitive numbers"
-	ldc	0
-	anewarray	java/lang/Object
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; $negative=-1;
-
-	ldc	1
-	ineg
-	putstatic	sampleProgram/negative I
-
-; printf('%d\n',$negative);
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"%d\n"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/negative I
-	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; $negative=$negative-4;
-
-	getstatic	sampleProgram/negative I
-	ldc	4
-	isub
-	putstatic	sampleProgram/negative I
-
-; printf('%d\n',$negative);
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"%d\n"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/negative I
-	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; $negative=$negative*8;
-
-	getstatic	sampleProgram/negative I
-	ldc	8
-	imul
-	putstatic	sampleProgram/negative I
-
-; printf('%d\n',$negative);
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"%d\n"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/negative I
-	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; printf('\nDo While Loop\n');
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"\nDo While Loop\n"
-	ldc	0
-	anewarray	java/lang/Object
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; $counter=0;
-
-	ldc	0
-	putstatic	sampleProgram/counter I
-
-; do{printf('In loop, %d\n',$counter);$counter=$counter+1;}while($counter<3);
-
-L14:
-
-; printf('In loop, %d\n',$counter);
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"In loop, %d\n"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/counter I
-	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; $counter=$counter+1;
-
-	getstatic	sampleProgram/counter I
-	ldc	1
-	iadd
-	putstatic	sampleProgram/counter I
-	getstatic	sampleProgram/counter I
-	ldc	3
-	isub
-	iflt L16
-	iconst_0
-	goto L17
-L16:
-	iconst_1
-L17:
-	ifle L15
-	goto L14
-L15:
-
-; printf('\nPowers\n');
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"\nPowers\n"
-	ldc	0
-	anewarray	java/lang/Object
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; $power=3;
-
-	ldc	3
-	putstatic	sampleProgram/power I
-
-; $power=$power^2;
-
-	getstatic	sampleProgram/power I
-	ldc	2
-	istore_1
-	istore_0
-	iload_1
-	ldc 0
-	isub
-	ifeq L19
-	iload_0
-L18:
-	iload_1
-	ldc 1
-	isub
-	ifeq L20
-	iload_0
-	imul
-	iload_1
-	ldc 1
-	isub
-	istore_1
-	goto L18
-L19:
-	ldc 1
-L20:
-	putstatic	sampleProgram/power I
-
-; printf('3^2 = %d\n',$power);
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"3^2 = %d\n"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/power I
-	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; printf('\nDiv\n');
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"\nDiv\n"
-	ldc	0
-	anewarray	java/lang/Object
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; $power=$power/3;
-
-	getstatic	sampleProgram/power I
-	ldc	3
-	idiv
-	putstatic	sampleProgram/power I
-
-; printf('9/3 = %d\n',$power);
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"9/3 = %d\n"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/power I
-	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; printf('\nBit Manipulation\n');
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"\nBit Manipulation\n"
-	ldc	0
-	anewarray	java/lang/Object
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; $power=15;
-
-	ldc	15
-	putstatic	sampleProgram/power I
-
-; $power=$power&3;
-
-	getstatic	sampleProgram/power I
-	ldc	3
-	iand
-	putstatic	sampleProgram/power I
-
-; printf('15 (0...0_1111) & 3 (0...0_0011) = [%d] = 3 (0...0_0011)\n',$power);
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"15 (0...0_1111) & 3 (0...0_0011) = [%d] = 3 (0...0_0011)\n"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/power I
-	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; $power=15;
-
-	ldc	15
-	putstatic	sampleProgram/power I
-
-; $power=$power|3;
-
-	getstatic	sampleProgram/power I
-	ldc	3
-	ior
-	putstatic	sampleProgram/power I
-
-; printf('15 (0...0_1111) | 3 (0...0_0011) = [%d] = 15 (0...0_1111)\n',$power);
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"15 (0...0_1111) | 3 (0...0_0011) = [%d] = 15 (0...0_1111)\n"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/power I
-	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; $power=15;
-
-	ldc	15
-	putstatic	sampleProgram/power I
-
-; $power=$power/&3;
-
-	getstatic	sampleProgram/power I
-	ldc	3
-	iand
-	ldc	2147483647
-	ixor
-	ldc	2147483647
-	iadd	
-	ldc	1
-	iadd	
-	putstatic	sampleProgram/power I
-
-; printf('15 (0...0_1111) /& 3 (0...0_0011) = [%d] = -4 (1...1_1100)\n',$power);
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"15 (0...0_1111) /& 3 (0...0_0011) = [%d] = -4 (1...1_1100)\n"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/power I
-	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; $power=15;
-
-	ldc	15
-	putstatic	sampleProgram/power I
-
-; $power=$power/|3;
-
-	getstatic	sampleProgram/power I
-	ldc	3
-	ior
-	ldc	2147483647
-	ixor
-	ldc	2147483647
-	iadd	
-	ldc	1
-	iadd	
-	putstatic	sampleProgram/power I
-
-; printf('15 (0...0_1111) /| 3 (0...0_0011) = [%d] = -16 (1...1_0000)\n',$power);
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"15 (0...0_1111) /| 3 (0...0_0011) = [%d] = -16 (1...1_0000)\n"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/power I
-	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; printf('\nBit shifting\n');
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"\nBit shifting\n"
-	ldc	0
-	anewarray	java/lang/Object
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; $power=8;
-
-	ldc	8
-	putstatic	sampleProgram/power I
-
-; $power=$power<<2;
-
-	getstatic	sampleProgram/power I
-	ldc	2
-	ishl
-	putstatic	sampleProgram/power I
-
-; printf('8<<2 = %d\n',$power);
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"8<<2 = %d\n"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/power I
-	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; printf('\nMod\n');
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"\nMod\n"
-	ldc	0
-	anewarray	java/lang/Object
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
-
-; $power=9;
-
-	ldc	9
-	putstatic	sampleProgram/power I
-
-; $power=$power%2;
-
-	getstatic	sampleProgram/power I
-	ldc	2
-	irem
-	putstatic	sampleProgram/power I
-
-; printf('9%%2 = %d\n',$power);
-
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"9%%2 = %d\n"
-	ldc	1
-	anewarray	java/lang/Object
-	dup
-	ldc	0
-	getstatic	sampleProgram/power I
-	invokestatic	java/lang/Integer.valueOf(I)Ljava/lang/Integer;
-	aastore
-	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
-	pop
 
 	getstatic     sampleProgram/_runTimer LRunTimer;
 	invokevirtual RunTimer.printElapsedTime()V

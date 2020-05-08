@@ -20,6 +20,7 @@ const bool DEBUG_1 = true;
 bool in_method;
 int slot_number;
 string method_name;
+string program_name = "perl_Program";
 
 Pass1Visitor::Pass1Visitor()
 {
@@ -35,7 +36,7 @@ Pass1Visitor::~Pass1Visitor() {};
 antlrcpp::Any Pass1Visitor::visitProgram(perlParser::ProgramContext *ctx){
 
 
-	string program_name = "perl_Program";
+
 
 	SymTabEntry *program_id = symtab_stack->enter_local(program_name);
 	program_id->set_definition((Definition)DF_PROGRAM);
@@ -110,9 +111,9 @@ antlrcpp::Any Pass1Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	variable_id = symtab_stack->enter_local(method_name);
 
 	variable_id->set_definition((Definition) DF_FUNCTION);
-	TypeSpec *type_spec = nullptr;
+	TypeSpec *type_spec;
 
-	variable_id->set_typespec(type_spec);
+
 
 	variable_id_list.push_back(variable_id);
 
@@ -123,7 +124,7 @@ antlrcpp::Any Pass1Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	int param_amount = ctx->parameters()->variable_delcaration().size();
 
 	string type_id;
-	method_signature = method_name + "(";
+	method_signature = program_name + "/" + method_name + "(";
 	for(int i = 0; i < param_amount; i++){
 
 		type_id = ctx->parameters()->variable_delcaration(i)->TYPEID()->toString();
@@ -136,10 +137,17 @@ antlrcpp::Any Pass1Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	method_signature.append(")");
 
 	type_id = ctx->TYPEID()->toString();
-			type_id = (type_id == "i") ? "I"
-		            : (type_id == "f") ? "F"
-		            : (type_id == "b") ? "I"
-		            : "?";
+
+	type_spec = (type_id == "i") ? Predefined::integer_type
+			  : (type_id == "f") ? Predefined::real_type
+ 			  : (type_id == "b") ? Predefined::boolean_type
+ 			  : Predefined::undefined_type;
+	type_id = (type_id == "i") ? "I"
+				: (type_id == "f") ? "F"
+			    : (type_id == "b") ? "I"
+			    : "?";
+
+	variable_id->set_typespec(type_spec);
 	method_signature.append(type_id);
 
 	variable_id->set_attribute((SymTabKey) ROUTINE_SIGNATURE, method_signature);
