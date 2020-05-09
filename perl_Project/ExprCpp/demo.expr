@@ -10,29 +10,22 @@ increment(i$a;)i{
 	return $a + 1; 
 };
 
+decrement(i$a;)i{
+	return $a - 1; 
+};
+
 //main
 main{
 
 	$alpha = 13;
 	$bravo = 54;
 	$counter = increment($alpha); 
-	while($bravo > 40){
 	
-		if($bravo & 2){
-			printf('Has a 2: %d\n', $bravo); 
-		}
-		elseif( $bravo & 4){
-			printf('Has a 4: %d\n', $bravo); 
-		}
-		else{
-			printf('No 4 or 2\n'); 
-		}
-		$bravo = $bravo - 1; 
-	}
+	printf('$alpha = %d\n', $alpha); 
+	printf('$counter = %d\n', $counter); 
 	
-	
-
-
-
+	$counter = decrement($bravo); 
+	printf('$bravo = %d\n', $bravo); 
+	printf('$counter = %d\n', $counter);
 
 }

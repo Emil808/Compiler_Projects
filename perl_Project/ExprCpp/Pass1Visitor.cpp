@@ -20,7 +20,7 @@ const bool DEBUG_1 = true;
 bool in_method;
 int slot_number;
 string method_name;
-string program_name = "perl_Program";
+string program_name = "sampleProgram";
 
 Pass1Visitor::Pass1Visitor()
 {
@@ -153,7 +153,7 @@ antlrcpp::Any Pass1Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	variable_id->set_attribute((SymTabKey) ROUTINE_SIGNATURE, method_signature);
 
 	in_method = false;
-
+	variable_id->set_slot(slot_number);
 	ctx->locals_var = slot_number + 1;
 
 	ctx->stack_var = 4; // unsure how to calculate used stack size

@@ -160,7 +160,11 @@ antlrcpp::Any Pass2Visitor::visitReturn_stmt(perlParser::Return_stmtContext *ctx
 	    	: (ctx->expr()->type == Predefined::real_type)    ? "f"
 	    	: (ctx->expr()->type == Predefined::boolean_type) ? "i"
 	    	: "?";
-	// todo: push onto return slot: in pass1 assign the return_stmt ctx with an int for its slot number
+	SymTabEntry *variable_id = symtab_stack->lookup(method_name_p2);
+	int return_slot = variable_id->get_slot();
+
+	j_file << endl << "\t" << type_indicator << "store " << return_slot
+		   << endl << "\t" << type_indicator << "load " << return_slot << endl;
 	j_file << "\t" << type_indicator << "return" << endl;
 	return value;
 }
