@@ -16,7 +16,7 @@ declarations: (variable_delcaration)*;
 method_delcarations : (function | procedure)*;
 
 function locals [int locals_var, int stack_var]: IDENTIFIER '(' parameters ')' TYPEID '{' declarations compound_stmt'}' ';' ; 
-procedure locals [int locals_var, int stack_var]: IDENTIFIER '(' parameters ')' '{' declarations compound_stmt '}' ';' ; 
+procedure locals [int locals_var, int stack_var]: IDENTIFIER '(' parameters ')''{' declarations compound_stmt '}' ';' ; 
 
 parameters : (variable_delcaration)*;
 
@@ -37,10 +37,14 @@ stmt : assignment_stmt
 	 | do_while_stmt
 	 | printStmt
 	 | return_stmt
+	 | procedure_call_stmt
 	 ;
+	 
+	 
 	 
 assignment_stmt : variable ASSIGN expr ';' ; 
 return_stmt : 'return' expr ';'; 
+procedure_call_stmt : IDENTIFIER '(' arguments ')' ';'; 
 
 
 if_stmt : IF '(' expr ')' '{' compound_stmt '}' (ELSE_IF '(' expr ')' '{' compound_stmt '}')* (ELSE '{' compound_stmt '}' )? ; 
@@ -105,7 +109,7 @@ number locals [ TypeSpec *type = nullptr ]
 signed_number : sign number ;
 
 PRINTF  : 'printf' ;
-IDENTIFIER : [a-zA-Z][a-zA-Z0-9]* ;
+IDENTIFIER : [a-zA-Z][_a-zA-Z0-9]* ;
 INTEGER    : [0-9]+ ;
 EXPONENT   : INTEGER POWER_OP INTEGER | INTEGER;	// New
 REAL : INTEGER '.' INTEGER; 

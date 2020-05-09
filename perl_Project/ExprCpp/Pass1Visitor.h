@@ -25,6 +25,8 @@ public:
     antlrcpp::Any visitProgram(perlParser::ProgramContext *ctx) override;
 
     antlrcpp::Any visitFunction(perlParser::FunctionContext *ctx) override;
+    antlrcpp::Any visitProcedure(perlParser::ProcedureContext *ctx) override;
+
     antlrcpp::Any visitParameters(perlParser::ParametersContext *ctx) override;
     antlrcpp::Any visitVariable_delcaration(perlParser::Variable_delcarationContext *ctx) override;
 

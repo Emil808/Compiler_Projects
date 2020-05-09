@@ -156,9 +156,54 @@ antlrcpp::Any Pass1Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	variable_id->set_slot(slot_number);
 	ctx->locals_var = slot_number + 1;
 
-	ctx->stack_var = 4; // unsure how to calculate used stack size
+	ctx->stack_var = 16; // todo: how to calculate for minimum needed stack size
 	slot_number = -1;
 	return value;
+}
+
+antlrcpp::Any Pass1Visitor::visitProcedure(perlParser::ProcedureContext *ctx){
+
+	in_method = true;
+	slot_number = 0;
+	method_name = ctx->IDENTIFIER()->toString();
+
+	SymTabEntry *variable_id = symtab_stack->lookup(method_name);
+
+	variable_id = symtab_stack->enter_local(method_name);
+
+	variable_id->set_definition((Definition) DF_PROCEDURE);
+
+	variable_id_list.push_back(variable_id);
+
+	string method_signature = method_name;
+
+	auto value = visitChildren(ctx);
+
+	int param_amount = ctx->parameters()->variable_delcaration().size();
+
+	string type_id;
+	method_signature = program_name + "/" + method_name + "(";
+	for(int i = 0; i < param_amount; i++){
+
+		type_id = ctx->parameters()->variable_delcaration(i)->TYPEID()->toString();
+		type_id = (type_id == "i") ? "I"
+	            : (type_id == "f") ? "F"
+	            : (type_id == "b") ? "I"
+	            : "?";
+		method_signature.append(type_id);
+	}
+	method_signature.append(")V");
+
+	variable_id->set_attribute((SymTabKey) ROUTINE_SIGNATURE, method_signature);
+
+	in_method = false;
+	variable_id->set_slot(slot_number);
+	ctx->locals_var = slot_number;
+
+	ctx->stack_var = 16; // todo: how to calculate used stack size
+	slot_number = -1;
+	return value;
+
 }
 antlrcpp::Any Pass1Visitor::visitParameters(perlParser::ParametersContext *ctx){
 

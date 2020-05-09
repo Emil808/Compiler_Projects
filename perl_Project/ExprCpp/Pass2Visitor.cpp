@@ -144,12 +144,34 @@ antlrcpp::Any Pass2Visitor::visitFunction(perlParser::FunctionContext *ctx){
 	//visit compound statement
 	value = visit(ctx->compound_stmt());
 
-	//todo: check if function has atleast one return statement
+	// todo: check if function has atleast one return statement
 
 	j_file << ".limit locals " << ctx->locals_var << endl
 		   << ".limit stack " << ctx->stack_var << endl
 		   << ".end method" << endl << endl;
-	//function epiloge
+	//function epilogue
+	return value;
+}
+
+antlrcpp::Any Pass2Visitor::visitProcedure(perlParser::ProcedureContext *ctx){
+
+	string function_name = ctx->IDENTIFIER()->toString();
+	method_name_p2 = function_name;
+	j_file << endl << ".method private static " << function_name
+		   << "(" ;
+	auto value = visit(ctx->parameters());
+	j_file << ")V" ;
+
+	//visit compound statement
+	value = visit(ctx->compound_stmt());
+
+	//todo: check if function has atleast one return statement
+
+	j_file << "return" << endl
+		   << ".limit locals " << ctx->locals_var << endl
+		   << ".limit stack " << ctx->stack_var << endl
+		   << ".end method" << endl << endl;
+	//function epilogue
 	return value;
 }
 
@@ -209,6 +231,25 @@ antlrcpp::Any Pass2Visitor::visitFunctionExpr(perlParser::FunctionExprContext *c
 
 
 	return value;
+}
+
+antlrcpp::Any Pass2Visitor::visitProcedure_call_stmt(perlParser::Procedure_call_stmtContext *ctx){
+
+	auto value = visitChildren(ctx);
+
+	SymTabEntry *variable_id = symtab_stack->lookup(ctx->IDENTIFIER()->toString());
+
+	Object signature = variable_id->get_attribute((SymTabKey) ROUTINE_SIGNATURE);
+
+	string function_signature = stringify(signature);
+
+	j_file << "\tinvokestatic " << function_signature << endl;
+	//invoke static,
+
+
+
+	return value;
+
 }
 antlrcpp::Any Pass2Visitor::visitStmt(perlParser::StmtContext *ctx){
 

@@ -32,7 +32,7 @@
 	iload 1
 	ireturn
 .limit locals 2
-.limit stack 4
+.limit stack 16
 .end method
 
 
@@ -48,7 +48,34 @@
 	iload 1
 	ireturn
 .limit locals 2
-.limit stack 4
+.limit stack 16
+.end method
+
+
+.method private static double_proc(F)V
+; $var=$var*2.0;
+
+	fload 0
+	ldc	2.0
+	fmul
+	fstore 0
+
+; printf('In procedure: %f\n',$var);
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"In procedure: %f\n"
+	ldc	1
+	anewarray	java/lang/Object
+	dup
+	ldc	0
+	fload 0
+	invokestatic	java/lang/Float.valueOf(F)Ljava/lang/Float;
+	aastore
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+return
+.limit locals 1
+.limit stack 16
 .end method
 
 .method public static main([Ljava/lang/String;)V
@@ -139,6 +166,30 @@
 	aastore
 	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
+
+; $charlie=3.5;
+
+	ldc	3.5
+	putstatic	sampleProgram/charlie F
+
+; printf('In main: %f\n',$charlie);
+
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"In main: %f\n"
+	ldc	1
+	anewarray	java/lang/Object
+	dup
+	ldc	0
+	getstatic	sampleProgram/charlie F
+	invokestatic	java/lang/Float.valueOf(F)Ljava/lang/Float;
+	aastore
+	invokevirtual java/io/PrintStream.printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+
+; double_proc($charlie);
+
+	getstatic	sampleProgram/charlie F
+	invokestatic sampleProgram/double_proc(F)V
 
 	getstatic     sampleProgram/_runTimer LRunTimer;
 	invokevirtual RunTimer.printElapsedTime()V

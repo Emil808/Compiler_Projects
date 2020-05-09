@@ -14,6 +14,11 @@ decrement(i$a;)i{
 	return $a - 1; 
 };
 
+double_proc(f$var;){
+	$var = $var * 2.0; 
+	
+	printf('In procedure: %f\n', $var); 
+};
 //main
 main{
 
@@ -27,5 +32,9 @@ main{
 	$counter = decrement($bravo); 
 	printf('$bravo = %d\n', $bravo); 
 	printf('$counter = %d\n', $counter);
+	
+	$charlie = 3.5; 
+	printf('In main: %f\n', $charlie); 
+	double_proc($charlie); 
 
 }
