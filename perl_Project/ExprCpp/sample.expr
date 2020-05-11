@@ -7,7 +7,7 @@ i$power;
 //functions
 
 increment(i$a;)i{
-	return $a + 1; 
+	return $a + 1;
 };
 
 
@@ -49,9 +49,9 @@ Negitive number test
 printf('\nnegitive numbers');
 $negative = -1;
 printf('%d\n', $negative);
-$negative = $negative - 4; 
+$negative = $negative - 4;
 printf('%d\n', $negative);
-$negative = $negative * 8; 
+$negative = $negative * 8;
 printf('%d\n', $negative);
 
 /*
@@ -62,7 +62,7 @@ printf('\nDo While Loop\n');
 $counter = 0; 
 do{
 	printf('In loop, %d\n', $counter); 
-	$counter = $counter+1; 
+	$counter = increment($counter); 
 }
 while ($counter < 3); 
 

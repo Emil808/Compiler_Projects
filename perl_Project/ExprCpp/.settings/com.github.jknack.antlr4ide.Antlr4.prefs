@@ -1,5 +1,5 @@
-antlr4.antlrRegisteredTools=4.4@/tmp/antlr-4.4-complete.jar\:4.7.2@/home/emil/ANTLR-4.7.2/antlr-4.7.2-complete.jar
-antlr4.antlrToolPath=/home/emil/ANTLR-4.7.2/antlr-4.7.2-complete.jar
+antlr4.antlrRegisteredTools=4.4@/tmp/antlr-4.4-complete.jar\:4.7.2@/home/emil/ANTLR-4.7.2/antlr-4.7.2-complete.jar\:4.8@/home/abhi/ANTLR-4.8/antlr-4.8-complete.jar
+antlr4.antlrToolPath=/home/abhi/ANTLR-4.8/antlr-4.8-complete.jar
 antlr4.encoding=UTF-8
 antlr4.listener=true
 antlr4.visitor=false
